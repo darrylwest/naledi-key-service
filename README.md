@@ -14,7 +14,7 @@ It is important to note that the actual documents never pass through the service
 
 ## Communication Protocol
 
-All communications are through a single endpoint, e.g. http://naledi.com/KeyService with routing and data parameters specified using public/private key encryption.  Keys and document specs are stored on separate private machines.
+All communications are through a single endpoint, e.g. https://naledi.com/KeyService with routing and data parameters specified using public/private key encryption.  Keys and document specs are stored on separate private machines.
 
 ### Public/Private Key Communications
 
