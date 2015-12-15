@@ -24,9 +24,15 @@ All communications are through a single endpoint, e.g. https://naledi.com/KeySer
 
 ### Symetric Key Exchange
 
+## API Use Cases
+
+See the [detail document](documents/use-case.md) for use cases for each exposed API.
+
 ## License
 
 _See the [LICENSE](LICENSE) file._
 
 - - -
 <small><em>Copyright 2015, darryl west | version 0.90.10 2015-12-14</em></small>
+
+<small><em>The word Naledi means "Star" and is the name of our recently discovered relative, [homo naledi](https://en.wikipedia.org/wiki/Homo_naledi) discovered in the Rising Star Cave by a team led by South African paleoanthropologist [Lee Berger](https://en.wikipedia.org/wiki/Lee_Rogers_Berger).</em></small>
