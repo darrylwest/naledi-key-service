@@ -1,0 +1,4 @@
+# dot this in...
+
+export GOPATH="$HOME/.gopath:`pwd`"
+
