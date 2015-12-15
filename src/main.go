@@ -7,7 +7,7 @@ import (
 
 func main() {
 
-	ctx := keyservice.ParseCommandArgs()
+	ctx := keyservice.ParseArgs()
 	// err := keyservice.StartService()
 
 	fmt.Printf("KeyService Started: %v\n", ctx.ToMap())

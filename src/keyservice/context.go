@@ -59,8 +59,8 @@ func NewDefaultContext() *Context {
 	ctx.logpath = path.Join(os.Getenv("HOME"), "logs")
 	ctx.logname = "webserver"
 
-	ctx.baseport = 3001
-	ctx.shutdownPort = 3009
+	ctx.baseport = 9001
+	ctx.shutdownPort = 9009
 	ctx.serverCount = 2
 
 	return ctx
@@ -72,7 +72,7 @@ func NewContextForEnvironment(env string) *Context {
 	ctx.env = env
 
 	if !IsProduction(env) {
-		ctx.logname = env + "-webserver"
+		ctx.logname = env + "-keyservice"
 	}
 
 	return ctx
