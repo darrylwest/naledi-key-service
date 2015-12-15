@@ -24,5 +24,9 @@ All communications are through a single endpoint, e.g. http://naledi.com/KeyServ
 
 ### Symetric Key Exchange
 
+## License
+
+_See the [LICENSE](LICENSE) file._
+
 - - -
 <small><em>Copyright 2015, darryl west | version 0.90.10 2015-12-14</em></small>
