@@ -3,19 +3,15 @@
 
 ## Register a user
 
-All users must be registered with minimum data including back-channel access method.
-
-## Update a user
-
-Update a user password, email, back-channel, etc
+All users must be registered with minimum data including email and back-channel access method (SMS, socket, etc).
 
 ## Request a user session
 
-Other than registering a user all communications are conducted in a strict session
+With the exception of registering a new user, all communications are conducted in strict, short-lived sessions.  To begin a session, the user requests a session token by supplying a public-key and session/request route.  The server responds by creating a session and returns the session token and message encryption symmetric key encrypted with the user's public-key.  Subsequent requests from the user must add the session token to the header and encrypt all request data using the message key.  Responses from the server will also encrypt responses with the message key as long as the session is active.
 
 ## User Login
 
-Given a valid session, login to a registered account.
+Given a valid session, the user must login to a registered account to obtain document information.  A successful login will return the user's settings and a document list with meta data.
 
 ## Change a User Passord
 
@@ -29,9 +25,9 @@ Requires back-channel confirmation.
 
 User settings such as email, sms address, etc may be updated the logged in user.
 
-## Submit a key and recieve an ID
+## Request an encryption key
 
-An author may submit a key to a specific document and recieve an ID.  The ID may be passed to another user to enable sharing documents.
+To encrypt a document an author requests a symmetry key from the service by supplying document meta data.  The server responds is an ID used to identify the document and meta data (title, author, create date, update date, abstract).
 
 ## Request a Shared Document Key
 
