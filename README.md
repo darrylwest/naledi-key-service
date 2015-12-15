@@ -1,8 +1,10 @@
 # Naledi Key Service
 
+_A secure service for exchanging symmetric encryption keys between two or more registered users..._
+
 ## Overview
 
-Naledi Key Service is used to manage a set of encryption keys for a user's documents.  A "document" can be a single file or multiple files of any type combined into a single tar-ball.  The service generates and stores document keys for a user to enable encryption and decryption.  The author may share these keys with other registered users. The actual document(s) never pass throught the service.
+**Naledi Key Service** is used to manage a set of encryption keys for a user's documents.  A "document" can be a single file or multiple files of any type combined into a single tar-ball.  The service generates and stores document keys for a user to enable encryption and decryption.  The author may share these keys with other registered users. The actual document(s) never pass throught the service.
 
 ## Document Key Sharing
 
@@ -43,9 +45,19 @@ All communications are through a single endpoint, e.g. https://naledi.com/KeySer
 * if the shared key exists and has not expired, a code is generated and sent via back-channel to the requestor
 * when the code is submitted by the requestor and verified by the service, the shared key is returned
 
-## API Use Cases
+
+## Other Documents
+### User Stories
+
+See the [user stories document](documents/user-stories.md) for examples of typical use.
+
+### API Use Cases
 
 See the [detail document](documents/use-case.md) for use cases for each exposed API.
+
+### Data Model Diagram
+
+See [data model diagram](documents/data-model.pdf) for a full list of data models and attributes.
 
 ## License
 
