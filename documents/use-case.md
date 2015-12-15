@@ -2,7 +2,9 @@
 
 ## Request a user session
 
-All communications are conducted in strict, short-lived sessions.  To begin a session, the client application requests a session token by supplying it's public-key and session/request route.  The server responds by creating a session and returns the session token and message encryption symmetric key encrypted with the user's public-key.  Subsequent requests from the user must add the session token to the header and encrypt all request data using the message key.  Responses from the server are encrypted with the message key.
+All communications are conducted in strict, short-lived sessions.  To begin a session, the client application requests a session token by supplying it's public-key and session/request route.  The server responds by creating a session and returns the session token and message encryption symmetric key encrypted with the user's public-key.  
+
+Subsequent requests from the client/user must add the session token to the header and encrypt all request data using the message key.  Responses from the server are encrypted with the message key.  If any errors are detected, the session is terminated.
 
 ## Register a user
 
@@ -28,9 +30,9 @@ User settings such as email, sms address, etc may be updated the logged in user.
 
 To encrypt a document an author requests a symmetry key from the service by supplying document meta data.  The server responds with an ID used to identify the document and meta data (title, author, create date, update date, abstract, status).
 
-## Request a Shared Document Key
+## Request Creation of a Shared Key
 
-A document owner may request a key for a document to be shared with a registered user as designated by the author/owner.  The key is generated and stored for the registered user.  Both the document owner and the registered user now share this key.
+A document owner may request the creation of a shared key for a document with a registered user as designated by the author/owner.  The key is generated and stored for the registered user and the specified document.  Both the document owner and the registered user now share and have access this key.  The registered owner has the ability to update or revoke access to the shared key.
 
 ## Revoke Access from a Shared Document Key
 
@@ -39,6 +41,10 @@ A document owner may revoke a shared document key at any time.  The key and it's
 ## Update Access to a Shared Document Key
 
 Shared keys that have an expiration date will expire to restrict access to a document set.  The expiration date may be extended by the original user.
+
+## Request Access to a Shared Key
+
+A registered user that has been granted access to a document may request the key to enable decryption.  If the key is valid, the service responds by creating a single-use challenge code that is sent to the user via back-channel (SMS, email, etc).   The registered user then sumbits the challenge code and if verified, the service returns the shared key or an error message if the code or shared key are invalid.
 
 - - -
 

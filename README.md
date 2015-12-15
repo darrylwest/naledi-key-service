@@ -21,8 +21,27 @@ All communications are through a single endpoint, e.g. https://naledi.com/KeySer
 ### Establishing a Session
 
 * requestor sends public key
+* service creates a session and symmetric key to enable encrypted messaging
+* service returns session and key encrypted with requestor's public key
 
-### Symetric Key Exchange
+### User Login
+
+* using the shared symmetric key, the user submits login data to the service
+* if the user is authenticated the full user record including file lists are returned
+* an authentication error invalidates the session and returns a simple error
+
+### Creating a Shared Key
+
+* the document owner requests a symmetric key for a given document and registered user
+* the server validates the document meta data and registered user then generates a shared symmetric key
+* the shared key is stored with the owner, registered user and document meta data
+* the server then returns the shared key to enable encryption by the client
+
+### Requesting a Shared Key
+
+* the registered user requests a decryption key for a specified document
+* if the shared key exists and has not expired, a code is generated and sent via back-channel to the requestor
+* when the code is submitted by the requestor and verified by the service, the shared key is returned
 
 ## API Use Cases
 
