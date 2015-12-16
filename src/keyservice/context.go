@@ -32,29 +32,12 @@ var (
 	currentContext Context
 )
 
-func (c *Context) GetShutdownPort() int {
-	return c.shutdownPort
+func Version() string {
+	return version
 }
 
 func IsProduction(env string) bool {
 	return env == "production"
-}
-
-func (c *Context) ToMap() map[string]interface{} {
-	hash := make(map[string]interface{})
-
-	hash["env"] = c.env
-	hash["logpath"] = c.logpath
-	hash["logname"] = c.logname
-
-	hash["baseport"] = c.baseport
-	hash["shutdownPort"] = c.shutdownPort
-	hash["serverCount"] = c.serverCount
-
-    hash["workFolder"] = c.workFolder
-    hash["configFile"] = c.configFile
-
-	return hash
 }
 
 func NewDefaultContext() *Context {
@@ -130,9 +113,9 @@ func ParseArgs() *Context {
 	return ctx
 }
 
-func CreateLogger(ctx *Context) *logger.Logger {
+func (c *Context) CreateLogger() *logger.Logger {
 	if log == nil {
-		filename := path.Join(ctx.logpath, ctx.logname)
+		filename := path.Join(c.logpath, c.logname)
 		handler, err := logger.NewRotatingDayHandler(filename)
 
 		if err != nil {
@@ -147,6 +130,33 @@ func CreateLogger(ctx *Context) *logger.Logger {
 	return log
 }
 
-func Version() string {
-	return version
+func (c *Context) GetShutdownPort() int {
+	return c.shutdownPort
+}
+
+func (c *Context) ToMap() map[string]interface{} {
+	hash := make(map[string]interface{})
+
+	hash["env"] = c.env
+	hash["logpath"] = c.logpath
+	hash["logname"] = c.logname
+
+	hash["baseport"] = c.baseport
+	hash["shutdownPort"] = c.shutdownPort
+	hash["serverCount"] = c.serverCount
+
+    hash["workFolder"] = c.workFolder
+    hash["configFile"] = c.configFile
+
+	return hash
+}
+
+func (c Context) StartService() error {
+	if log == nil {
+		log = c.CreateLogger()
+	}
+
+	log.Info("start the servers with context: ", c.ToMap())
+
+	return nil
 }

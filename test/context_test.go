@@ -6,6 +6,8 @@ import (
     "strings"
     "fmt"
 
+	"github.com/darrylwest/cassava-logger/logger"
+	
 	. "github.com/franela/goblin"
 )
 
@@ -13,7 +15,10 @@ func TestContext(t *testing.T) {
 	g := Goblin(t)
 
 	g.Describe("Context", func() {
-		log := keyservice.CreateLogger(keyservice.NewContextForEnvironment("test"))
+		log := func() *logger.Logger {
+			ctx := keyservice.NewContextForEnvironment("test")
+			return ctx.CreateLogger()
+		}()
 
 		g.It("should create a context struct", func() {
             log.Info("create default context struct")
