@@ -93,6 +93,20 @@ func TestConfig(t *testing.T) {
 
 			g.Assert( hash["primaryRedisOptions"] != nil ).Equal( true )
 			g.Assert( hash["secondaryRedisOptions"] != nil ).Equal( true )
+
+			opts, ok := hash["primaryRedisOptions"].(*redis.Options)
+
+			g.Assert( ok ).Equal( true )
+			g.Assert( opts.Addr ).Equal( "localhost:8443" )
+			g.Assert( opts.Password ).Equal( "flarb" )
+			g.Assert( opts.DB ).Equal( int64( 0 ) )
+
+			opts, ok = hash["secondaryRedisOptions"].(*redis.Options)
+
+			g.Assert( ok ).Equal( true )
+			g.Assert( opts.Addr ).Equal( "localhost:8444" )
+			g.Assert( opts.Password ).Equal( "blarf" )
+			g.Assert( opts.DB ).Equal( int64( 1 ) )
 		})
 
 		g.It("should return error if config file is not found", func() {
