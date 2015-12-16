@@ -12,7 +12,7 @@ func main() {
 
 	if err != nil {
 		fmt.Println("error starting servers: ", err)
-		panic( err )
+		panic(err)
 	}
 
 	fmt.Printf("KeyService Started: %v\n", ctx.ToMap())

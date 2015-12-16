@@ -30,6 +30,7 @@ type Context struct {
 var (
 	log            *logger.Logger
 	currentContext Context
+	config Config
 )
 
 func Version() string {

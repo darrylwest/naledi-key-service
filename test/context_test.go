@@ -1,13 +1,13 @@
 package keyservicetest
 
 import (
+	"fmt"
 	"keyservice"
+	"strings"
 	"testing"
-    "strings"
-    "fmt"
 
 	"github.com/darrylwest/cassava-logger/logger"
-	
+
 	. "github.com/franela/goblin"
 )
 
@@ -21,29 +21,29 @@ func TestContext(t *testing.T) {
 		}()
 
 		g.It("should create a context struct", func() {
-            log.Info("create default context struct")
+			log.Info("create default context struct")
 			ctx := new(keyservice.Context)
 
 			g.Assert(ctx.GetShutdownPort()).Equal(0)
 		})
 
-        g.It("should return a three part version string", func() {
-            version := keyservice.Version()
+		g.It("should return a three part version string", func() {
+			version := keyservice.Version()
 
-            g.Assert(version != "")
+			g.Assert(version != "")
 
-            parts := strings.Split( version, "." )
-            g.Assert( len( parts )).Equal( 3 )
-        })
+			parts := strings.Split(version, ".")
+			g.Assert(len(parts)).Equal(3)
+		})
 
-        g.It("should return true when env is production", func() {
-            g.Assert(keyservice.IsProduction("test")).Equal( false )
-            g.Assert(keyservice.IsProduction("development")).Equal( false )
-            g.Assert(keyservice.IsProduction("staging")).Equal( false )
-            g.Assert(keyservice.IsProduction("production")).Equal( true )
-        })
+		g.It("should return true when env is production", func() {
+			g.Assert(keyservice.IsProduction("test")).Equal(false)
+			g.Assert(keyservice.IsProduction("development")).Equal(false)
+			g.Assert(keyservice.IsProduction("staging")).Equal(false)
+			g.Assert(keyservice.IsProduction("production")).Equal(true)
+		})
 
-        g.It("should create a context struct with defaults set", func() {
+		g.It("should create a context struct with defaults set", func() {
 			ctx := keyservice.NewDefaultContext()
 
 			g.Assert(ctx.GetShutdownPort()).Equal(9009)
@@ -60,14 +60,14 @@ func TestContext(t *testing.T) {
 			g.Assert(hash["shutdownPort"]).Equal(9009)
 			g.Assert(hash["serverCount"]).Equal(2)
 
-            workFolder, _ := hash["workFolder"]
-            g.Assert(strings.HasSuffix(fmt.Sprintf("%v", workFolder), ".keyservice")).Equal(true)
+			workFolder, _ := hash["workFolder"]
+			g.Assert(strings.HasSuffix(fmt.Sprintf("%v", workFolder), ".keyservice")).Equal(true)
 
-            configFile, _ := hash["configFile"]
-            g.Assert(strings.HasSuffix(fmt.Sprintf("%v", configFile), "config.json")).Equal(true)
+			configFile, _ := hash["configFile"]
+			g.Assert(strings.HasSuffix(fmt.Sprintf("%v", configFile), "config.json")).Equal(true)
 		})
 
-        g.It("should create context from args", func() {
+		g.It("should create context from args", func() {
 			ctx := keyservice.ParseArgs()
 
 			g.Assert(ctx.GetShutdownPort()).Equal(9009)

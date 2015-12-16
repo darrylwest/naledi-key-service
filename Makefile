@@ -11,6 +11,7 @@ install-deps:
 	go get gopkg.in/tylerb/graceful.v1
 	go get -u github.com/darrylwest/cassava-logger/logger
 	go get github.com/franela/goblin
+	go get gopkg.in/redis.v3
 
 format:
 	( gofmt -s -w src/*.go src/*/*.go test/*.go )
