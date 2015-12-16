@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"keyservice"
+    "time"
 )
 
 func main() {
@@ -16,4 +17,7 @@ func main() {
 	}
 
 	fmt.Printf("KeyService Started: %v\n", ctx.ToMap())
+
+    // TODO : remove after socket listeners are in place
+    time.Sleep( 5 * time.Second )
 }

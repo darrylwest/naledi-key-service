@@ -23,14 +23,14 @@ type Context struct {
 	baseport     int
 	shutdownPort int
 	serverCount  int
-    workFolder   string
-    configFile   string
+	workFolder   string
+	configFile   string
 }
 
 var (
 	log            *logger.Logger
 	currentContext Context
-	config Config
+	config         *Config
 )
 
 func Version() string {
@@ -44,18 +44,18 @@ func IsProduction(env string) bool {
 func NewDefaultContext() *Context {
 	ctx := new(Context)
 
-    home := os.Getenv("HOME")
+	home := os.Getenv("HOME")
 
 	ctx.env = "production"
 	ctx.logpath = path.Join(home, "logs")
-	ctx.logname = "webserver"
+	ctx.logname = "keyservice"
 
 	ctx.baseport = 9001
 	ctx.shutdownPort = 9009
 	ctx.serverCount = 2
 
-    ctx.workFolder = path.Join(home, ".keyservice")
-    ctx.configFile = path.Join(home, "config.json")
+	ctx.workFolder = path.Join(home, ".keyservice")
+	ctx.configFile = path.Join(ctx.workFolder, "config.json")
 
 	return ctx
 }
@@ -86,8 +86,8 @@ func ParseArgs() *Context {
 	logpath := flag.String("logpath", dflt.logpath, "set the log directory")
 	logname := flag.String("logname", dflt.logname, "set the name of the rolling log file")
 
-    workFolder := flag.String("workFolder", dflt.workFolder, "set the application's working folder")
-    configFile := flag.String("configFile", dflt.configFile, "set the configuration file")
+	workFolder := flag.String("workFolder", dflt.workFolder, "set the application's working folder")
+	configFile := flag.String("configFile", dflt.configFile, "set the configuration file")
 
 	flag.Parse()
 
@@ -108,8 +108,8 @@ func ParseArgs() *Context {
 	ctx.shutdownPort = *shutdownPort
 	ctx.serverCount = *serverCount
 
-    ctx.workFolder = *workFolder
-    ctx.configFile = *configFile
+	ctx.workFolder = *workFolder
+	ctx.configFile = *configFile
 
 	return ctx
 }
@@ -146,8 +146,8 @@ func (c *Context) ToMap() map[string]interface{} {
 	hash["shutdownPort"] = c.shutdownPort
 	hash["serverCount"] = c.serverCount
 
-    hash["workFolder"] = c.workFolder
-    hash["configFile"] = c.configFile
+	hash["workFolder"] = c.workFolder
+	hash["configFile"] = c.configFile
 
 	return hash
 }
@@ -157,7 +157,21 @@ func (c Context) StartService() error {
 		log = c.CreateLogger()
 	}
 
-	log.Info("start the servers with context: ", c.ToMap())
+	log.Info("StartService, version: %s, env: %s", version, c.env)
+
+	if config == nil {
+		log.Info("read configuration from: %s", c.configFile)
+		conf, err := ReadConfig(c.configFile)
+
+		if err != nil {
+			panic(err)
+		}
+
+		log.Info("config parsed, name: %s", conf.name)
+		config = conf
+	}
+
+	log.Info("start the servers with context: %v", c.ToMap())
 
 	return nil
 }

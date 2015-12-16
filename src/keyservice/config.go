@@ -1,8 +1,8 @@
 package keyservice
 
 import (
-	"gopkg.in/redis.v3"
 	"encoding/json"
+	"gopkg.in/redis.v3"
 	"io/ioutil"
 )
 
@@ -29,9 +29,9 @@ func (c Config) ToMap() map[string]interface{} {
 }
 
 func ReadConfig(path string) (*Config, error) {
-	log.Info("read the configuration file: ", path)
+	log.Info("read the configuration file: %s", path)
 
-	data, err := ioutil.ReadFile( path )
+	data, err := ioutil.ReadFile(path)
 
 	if err != nil {
 		log.Error("config file read error: ", err)
@@ -42,11 +42,11 @@ func ReadConfig(path string) (*Config, error) {
 }
 
 func ParseRedisOptions(hash map[string]interface{}) *redis.Options {
-	opts := new( redis.Options )
+	opts := new(redis.Options)
 
 	opts.Addr = hash["addr"].(string)
 	opts.Password = hash["password"].(string)
-	opts.DB = int64( hash["db"].(float64) )
+	opts.DB = int64(hash["db"].(float64))
 
 	return opts
 }
@@ -65,8 +65,8 @@ func ParseConfig(data []byte) (*Config, error) {
 	config.appkey = hash["appkey"].(string)
 	config.baseURI = hash["baseURI"].(string)
 
-	config.primaryRedisOptions = ParseRedisOptions( hash["primaryRedisOptions"].(map[string]interface{}) )
-	config.secondaryRedisOptions = ParseRedisOptions( hash["secondaryRedisOptions"].(map[string]interface{}) )
+	config.primaryRedisOptions = ParseRedisOptions(hash["primaryRedisOptions"].(map[string]interface{}))
+	config.secondaryRedisOptions = ParseRedisOptions(hash["secondaryRedisOptions"].(map[string]interface{}))
 
 	return config, nil
 }

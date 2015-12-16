@@ -56,6 +56,8 @@ func TestContext(t *testing.T) {
 				g.Assert(value).Equal("public")
 			}
 
+			g.Assert(hash["logname"]).Equal("keyservice")
+
 			g.Assert(hash["baseport"]).Equal(9001)
 			g.Assert(hash["shutdownPort"]).Equal(9009)
 			g.Assert(hash["serverCount"]).Equal(2)
