@@ -27,5 +27,15 @@ func TestConfig(t *testing.T) {
 
             g.Assert(config != nil)
         })
+
+		g.It("read external configuration file", func() {
+			file := "test-config.json"
+
+			config, err := keyservice.ReadConfig( file )
+
+			g.Assert( err != nil )
+			g.Assert( config == nil )
+
+		})
     })
 }

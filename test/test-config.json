@@ -1,0 +1,14 @@
+{
+    "name":"KeyServiceTestConfig",
+    "appkey":"669a3a9db3f2456f9e1d5ffe9b13b340",
+    "primaryRedis":{
+        "addr":"localhost:8443",
+        "password":"flarb",
+        "db":0
+    },
+    "secondaryRedis":{
+        "addr":"localhost:8444",
+        "password":"flarb",
+        "db":0
+    }
+}
