@@ -23,6 +23,8 @@ type Context struct {
 	baseport     int
 	shutdownPort int
 	serverCount  int
+    workFolder   string
+    configFile   string
 }
 
 var (
@@ -49,19 +51,27 @@ func (c *Context) ToMap() map[string]interface{} {
 	hash["shutdownPort"] = c.shutdownPort
 	hash["serverCount"] = c.serverCount
 
+    hash["workFolder"] = c.workFolder
+    hash["configFile"] = c.configFile
+
 	return hash
 }
 
 func NewDefaultContext() *Context {
 	ctx := new(Context)
 
+    home := os.Getenv("HOME")
+
 	ctx.env = "production"
-	ctx.logpath = path.Join(os.Getenv("HOME"), "logs")
+	ctx.logpath = path.Join(home, "logs")
 	ctx.logname = "webserver"
 
 	ctx.baseport = 9001
 	ctx.shutdownPort = 9009
 	ctx.serverCount = 2
+
+    ctx.workFolder = path.Join(home, ".keyservice")
+    ctx.configFile = path.Join(home, "config.json")
 
 	return ctx
 }
@@ -92,6 +102,9 @@ func ParseArgs() *Context {
 	logpath := flag.String("logpath", dflt.logpath, "set the log directory")
 	logname := flag.String("logname", dflt.logname, "set the name of the rolling log file")
 
+    workFolder := flag.String("workFolder", dflt.workFolder, "set the application's working folder")
+    configFile := flag.String("configFile", dflt.configFile, "set the configuration file")
+
 	flag.Parse()
 
 	fmt.Printf("%s Version: %s\n", path.Base(os.Args[0]), Version())
@@ -110,6 +123,9 @@ func ParseArgs() *Context {
 	ctx.baseport = *baseport
 	ctx.shutdownPort = *shutdownPort
 	ctx.serverCount = *serverCount
+
+    ctx.workFolder = *workFolder
+    ctx.configFile = *configFile
 
 	return ctx
 }

@@ -3,6 +3,8 @@ package keyservicetest
 import (
 	"keyservice"
 	"testing"
+    "strings"
+    "fmt"
 
 	. "github.com/franela/goblin"
 )
@@ -20,6 +22,22 @@ func TestContext(t *testing.T) {
 			g.Assert(ctx.GetShutdownPort()).Equal(0)
 		})
 
+        g.It("should return a three part version string", func() {
+            version := keyservice.Version()
+
+            g.Assert(version != "")
+
+            parts := strings.Split( version, "." )
+            g.Assert( len( parts )).Equal( 3 )
+        })
+
+        g.It("should return true when env is production", func() {
+            g.Assert(keyservice.IsProduction("test")).Equal( false )
+            g.Assert(keyservice.IsProduction("development")).Equal( false )
+            g.Assert(keyservice.IsProduction("staging")).Equal( false )
+            g.Assert(keyservice.IsProduction("production")).Equal( true )
+        })
+
         g.It("should create a context struct with defaults set", func() {
 			ctx := keyservice.NewDefaultContext()
 
@@ -36,6 +54,12 @@ func TestContext(t *testing.T) {
 			g.Assert(hash["baseport"]).Equal(9001)
 			g.Assert(hash["shutdownPort"]).Equal(9009)
 			g.Assert(hash["serverCount"]).Equal(2)
+
+            workFolder, _ := hash["workFolder"]
+            g.Assert(strings.HasSuffix(fmt.Sprintf("%v", workFolder), ".keyservice")).Equal(true)
+
+            configFile, _ := hash["configFile"]
+            g.Assert(strings.HasSuffix(fmt.Sprintf("%v", configFile), "config.json")).Equal(true)
 		})
 
         g.It("should create context from args", func() {
