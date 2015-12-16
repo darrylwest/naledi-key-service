@@ -1,6 +1,7 @@
 {
     "name":"KeyServiceTestConfig",
     "appkey":"669a3a9db3f2456f9e1d5ffe9b13b340",
+    "baseURI":"KeyService",
     "primaryRedis":{
         "addr":"localhost:8443",
         "password":"flarb",
