@@ -1,7 +1,7 @@
 package keyservicetest
 
 import (
-	// "fmt"
+	"fmt"
 	"keyservice"
 	// "strings"
 	"testing"
@@ -37,7 +37,7 @@ func TestConfig(t *testing.T) {
 
             config := new(keyservice.Config)
 
-            g.Assert(config != nil)
+            g.Assert(config != nil).Equal( true )
         })
 
 		g.It("should parse a valid config json blob and return a config struct", func() {
@@ -45,6 +45,14 @@ func TestConfig(t *testing.T) {
 
 			g.Assert( err == nil ).Equal( true )
 			g.Assert( config != nil ).Equal( true )
+
+			hash := config.ToMap()
+
+			fmt.Printf("%s\n", hash)
+
+			g.Assert( hash["name"] ).Equal( "KeyServiceTestConfig" )
+			g.Assert( hash["appkey"] ).Equal( "669a3a9db3f2456f9e1d5ffe9b13b340" )
+			g.Assert( hash["baseURI"] ).Equal( "KeyService" )
 		})
 
 		g.It("should read external configuration file", func() {

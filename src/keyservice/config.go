@@ -15,6 +15,16 @@ type Config struct {
 	secondaryRedis *redis.Options
 }
 
+func (c Config) ToMap() map[string]interface{} {
+	hash := make(map[string]interface{})
+
+	hash["name"] = c.name
+	hash["appkey"] = c.appkey
+	hash["baseURI"] = c.baseURI
+
+	return hash
+}
+
 func ReadConfig(path string) (*Config, error) {
 	log.Info("read the configuration file: ", path)
 
@@ -41,8 +51,6 @@ func ParseConfig(data []byte) (*Config, error) {
 	config.name = hash["name"].(string)
 	config.appkey = hash["appkey"].(string)
 	config.baseURI = hash["baseURI"].(string)
-
-	
 
 	return config, nil
 }
