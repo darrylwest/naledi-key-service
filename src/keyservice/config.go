@@ -11,8 +11,8 @@ type Config struct {
 	appkey  string
 	baseURI string
 
-	primaryRedis   *redis.Options
-	secondaryRedis *redis.Options
+	primaryRedisOptions   *redis.Options
+	secondaryRedisOptions *redis.Options
 }
 
 func (c Config) ToMap() map[string]interface{} {
@@ -21,6 +21,9 @@ func (c Config) ToMap() map[string]interface{} {
 	hash["name"] = c.name
 	hash["appkey"] = c.appkey
 	hash["baseURI"] = c.baseURI
+
+	hash["primaryRedisOptions"] = c.primaryRedisOptions
+	hash["secondaryRedisOptions"] = c.secondaryRedisOptions
 
 	return hash
 }
@@ -38,6 +41,16 @@ func ReadConfig(path string) (*Config, error) {
 	return ParseConfig(data)
 }
 
+func ParseRedisOptions(hash map[string]interface{}) *redis.Options {
+	opts := new( redis.Options )
+
+	opts.Addr = hash["addr"].(string)
+	opts.Password = hash["password"].(string)
+	opts.DB = int64( hash["db"].(float64) )
+
+	return opts
+}
+
 func ParseConfig(data []byte) (*Config, error) {
 	var hash map[string]interface{}
 
@@ -51,6 +64,9 @@ func ParseConfig(data []byte) (*Config, error) {
 	config.name = hash["name"].(string)
 	config.appkey = hash["appkey"].(string)
 	config.baseURI = hash["baseURI"].(string)
+
+	config.primaryRedisOptions = ParseRedisOptions( hash["primaryRedisOptions"].(map[string]interface{}) )
+	config.secondaryRedisOptions = ParseRedisOptions( hash["secondaryRedisOptions"].(map[string]interface{}) )
 
 	return config, nil
 }
