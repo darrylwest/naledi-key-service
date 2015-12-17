@@ -174,7 +174,7 @@ func (c Context) StartService() error {
 	log.Info("start the servers with context: %v", c.ToMap())
 
 	for idx := 0; idx < c.serverCount; idx++ {
-		mux := ConfigureRoutes()
+		mux := ConfigureStandardRoutes()
 		server := CreateServer(mux, c.env)
 		go startServer( server, c.baseport + idx )
 	}
@@ -184,7 +184,7 @@ func (c Context) StartService() error {
 
 func (c Context) StartShutdownService() {
 
-	mux := ConfigureRoutes()
+	mux := ConfigureStandardRoutes()
 	mux.HandleFunc("/shutdown", ShutdownHandler)
 
 	server := CreateServer( mux, c.env )

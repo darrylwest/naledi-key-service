@@ -15,7 +15,7 @@ func TestServer(t *testing.T) {
 
 	g.Describe("Server", func() {
 		g.It("should do configure routing for known routes", func() {
-			mux := keyservice.ConfigureRoutes()
+			mux := keyservice.ConfigureStandardRoutes()
 
 			str := fmt.Sprintf("%v\n", mux)
 			// fmt.Println( str )

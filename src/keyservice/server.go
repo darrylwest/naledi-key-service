@@ -8,7 +8,7 @@ import (
 	"fmt"
 )
 
-func ConfigureRoutes() *http.ServeMux {
+func ConfigureStandardRoutes() *http.ServeMux {
 	log.Info("configure service routes")
 	mux := http.NewServeMux()
 
