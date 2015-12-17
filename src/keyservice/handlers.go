@@ -20,6 +20,8 @@ func ShutdownHandler(w http.ResponseWriter, r *http.Request) {
 		// TODO replace with internal signal listener
 		cmd := exec.Command("kill", "-2", fmt.Sprintf("%d", os.Getpid()))
 		cmd.Run()
+
+		log.Info("shutdown running...")
 	} else {
 		log.Warn("shudown denied, method %s", r.Method)
 		fmt.Fprintf(w, "shutdown request denied...\r\n")

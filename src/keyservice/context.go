@@ -173,5 +173,22 @@ func (c Context) StartService() error {
 
 	log.Info("start the servers with context: %v", c.ToMap())
 
+	for idx := 0; idx < c.serverCount; idx++ {
+		mux := ConfigureRoutes()
+		server := CreateServer(mux, c.env)
+		go startServer( server, c.baseport + idx )
+	}
+
 	return nil
+}
+
+func (c Context) StartShutdownService() {
+
+	mux := ConfigureRoutes()
+	mux.HandleFunc("/shutdown", ShutdownHandler)
+
+	server := CreateServer( mux, c.env )
+
+	log.Info("running, shutown at port: %d", c.shutdownPort)
+	startServer( server, c.shutdownPort )
 }
