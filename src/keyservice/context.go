@@ -25,13 +25,11 @@ type Context struct {
 	serverCount  int
 	workFolder   string
 	configFile   string
-	apikey       string
+	config       *Config
 }
 
 var (
-	log            *logger.Logger
-	currentContext Context
-	config         *Config
+	log    *logger.Logger
 )
 
 func Version() string {
@@ -57,7 +55,6 @@ func NewDefaultContext() *Context {
 
 	ctx.workFolder = path.Join(home, ".keyservice")
 	ctx.configFile = path.Join(ctx.workFolder, "config.json")
-	ctx.apikey = "75729ba9-17d1-477f-8bb2-6ee4da22ba20"
 
 	return ctx
 }
@@ -91,8 +88,6 @@ func ParseArgs() *Context {
 	workFolder := flag.String("workFolder", dflt.workFolder, "set the application's working folder")
 	configFile := flag.String("configFile", dflt.configFile, "set the configuration file")
 
-	apikey := flag.String("apikey", dflt.apikey, "set the api key")
-
 	flag.Parse()
 
 	fmt.Printf("%s Version: %s\n", path.Base(os.Args[0]), Version())
@@ -114,7 +109,6 @@ func ParseArgs() *Context {
 
 	ctx.workFolder = *workFolder
 	ctx.configFile = *configFile
-	ctx.apikey = *apikey
 
 	return ctx
 }
@@ -153,19 +147,18 @@ func (c *Context) ToMap() map[string]interface{} {
 
 	hash["workFolder"] = c.workFolder
 	hash["configFile"] = c.configFile
-	hash["apikey"] = c.apikey
 
 	return hash
 }
 
-func (c Context) StartService() error {
+func (c *Context) StartService() error {
 	if log == nil {
 		log = c.CreateLogger()
 	}
 
 	log.Info("StartService, version: %s, env: %s", version, c.env)
 
-	if config == nil {
+	if c.config == nil {
 		log.Info("read configuration from: %s", c.configFile)
 		conf, err := ReadConfig(c.configFile)
 
@@ -174,30 +167,28 @@ func (c Context) StartService() error {
 		}
 
 		log.Info("config parsed, name: %s", conf.name)
-		config = conf
+		c.config = conf
 	}
-
-	c.apikey = config.appkey
 
 	log.Info("start the servers with context: %v", c.ToMap())
 
 	for idx := 0; idx < c.serverCount; idx++ {
 		mux := ConfigureStandardRoutes()
-		ConfigureCustomRoutes( mux )
+		ConfigureCustomRoutes(mux)
 
 		server := CreateServer(mux, c)
-		go startServer( server, c.baseport + idx )
+		go startServer(server, c.baseport+idx)
 	}
 
 	return nil
 }
 
-func (c Context) StartShutdownService() {
+func (c *Context) StartShutdownService() {
 	mux := ConfigureStandardRoutes()
 	mux.HandleFunc("/shutdown", ShutdownHandler)
 
-	server := CreateServer( mux, c )
+	server := CreateShutdownServer(mux, c)
 
 	log.Info("running, shutown at port: %d", c.shutdownPort)
-	startServer( server, c.shutdownPort )
+	startServer(server, c.shutdownPort)
 }

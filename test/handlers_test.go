@@ -69,7 +69,7 @@ func TestHandlers(t *testing.T) {
 		})
 
 		g.It("should have a shutdown handler that fails if method is not a post", func() {
-            mux := http.NewServeMux()
+			mux := http.NewServeMux()
 			mux.HandleFunc("/shutdown", keyservice.ShutdownHandler)
 
 			server := negroni.New()
@@ -84,9 +84,9 @@ func TestHandlers(t *testing.T) {
 
 			server.ServeHTTP(recorder, request)
 
-            g.Assert(recorder.Code).Equal(200)
+			g.Assert(recorder.Code).Equal(200)
 			g.Assert(recorder.Body != nil).IsTrue()
 			g.Assert(recorder.Body.String()).Equal("shutdown requested...\r\nshutdown request denied...\r\n")
-        })
+		})
 	})
 }

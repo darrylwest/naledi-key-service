@@ -10,8 +10,8 @@ type ProtoMiddleware struct {
 	allowHTTP bool
 }
 
-func NewProtoMiddleware(env string) *ProtoMiddleware {
-	return &ProtoMiddleware{allowHTTP: IsProduction(env) == false}
+func NewProtoMiddleware(ctx *Context) *ProtoMiddleware {
+	return &ProtoMiddleware{allowHTTP: IsProduction(ctx.env) == false}
 }
 
 func (m *ProtoMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
@@ -33,18 +33,30 @@ func (m *ProtoMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next
 }
 
 type APIKeyMiddleware struct {
+	skip   bool
 	apikey string
 }
 
-func NewAPIKeyMiddleware(key string) *APIKeyMiddleware {
-	return &APIKeyMiddleware{ apikey:key }
+func NewAPIKeyMiddleware(ctx *Context) *APIKeyMiddleware {
+	m := &APIKeyMiddleware{}
+
+	m.skip = IsProduction(ctx.env) == false
+	if ctx.config != nil {
+		m.apikey = ctx.config.appkey
+		log.Info("apikey: %s", m.apikey)
+	} else {
+		m.apikey = "c2b4d9bf-652e-4915-ab23-7a0e0e32e362"
+		log.Warn("using the default api key: %s", m.apikey)
+	}
+
+	return m
 }
 
 func (m *APIKeyMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	key := r.Header.Get("x-api-key")
-	log.Info("api key check: %s", key)
+	log.Info("api key check: %s, len: %d", key, len( key ))
 
-	if m.apikey == key || r.URL.Path == "/ping" || r.URL.Path == "/status" {
+	if m.apikey == key || (len( key ) >= 32 && m.skip)  {
 		next(w, r)
 	} else {
 		log.Warn("request header does not have a recognized key: %s", key)
