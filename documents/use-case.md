@@ -2,7 +2,7 @@
 
 ## Request a user session
 
-All communications are conducted in strict, short-lived sessions.  To begin a session, the client application requests a session token by supplying it's public-key and session/request route.  The server responds by creating a session and returns the session token and message encryption symmetric key encrypted with the user's public-key.  
+All communications are conducted in strict, short-lived sessions.  To begin a session, the client application requests a session token by accessing the session/create route and supplying it's public-key.  The server responds by creating a session and returns the session token and message encryption symmetric key encrypted with the user's public-key.  
 
 Subsequent requests from the client/user must add the session token to the header and encrypt all request data using the message key.  Responses from the server are encrypted with the message key.  If any errors are detected, the session is terminated.
 
@@ -14,7 +14,7 @@ All users must be registered with minimum data including email and back-channel 
 
 Given a valid session, the user must login to a registered account to obtain document information.  A successful login will return the user's settings and a document list with meta data.
 
-## Change a User Passord
+## Change a User Password
 
 Passwords may be changed by the original user using the existing password.  Passwords must be gauged as "strong" to qualify.
 
