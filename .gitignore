@@ -2,4 +2,4 @@ bin
 dist
 *.swp
 *.log
-
+nohup.out
