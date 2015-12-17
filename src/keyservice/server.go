@@ -47,7 +47,6 @@ func CreateShutdownServer(mux *http.ServeMux, ctx *Context) *negroni.Negroni {
 
 	server.Use(negroni.NewRecovery())
 	server.Use(logger.NewMiddlewareLogger(log))
-	server.Use(NewProtoMiddleware(ctx))
 
 	server.UseHandler(mux)
 
