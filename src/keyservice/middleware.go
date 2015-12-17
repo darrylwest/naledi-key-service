@@ -15,7 +15,7 @@ func NewProtoMiddleware(ctx *Context) *ProtoMiddleware {
 }
 
 func (m *ProtoMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	if m.allowHTTP || r.URL.Path == "/ping" || r.URL.Path == "/status" {
+	if m.allowHTTP || strings.Contains(r.Host, "localhost") {
 		next(w, r)
 	} else {
 		proto := r.Header.Get("X-Forwarded-Proto")

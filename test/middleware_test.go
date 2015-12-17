@@ -78,7 +78,7 @@ func TestMiddleware(t *testing.T) {
 			g.Assert(recorder.Body.String() != msg)
 		})
 
-		g.It("should accept a non-https request for status", func() {
+		g.It("should accept a non-https request for localhost", func() {
 			msg := "write success to service for status"
 			recorder := httptest.NewRecorder()
 			ctx := keyservice.NewDefaultContext()
@@ -93,33 +93,7 @@ func TestMiddleware(t *testing.T) {
 				fmt.Fprintf(w, msg)
 			}))
 
-			request, err := http.NewRequest("GET", "https://bluelasso.com/status", nil)
-			request.Header.Set("X-Forwarded-Proto", "http")
-
-			g.Assert(err == nil).IsTrue()
-
-			server.ServeHTTP(recorder, request)
-
-			g.Assert(recorder.Code).Equal(200)
-			g.Assert(recorder.Body.String()).Equal(msg)
-		})
-
-		g.It("should accept a non-https request for ping", func() {
-			msg := "write success to service for ping"
-			recorder := httptest.NewRecorder()
-			ctx := keyservice.NewDefaultContext()
-
-			proto := keyservice.NewProtoMiddleware( ctx )
-
-			server := negroni.New()
-			server.Use(proto)
-
-			server.UseHandler(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-				// fmt.Println( req.Header.Get("X-Forwarded-Proto"))
-				fmt.Fprintf(w, msg)
-			}))
-
-			request, err := http.NewRequest("GET", "https://bluelasso.com/ping", nil)
+			request, err := http.NewRequest("GET", "https://localhost:3434/status", nil)
 			request.Header.Set("X-Forwarded-Proto", "http")
 
 			g.Assert(err == nil).IsTrue()
