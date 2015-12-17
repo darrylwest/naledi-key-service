@@ -18,8 +18,11 @@ func TestServer(t *testing.T) {
 			mux := keyservice.ConfigureRoutes()
 
 			str := fmt.Sprintf("%v\n", mux)
+			// fmt.Println( str )
 
 			g.Assert(strings.Contains(str, "false")).Equal(true)
+			g.Assert(strings.Contains(str, "/status")).Equal(true)
+			g.Assert(strings.Contains(str, "/ping")).Equal(true)
 		})
 	})
 }
