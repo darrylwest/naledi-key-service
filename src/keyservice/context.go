@@ -25,11 +25,12 @@ type Context struct {
 	serverCount  int
 	workFolder   string
 	configFile   string
-	config       *Config
+	apikey       string
 }
 
 var (
 	log    *logger.Logger
+	config *Config
 )
 
 func Version() string {
@@ -55,6 +56,7 @@ func NewDefaultContext() *Context {
 
 	ctx.workFolder = path.Join(home, ".keyservice")
 	ctx.configFile = path.Join(ctx.workFolder, "config.json")
+	ctx.apikey = "c2b4d9bf-652e-4915-ab23-7a0e0e32e362"
 
 	return ctx
 }
@@ -147,6 +149,7 @@ func (c *Context) ToMap() map[string]interface{} {
 
 	hash["workFolder"] = c.workFolder
 	hash["configFile"] = c.configFile
+	hash["apikey"] = c.apikey
 
 	return hash
 }
@@ -158,7 +161,7 @@ func (c *Context) StartService() error {
 
 	log.Info("StartService, version: %s, env: %s", version, c.env)
 
-	if c.config == nil {
+	if config == nil {
 		log.Info("read configuration from: %s", c.configFile)
 		conf, err := ReadConfig(c.configFile)
 
@@ -167,7 +170,8 @@ func (c *Context) StartService() error {
 		}
 
 		log.Info("config parsed, name: %s", conf.name)
-		c.config = conf
+		config = conf
+		c.apikey = conf.appkey
 	}
 
 	log.Info("start the servers with context: %v", c.ToMap())

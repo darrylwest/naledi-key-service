@@ -41,13 +41,9 @@ func NewAPIKeyMiddleware(ctx *Context) *APIKeyMiddleware {
 	m := &APIKeyMiddleware{}
 
 	m.skip = IsProduction(ctx.env) == false
-	if ctx.config != nil {
-		m.apikey = ctx.config.appkey
-		log.Info("apikey: %s", m.apikey)
-	} else {
-		m.apikey = "c2b4d9bf-652e-4915-ab23-7a0e0e32e362"
-		log.Warn("using the default api key: %s", m.apikey)
-	}
+	m.apikey = ctx.apikey
+
+	log.Info("skip: %v, apikey: %s", m.skip, m.apikey)
 
 	return m
 }
@@ -56,7 +52,7 @@ func (m *APIKeyMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request, nex
 	key := r.Header.Get("x-api-key")
 	log.Info("api key check: %s, len: %d", key, len( key ))
 
-	if m.apikey == key || (len( key ) >= 32 && m.skip)  {
+	if m.apikey == key || (len( key ) >= 32 && m.skip) || strings.Contains(r.Host, "localhost")  {
 		next(w, r)
 	} else {
 		log.Warn("request header does not have a recognized key: %s", key)
