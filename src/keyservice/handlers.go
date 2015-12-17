@@ -1,13 +1,13 @@
 package keyservice
 
 import (
-    "encoding/json"
-    "fmt"
-    "net/http"
-    "os"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
 	"os/exec"
-    // "strings"
-    "time"
+	// "strings"
+	"time"
 )
 
 func ShutdownHandler(w http.ResponseWriter, r *http.Request) {

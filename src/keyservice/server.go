@@ -5,11 +5,11 @@ import (
 )
 
 func ConfigureRoutes() *http.ServeMux {
-    log.Info("configure service routes")
-    mux := http.NewServeMux()
+	log.Info("configure service routes")
+	mux := http.NewServeMux()
 
-    mux.HandleFunc("/status", StatusHandler)
+	mux.HandleFunc("/status", StatusHandler)
 	mux.HandleFunc("/ping", PingHandler)
 
-    return mux
+	return mux
 }

@@ -1,25 +1,25 @@
 package keyservicetest
 
 import (
-    "fmt"
-    "strings"
-    "testing"
+	"fmt"
+	"strings"
+	"testing"
 
-    "keyservice"
+	"keyservice"
 
-    . "github.com/franela/goblin"
+	. "github.com/franela/goblin"
 )
 
 func TestServer(t *testing.T) {
-    g := Goblin(t)
+	g := Goblin(t)
 
-    g.Describe("Server", func() {
-        g.It("should do configure routing for known routes", func() {
-            mux := keyservice.ConfigureRoutes()
+	g.Describe("Server", func() {
+		g.It("should do configure routing for known routes", func() {
+			mux := keyservice.ConfigureRoutes()
 
-            str := fmt.Sprintf( "%v\n", mux )
+			str := fmt.Sprintf("%v\n", mux)
 
-            g.Assert(strings.Contains( str, "false")).Equal( true )
-        })
-    })
+			g.Assert(strings.Contains(str, "false")).Equal(true)
+		})
+	})
 }
