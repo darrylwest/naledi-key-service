@@ -1,6 +1,6 @@
 {
     "name":"KeyServiceTestConfig",
-    "appkey":"669a3a9db3f2456f9e1d5ffe9b13b340",
+    "appkey":"c2b4d9bf-652e-4915-ab23-7a0e0e32e362",
     "baseURI":"KeyService",
     "primaryRedisOptions":{
         "addr":"localhost:8443",

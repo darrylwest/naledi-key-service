@@ -29,7 +29,7 @@ run:
 	( . ./.setpath ; go run src/main.go --env=development )
 
 start:
-	nohup /usr/local/bin/keyservice --baseport=9001 --serverCount=2 --shutdownPort=9009 --logname="keyservice" --config= & 
+	nohup /usr/local/bin/keyservice --baseport=9001 --serverCount=2 --shutdownPort=9009 --logname="keyservice" & 
 
 status:
 	curl http://localhost:9001/status

@@ -88,7 +88,7 @@ func TestConfig(t *testing.T) {
 			// fmt.Printf("%s\n", hash)
 
 			g.Assert(hash["name"]).Equal("KeyServiceTestConfig")
-			g.Assert(hash["appkey"]).Equal("669a3a9db3f2456f9e1d5ffe9b13b340")
+			g.Assert(hash["appkey"]).Equal("c2b4d9bf-652e-4915-ab23-7a0e0e32e362")
 			g.Assert(hash["baseURI"]).Equal("KeyService")
 
 			g.Assert(hash["primaryRedisOptions"] != nil).Equal(true)

@@ -177,6 +177,8 @@ func (c Context) StartService() error {
 		config = conf
 	}
 
+	c.apikey = config.appkey
+
 	log.Info("start the servers with context: %v", c.ToMap())
 
 	for idx := 0; idx < c.serverCount; idx++ {
