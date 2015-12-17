@@ -175,6 +175,7 @@ func (c Context) StartService() error {
 
 	for idx := 0; idx < c.serverCount; idx++ {
 		mux := ConfigureStandardRoutes()
+		ConfigureCustomRoutes( mux )
 		server := CreateServer(mux, c.env)
 		go startServer( server, c.baseport + idx )
 	}

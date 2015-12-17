@@ -20,6 +20,11 @@ func ConfigureStandardRoutes() *http.ServeMux {
 	return mux
 }
 
+func ConfigureCustomRoutes(mux *http.ServeMux) {
+	log.Info("configure custom routes")
+	
+}
+
 func CreateServer(mux *http.ServeMux, env string) *negroni.Negroni {
 	server := negroni.New()
 
