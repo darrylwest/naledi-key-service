@@ -14,7 +14,7 @@ func TestSessions(t *testing.T) {
     g := Goblin(t)
 
     g.Describe("Sessions", func() {
-        func() *logger.Logger {
+        log := func() *logger.Logger {
 			ctx := keyservice.NewContextForEnvironment("test")
 			return ctx.CreateLogger()
 		}()
@@ -22,6 +22,7 @@ func TestSessions(t *testing.T) {
 		expires := time.Now().Unix() - 1
 
         g.It("should have a valid session map", func() {
+            log.Info("test the sessions map")
             sessions := keyservice.GetSessions()
 
             g.Assert( sessions != nil ).IsTrue()
