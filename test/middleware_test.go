@@ -29,7 +29,7 @@ func TestMiddleware(t *testing.T) {
 			recorder := httptest.NewRecorder()
 			ctx := keyservice.NewDefaultContext()
 
-			proto := keyservice.NewProtoMiddleware( ctx )
+			proto := keyservice.NewProtoMiddleware(ctx)
 
 			server := negroni.New()
 			server.Use(proto)
@@ -56,7 +56,7 @@ func TestMiddleware(t *testing.T) {
 			recorder := httptest.NewRecorder()
 			ctx := keyservice.NewDefaultContext()
 
-			proto := keyservice.NewProtoMiddleware( ctx )
+			proto := keyservice.NewProtoMiddleware(ctx)
 
 			server := negroni.New()
 			server.Use(proto)
@@ -83,7 +83,7 @@ func TestMiddleware(t *testing.T) {
 			recorder := httptest.NewRecorder()
 			ctx := keyservice.NewDefaultContext()
 
-			proto := keyservice.NewProtoMiddleware( ctx )
+			proto := keyservice.NewProtoMiddleware(ctx)
 
 			server := negroni.New()
 			server.Use(proto)
@@ -109,7 +109,7 @@ func TestMiddleware(t *testing.T) {
 			recorder := httptest.NewRecorder()
 			ctx := keyservice.NewContextForEnvironment("test")
 
-			proto := keyservice.NewProtoMiddleware( ctx )
+			proto := keyservice.NewProtoMiddleware(ctx)
 
 			server := negroni.New()
 			server.Use(proto)
@@ -135,7 +135,7 @@ func TestMiddleware(t *testing.T) {
 			recorder := httptest.NewRecorder()
 			ctx := keyservice.NewDefaultContext()
 
-			akm := keyservice.NewAPIKeyMiddleware( ctx )
+			akm := keyservice.NewAPIKeyMiddleware(ctx)
 
 			server := negroni.New()
 			server.Use(akm)
@@ -161,7 +161,7 @@ func TestMiddleware(t *testing.T) {
 			recorder := httptest.NewRecorder()
 			ctx := keyservice.NewDefaultContext()
 
-			akm := keyservice.NewAPIKeyMiddleware( ctx )
+			akm := keyservice.NewAPIKeyMiddleware(ctx)
 
 			server := negroni.New()
 			server.Use(akm)

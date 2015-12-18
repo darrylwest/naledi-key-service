@@ -24,10 +24,10 @@ func ConfigureCustomRoutes(mux *http.ServeMux) {
 	uri := "/" + config.baseURI
 	log.Info("configure custom routes for path: %s", uri)
 
-	mux.HandleFunc(uri + "/session/create", StatusHandler)
-	mux.HandleFunc(uri + "/session/expire", StatusHandler)
+	mux.HandleFunc(uri+"/session/create", CreateSessionHandler)
+	mux.HandleFunc(uri+"/session/expire", ExpireSessionHandler)
 
-	mux.HandleFunc(uri + "/ping", PingHandler)
+	mux.HandleFunc(uri+"/ping", PingHandler)
 }
 
 func CreateServer(mux *http.ServeMux, ctx *Context) *negroni.Negroni {

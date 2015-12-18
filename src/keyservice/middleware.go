@@ -55,9 +55,9 @@ func NewAPIKeyMiddleware(ctx *Context) *APIKeyMiddleware {
 
 func (m *APIKeyMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	key := r.Header.Get("x-api-key")
-	log.Info("api key check: %s, len: %d", key, len( key ))
+	log.Debug("api key check: %s, len: %d", key, len(key))
 
-	if m.apikey == key || (len( key ) >= 32 && m.skip) || strings.Contains(r.Host, "localhost")  {
+	if m.apikey == key || (len(key) >= 32 && m.skip) || strings.Contains(r.Host, "localhost") {
 		next(w, r)
 	} else {
 		log.Warn("request header does not have a recognized key: %s", key)
@@ -66,5 +66,4 @@ func (m *APIKeyMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request, nex
 		headers.Set("Content-Type", "text/plain")
 		fmt.Fprintf(w, "invalid request...\r\n")
 	}
-
 }

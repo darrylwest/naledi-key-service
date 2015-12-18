@@ -10,6 +10,28 @@ import (
 	"time"
 )
 
+func badRequestHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "bad request\r\n")
+}
+
+func CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		badRequestHandler(w, r)
+		return
+	}
+
+	fmt.Fprintf(w, "expire session not implemented yet\r\n")
+}
+
+func ExpireSessionHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		badRequestHandler(w, r)
+		return
+	}
+
+	fmt.Fprintf(w, "expire session not implemented yet\r\n")
+}
+
 func ShutdownHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "shutdown requested...\r\n")
 
