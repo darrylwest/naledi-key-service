@@ -29,7 +29,7 @@ run:
 	( . ./.setpath ; go run src/main.go --env=staging --configFile=test/test-config.json )
 
 start:
-	nohup /usr/local/bin/keyservice --baseport=9001 --serverCount=2 --shutdownPort=9009 --logname=keyservice --env=staging & 
+	nohup /usr/local/bin/keyservice --baseport=9001 --serverCount=2 --shutdownPort=9009 --logname=keyservice --env=production & 
 
 status:
 	curl http://localhost:9001/status
