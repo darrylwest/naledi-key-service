@@ -41,6 +41,10 @@ func IsProduction(env string) bool {
 	return env == "production"
 }
 
+func IsStaging(env string) bool {
+	return env == "staging"
+}
+
 func NewDefaultContext() *Context {
 	ctx := new(Context)
 

@@ -40,10 +40,15 @@ type APIKeyMiddleware struct {
 func NewAPIKeyMiddleware(ctx *Context) *APIKeyMiddleware {
 	m := &APIKeyMiddleware{}
 
-	m.skip = IsProduction(ctx.env) == false
+	if IsProduction(ctx.env) || IsStaging(ctx.env) {
+		m.skip = false
+	} else {
+		m.skip = true
+	}
+
 	m.apikey = ctx.apikey
 
-	log.Info("skip: %v, apikey: %s", m.skip, m.apikey)
+	log.Info("APIKey middleware skip: %v, apikey: %s", m.skip, m.apikey)
 
 	return m
 }
