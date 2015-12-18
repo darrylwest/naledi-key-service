@@ -20,6 +20,8 @@ func CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// pull required public key
+
 	fmt.Fprintf(w, "expire session not implemented yet\r\n")
 }
 
@@ -28,6 +30,8 @@ func ExpireSessionHandler(w http.ResponseWriter, r *http.Request) {
 		badRequestHandler(w, r)
 		return
 	}
+
+	// pull the ssid and remove from sessions
 
 	fmt.Fprintf(w, "expire session not implemented yet\r\n")
 }
