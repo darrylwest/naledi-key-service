@@ -24,7 +24,7 @@ func CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ExpireSessionHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "POST" {
+	if r.Method != "PUT" {
 		badRequestHandler(w, r)
 		return
 	}

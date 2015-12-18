@@ -17,6 +17,50 @@ func TestHandlers(t *testing.T) {
 	g := Goblin(t)
 
 	g.Describe("Handlers", func() {
+		g.It("should create a new session", func() {
+			mux := http.NewServeMux()
+			mux.HandleFunc("/session/create", keyservice.CreateSessionHandler)
+
+			server := negroni.New()
+			server.UseHandler(mux)
+
+			request, err := http.NewRequest("POST", "http://test.com/session/create", nil)
+			if err != nil {
+				panic(err)
+			}
+
+			recorder := httptest.NewRecorder()
+
+			server.ServeHTTP(recorder, request)
+			// fmt.Println( recorder.Body.String() )
+			// log.Info("status response: %s", recorder.Body.String())
+
+			g.Assert(recorder.Code).Equal(200)
+			g.Assert(recorder.Body != nil).IsTrue()
+		})
+
+		g.It("should expire an existing session", func() {
+			mux := http.NewServeMux()
+			mux.HandleFunc("/session/expire", keyservice.CreateSessionHandler)
+
+			server := negroni.New()
+			server.UseHandler(mux)
+
+			request, err := http.NewRequest("PUT", "http://test.com/session/expire", nil)
+			if err != nil {
+				panic(err)
+			}
+
+			recorder := httptest.NewRecorder()
+
+			server.ServeHTTP(recorder, request)
+			// fmt.Println( recorder.Body.String() )
+			// log.Info("status response: %s", recorder.Body.String())
+
+			g.Assert(recorder.Code).Equal(200)
+			g.Assert(recorder.Body != nil).IsTrue()
+		})
+
 		g.It("should have a status handler that returns a json blob", func() {
 			mux := http.NewServeMux()
 			mux.HandleFunc("/status", keyservice.StatusHandler)
