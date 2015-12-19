@@ -5,7 +5,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>40</x>
-      <y>300</y>
+      <y>260</y>
       <w>210</w>
       <h>120</h>
     </coordinates>
@@ -24,7 +24,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>40</x>
-      <y>130</y>
+      <y>120</y>
       <w>160</w>
       <h>90</h>
     </coordinates>
@@ -40,22 +40,28 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>330</x>
-      <y>130</y>
-      <w>190</w>
-      <h>70</h>
+      <x>290</x>
+      <y>280</y>
+      <w>220</w>
+      <h>170</h>
     </coordinates>
-    <panel_attributes>AccessKeys
+    <panel_attributes>Session
 --
--doi: DocumentIdentifier
--key: string</panel_attributes>
+-ssid: string
+-peerPubKey: []byte
+-myPubKey: []byte
+-myPrivKey: []byte
+-user: UserModel
+-lastRecd: int
+-lastSent: int
+-expires: int64</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>40</x>
-      <y>500</y>
+      <x>20</x>
+      <y>620</y>
       <w>260</w>
       <h>60</h>
     </coordinates>
@@ -69,7 +75,7 @@ Version 0.90.10</panel_attributes>
     <coordinates>
       <x>30</x>
       <y>30</y>
-      <w>790</w>
+      <w>750</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>valign=center
@@ -82,17 +88,17 @@ Naledi Key Service Data Model Diagram</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>320</x>
-      <y>290</y>
+      <x>290</x>
+      <y>120</y>
       <w>220</w>
       <h>140</h>
     </coordinates>
-    <panel_attributes>DocumentKeys
+    <panel_attributes>UserDocument
 --
--doi: Document
+-doi: DocumentIdentifier
 -owner: UserModel.doi.id
 -name: string
--meta: string // data about the key
+-meta: string // data about the doc
 -share: UserModel.doi.id
 -expires: date
 -status: Valid|Expired</panel_attributes>
@@ -101,21 +107,20 @@ Naledi Key Service Data Model Diagram</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>590</x>
-      <y>130</y>
-      <w>200</w>
-      <h>100</h>
+      <x>300</x>
+      <y>480</y>
+      <w>380</w>
+      <h>80</h>
     </coordinates>
-    <panel_attributes>Access keys are stored separately from model records.
-Keys are used to authenticate users, encrypt/decrypt documents, etc.
+    <panel_attributes>Access keys are stored separately from model records. Keys are used to authenticate users, encrypt/decrypt documents, etc. Document keys are encrypted using the server's local key prior to saving in remote db.
 bg=yellow</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>590</x>
-      <y>290</y>
+      <x>560</x>
+      <y>120</y>
       <w>200</w>
       <h>130</h>
     </coordinates>
@@ -123,10 +128,24 @@ bg=yellow</panel_attributes>
 --
 doi: DocumentIdentifier
 type: Document|Access
-sendto: string
+sendTo: string
 sendDate: date
 expires: date
 status: Active|Canceled|Expired</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>480</y>
+      <w>190</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>AccessKeys
+--
+-id: string
+-key: string</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
