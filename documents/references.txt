@@ -1,0 +1,10 @@
+https://blog.codecentric.de/en/2014/03/crypto-broken-apply-secure-crypto-developer/
+https://github.com/lukaspustina/shick_crypto
+
+https://en.wikipedia.org/wiki/Curve25519
+https://en.wikipedia.org/wiki/Salsa20
+https://en.wikipedia.org/wiki/Salsa20
+
+https://en.wikipedia.org/wiki/ESTREAM
+
+https://labs.opendns.com/2013/03/06/announcing-sodium-a-new-cryptographic-library/
