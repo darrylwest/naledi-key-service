@@ -12,6 +12,9 @@ install-deps:
 	go get -u github.com/darrylwest/cassava-logger/logger
 	go get github.com/franela/goblin
 	go get gopkg.in/redis.v3
+	go get golang.org/x/crypto/nacl/secretbox
+	go get golang.org/x/crypto/nacl/box
+	go get golang.org/x/crypto/scrypt
 
 format:
 	( gofmt -s -w src/*.go src/*/*.go test/*.go )
