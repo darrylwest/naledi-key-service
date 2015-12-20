@@ -3,6 +3,8 @@ package keyservicetest
 import (
     "testing"
     "github.com/darrylwest/cassava-logger/logger"
+    "crypto/rand"
+    "golang.org/x/crypto/nacl/box"
 
     "keyservice"
 
@@ -39,7 +41,7 @@ func TestCrypto(t *testing.T) {
             g.Assert(len(key)).Equal(24)
         })
 
-        g.It("should encrypt a plain text string", func() {
+        g.It("should symmetrically encrypt a plain text string", func() {
             key, _ := keyservice.GenerateSymmetricKey()
 
             enc, err := keyservice.EncryptSymmetric(key, plainTextMessage)
@@ -50,7 +52,7 @@ func TestCrypto(t *testing.T) {
             log.Info("encrypted: %v", enc)
         })
 
-        g.It("should decrypt an encrypted message", func() {
+        g.It("should decrypt a symmetrically encrypted message", func() {
             key, _ := keyservice.GenerateSymmetricKey()
 
             enc, err := keyservice.EncryptSymmetric(key, plainTextMessage)
@@ -70,6 +72,26 @@ func TestCrypto(t *testing.T) {
             log.Info("error: %s", err)
             g.Assert(err != nil).IsTrue()
             g.Assert(dec == nil).IsTrue()
+        })
+
+        g.It("should encrypt a message using pub/priv keys", func() {
+            pub, priv, _ := box.GenerateKey( rand.Reader )
+
+            enc, err := keyservice.EncryptBox(pub, priv, plainTextMessage)
+
+            g.Assert(err == nil).IsTrue()
+            g.Assert(len(enc) > (24 + len(plainTextMessage))).IsTrue()
+
+        })
+
+        g.It("should decrypt a box encrypted message", func() {
+            pub, priv, _ := box.GenerateKey( rand.Reader )
+
+            enc, _ := keyservice.EncryptBox(pub, priv, plainTextMessage)
+            dec, err := keyservice.DecryptBox(pub, priv, enc)
+
+            g.Assert(err == nil).IsTrue()
+            g.Assert(dec).Equal(plainTextMessage)
         })
     })
 }

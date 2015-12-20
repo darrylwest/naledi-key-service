@@ -6,6 +6,7 @@ import (
     "errors"
     "fmt"
     "golang.org/x/crypto/nacl/secretbox"
+    "golang.org/x/crypto/nacl/box"
 )
 
 const (
@@ -32,6 +33,7 @@ func GenerateNonce() (*[NonceSize]byte, error) {
     return key, err
 }
 
+// encrypt the message and prepend the output with nonce
 func EncryptSymmetric(key *[KeySize]byte, message []byte) ([]byte, error) {
     nonce, err := GenerateNonce()
     if err != nil {
@@ -46,6 +48,7 @@ func EncryptSymmetric(key *[KeySize]byte, message []byte) ([]byte, error) {
     return out, nil
 }
 
+// strip the leading nonce and decrypt the message
 func DecryptSymmetric(key *[KeySize]byte, message []byte) ([]byte, error) {
     if len(message) < (NonceSize + secretbox.Overhead) {
         log.Error(decryptFailedMessage, "message too short")
@@ -58,6 +61,39 @@ func DecryptSymmetric(key *[KeySize]byte, message []byte) ([]byte, error) {
     if !ok {
         log.Error(decryptFailedMessage, "unknown reason")
         return nil, errors.New(fmt.Sprintf(decryptFailedMessage, "unknown reason"))
+    }
+
+    return out, nil
+}
+
+// encrypt with pub/priv keys ; prepend the output with nonce
+func EncryptBox(pub, priv *[KeySize]byte, message []byte) ([]byte, error) {
+    nonce, err := GenerateNonce()
+    if err != nil {
+        log.Error(encryptFailedMessage, err)
+        return nil, errors.New(fmt.Sprintf( encryptFailedMessage, err ))
+    }
+
+    out := make([]byte, len(nonce))
+    copy(out, nonce[:])
+    out = box.Seal(out, message, nonce, pub, priv)
+
+    return out, nil
+}
+
+func DecryptBox(pub, priv *[KeySize]byte, message []byte) ([]byte, error) {
+    if len(message) < (box.Overhead + NonceSize) {
+        log.Error(decryptFailedMessage, "message too short")
+        return nil, errors.New(fmt.Sprintf(decryptFailedMessage, "message too short"))
+    }
+
+    var nonce [NonceSize]byte
+    copy(nonce[:], message[:NonceSize])
+
+    out, ok := box.Open(nil, message[NonceSize:], &nonce, pub, priv)
+    if !ok {
+        log.Error(decryptFailedMessage, "message could not be decrypted")
+        return nil, errors.New(fmt.Sprintf(decryptFailedMessage, "message could not be decrypted"))
     }
 
     return out, nil
