@@ -60,5 +60,16 @@ func TestCrypto(t *testing.T) {
             g.Assert(err == nil).IsTrue()
             g.Assert(dec).Equal(plainTextMessage)
         })
+
+        g.It("should fail decryption if message is too short", func() {
+            key, _ := keyservice.GenerateSymmetricKey()
+            enc := make([]byte, 2)
+
+            dec, err := keyservice.Decrypt(key, enc)
+
+            log.Info("error: %s", err)
+            g.Assert(err != nil).IsTrue()
+            g.Assert(dec == nil).IsTrue()
+        })
     })
 }

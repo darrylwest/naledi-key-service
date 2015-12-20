@@ -28,7 +28,9 @@ func (c Config) ToMap() map[string]interface{} {
 	hash["primaryRedisOptions"] = c.primaryRedisOptions
 	hash["secondaryRedisOptions"] = c.secondaryRedisOptions
 
-	hash["privateLocalKey"] = c.privateLocalKey
+	pk := make([]byte, KeySize)
+	copy(pk[:], *c.privateLocalKey)
+	hash["privateLocalKey"] = pk
 
 	return hash
 }

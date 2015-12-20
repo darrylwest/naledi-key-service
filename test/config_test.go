@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"keyservice"
 	// "strings"
+	"encoding/hex"
 	"testing"
 
 	"github.com/darrylwest/cassava-logger/logger"
@@ -18,7 +19,8 @@ func createConfigJson() []byte {
 		"appkey":"669a3a9db3f2456f9e1d5ffe9b13b340",
 		"baseURI":"KeyService",
 		"primaryRedisOptions":{"addr":"localhost:8443","password":"flarb","db":0},
-		"secondaryRedisOptions":{"addr":"localhost:8444","password":"blarf","db":1}
+		"secondaryRedisOptions":{"addr":"localhost:8444","password":"blarf","db":1},
+		"privateLocalKey":"c2c3f31d02109189c1d22fc5c9e2ecf6bc4384a1117393d23614d1b91bed9271"
 	}`)
 
 	return json
@@ -73,6 +75,13 @@ func TestConfig(t *testing.T) {
 			g.Assert(opts.Password).Equal("blarf")
 			g.Assert(opts.DB).Equal(int64(1))
 
+			key, ok := hash["privateLocalKey"].([]byte)
+
+			g.Assert(ok).IsTrue()
+			g.Assert(len(key)).Equal(32)
+			skey := hex.EncodeToString( key )
+			g.Assert(skey).Equal("c2c3f31d02109189c1d22fc5c9e2ecf6bc4384a1117393d23614d1b91bed9271")
+
 		})
 
 		g.It("should read external configuration file", func() {
@@ -109,8 +118,11 @@ func TestConfig(t *testing.T) {
 			g.Assert(opts.DB).Equal(int64(1))
 
 			key, ok := hash["privateLocalKey"].([]byte)
+
 			g.Assert(ok).IsTrue()
 			g.Assert(len(key)).Equal(32)
+			skey := hex.EncodeToString( key )
+			g.Assert(skey).Equal("c2c3f31d02109189c1d22fc5c9e2ecf6bc4384a1117393d23614d1b91bed9271")
 		})
 
 		g.It("should return error if config file is not found", func() {
