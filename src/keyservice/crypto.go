@@ -98,3 +98,9 @@ func DecryptBox(pub, priv *[KeySize]byte, message []byte) ([]byte, error) {
 
     return out, nil
 }
+
+func ClearBytes(buf []byte) {
+    for i := range buf {
+        buf[i] = 0
+    }
+}

@@ -93,5 +93,13 @@ func TestCrypto(t *testing.T) {
             g.Assert(err == nil).IsTrue()
             g.Assert(dec).Equal(plainTextMessage)
         })
+
+        g.It("should clear a buffer's bytes to zero", func() {
+            clear := new([keyservice.KeySize]byte)
+            key, _ := keyservice.GenerateSymmetricKey()
+
+            keyservice.ClearBytes( key[:] )
+            g.Assert( *key ).Equal( *clear )
+        })
     })
 }
