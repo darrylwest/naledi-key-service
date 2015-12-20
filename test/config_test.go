@@ -107,6 +107,10 @@ func TestConfig(t *testing.T) {
 			g.Assert(opts.Addr).Equal("localhost:8444")
 			g.Assert(opts.Password).Equal("blarf")
 			g.Assert(opts.DB).Equal(int64(1))
+
+			key, ok := hash["privateLocalKey"].([]byte)
+			g.Assert(ok).IsTrue()
+			g.Assert(len(key)).Equal(32)
 		})
 
 		g.It("should return error if config file is not found", func() {

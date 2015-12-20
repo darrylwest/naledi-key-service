@@ -13,6 +13,7 @@ func TestCrypto(t *testing.T) {
     g := Goblin(t)
 
     g.Describe("Crypto", func() {
+        plainTextMessage := []byte("this is a standard text message with some length to it that will be encrypted.  maybe")
         log := func() *logger.Logger {
 			ctx := keyservice.NewContextForEnvironment("test")
 			return ctx.CreateLogger()
@@ -38,6 +39,26 @@ func TestCrypto(t *testing.T) {
             g.Assert(len(key)).Equal(24)
         })
 
+        g.It("should encrypt a plain text string", func() {
+            key, _ := keyservice.GenerateSymmetricKey()
 
+            enc, err := keyservice.Encrypt(key, plainTextMessage)
+
+            g.Assert(err == nil).IsTrue()
+            g.Assert(enc != nil).IsTrue()
+
+            log.Info("encrypted: %v", enc)
+        })
+
+        g.It("should decrypt an encrypted message", func() {
+            key, _ := keyservice.GenerateSymmetricKey()
+
+            enc, err := keyservice.Encrypt(key, plainTextMessage)
+
+            dec, err := keyservice.Decrypt(key, enc)
+
+            g.Assert(err == nil).IsTrue()
+            g.Assert(dec).Equal(plainTextMessage)
+        })
     })
 }
