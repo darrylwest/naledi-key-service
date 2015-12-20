@@ -42,7 +42,7 @@ func TestCrypto(t *testing.T) {
         g.It("should encrypt a plain text string", func() {
             key, _ := keyservice.GenerateSymmetricKey()
 
-            enc, err := keyservice.Encrypt(key, plainTextMessage)
+            enc, err := keyservice.EncryptSymmetric(key, plainTextMessage)
 
             g.Assert(err == nil).IsTrue()
             g.Assert(enc != nil).IsTrue()
@@ -53,9 +53,9 @@ func TestCrypto(t *testing.T) {
         g.It("should decrypt an encrypted message", func() {
             key, _ := keyservice.GenerateSymmetricKey()
 
-            enc, err := keyservice.Encrypt(key, plainTextMessage)
+            enc, err := keyservice.EncryptSymmetric(key, plainTextMessage)
 
-            dec, err := keyservice.Decrypt(key, enc)
+            dec, err := keyservice.DecryptSymmetric(key, enc)
 
             g.Assert(err == nil).IsTrue()
             g.Assert(dec).Equal(plainTextMessage)
@@ -65,7 +65,7 @@ func TestCrypto(t *testing.T) {
             key, _ := keyservice.GenerateSymmetricKey()
             enc := make([]byte, 2)
 
-            dec, err := keyservice.Decrypt(key, enc)
+            dec, err := keyservice.DecryptSymmetric(key, enc)
 
             log.Info("error: %s", err)
             g.Assert(err != nil).IsTrue()

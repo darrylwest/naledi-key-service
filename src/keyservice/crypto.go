@@ -32,7 +32,7 @@ func GenerateNonce() (*[NonceSize]byte, error) {
     return key, err
 }
 
-func Encrypt(key *[KeySize]byte, message []byte) ([]byte, error) {
+func EncryptSymmetric(key *[KeySize]byte, message []byte) ([]byte, error) {
     nonce, err := GenerateNonce()
     if err != nil {
         log.Error(encryptFailedMessage, err)
@@ -46,7 +46,7 @@ func Encrypt(key *[KeySize]byte, message []byte) ([]byte, error) {
     return out, nil
 }
 
-func Decrypt(key *[KeySize]byte, message []byte) ([]byte, error) {
+func DecryptSymmetric(key *[KeySize]byte, message []byte) ([]byte, error) {
     if len(message) < (NonceSize + secretbox.Overhead) {
         log.Error(decryptFailedMessage, "message too short")
         return nil, errors.New(fmt.Sprintf(decryptFailedMessage, "message too short"))
