@@ -2,6 +2,7 @@ package keyservice
 
 import (
 	"encoding/json"
+	"encoding/hex"
 	"gopkg.in/redis.v3"
 	"io/ioutil"
 )
@@ -13,6 +14,8 @@ type Config struct {
 
 	primaryRedisOptions   *redis.Options
 	secondaryRedisOptions *redis.Options
+
+	privateLocalKey *[]byte
 }
 
 func (c Config) ToMap() map[string]interface{} {
@@ -24,6 +27,8 @@ func (c Config) ToMap() map[string]interface{} {
 
 	hash["primaryRedisOptions"] = c.primaryRedisOptions
 	hash["secondaryRedisOptions"] = c.secondaryRedisOptions
+
+	hash["privateLocalKey"] = c.privateLocalKey
 
 	return hash
 }
@@ -67,6 +72,19 @@ func ParseConfig(data []byte) (*Config, error) {
 
 	config.primaryRedisOptions = ParseRedisOptions(hash["primaryRedisOptions"].(map[string]interface{}))
 	config.secondaryRedisOptions = ParseRedisOptions(hash["secondaryRedisOptions"].(map[string]interface{}))
+
+	if key, ok := hash["privateLocalKey"].(string); ok == true {
+		log.Debug("key: %s", key)
+
+		decoded, err := hex.DecodeString(key)
+		if err != nil {
+			log.Error("error decoding private local key")
+		} else {
+			config.privateLocalKey = &decoded
+			log.Debug("private local key: %v", config.privateLocalKey)
+		}
+
+	}
 
 	return config, nil
 }
