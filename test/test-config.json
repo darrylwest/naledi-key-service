@@ -11,5 +11,6 @@
         "addr":"localhost:8444",
         "password":"blarf",
         "db":1
-    }
+    },
+    "privateLocalKey":"c2c3f31d02109189c1d22fc5c9e2ecf6bc4384a1117393d23614d1b91bed9271"
 }
