@@ -45,9 +45,9 @@ type AccessKey struct {
 }
 
 type Message struct {
-    sigPubKey *[KeySize]byte
     peerPubKey *[KeySize]byte
     nonce *[NonceSize]byte
+    sigPubKey *[KeySize]byte
     sig *[64]byte
     number uint32
     message *[]byte

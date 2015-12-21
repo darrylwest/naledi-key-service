@@ -15,7 +15,7 @@ type Config struct {
 	primaryRedisOptions   *redis.Options
 	secondaryRedisOptions *redis.Options
 
-	privateLocalKey *[]byte
+	privateLocalKey *[KeySize]byte
 }
 
 func (c Config) ToMap() map[string]interface{} {
@@ -28,11 +28,13 @@ func (c Config) ToMap() map[string]interface{} {
 	hash["primaryRedisOptions"] = c.primaryRedisOptions
 	hash["secondaryRedisOptions"] = c.secondaryRedisOptions
 
-	pk := make([]byte, KeySize)
-	copy(pk[:], *c.privateLocalKey)
-	hash["privateLocalKey"] = pk
+	hash["privateLocalKey"] = hex.EncodeToString( c.privateLocalKey[:] )
 
 	return hash
+}
+
+func (c Config) GetPrivateLocalKey() *[KeySize]byte {
+	return c.privateLocalKey
 }
 
 func ReadConfig(path string) (*Config, error) {
@@ -82,8 +84,10 @@ func ParseConfig(data []byte) (*Config, error) {
 		if err != nil {
 			log.Error("error decoding private local key")
 		} else {
-			config.privateLocalKey = &decoded
-			log.Debug("private local key: %v", config.privateLocalKey)
+			var pk *[KeySize]byte = new([KeySize]byte)
+			copy(pk[:], decoded)
+			config.privateLocalKey = pk
+			log.Info("private local key: %v", config.privateLocalKey)
 		}
 
 	}
