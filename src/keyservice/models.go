@@ -43,3 +43,12 @@ type AccessKey struct {
     id string
     key []byte
 }
+
+type Message struct {
+    sigPubKey *[KeySize]byte
+    peerPubKey *[KeySize]byte
+    nonce *[NonceSize]byte
+    sig *[64]byte
+    number uint32
+    message *[]byte
+}

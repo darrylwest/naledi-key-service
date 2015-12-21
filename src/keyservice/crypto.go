@@ -81,6 +81,7 @@ func EncryptBox(pub, priv *[KeySize]byte, message []byte) ([]byte, error) {
     return out, nil
 }
 
+// decrypt with pub/priv keys by first stripping the prepended nonce
 func DecryptBox(pub, priv *[KeySize]byte, message []byte) ([]byte, error) {
     if len(message) < (box.Overhead + NonceSize) {
         log.Error(decryptFailedMessage, "message too short")
@@ -99,6 +100,7 @@ func DecryptBox(pub, priv *[KeySize]byte, message []byte) ([]byte, error) {
     return out, nil
 }
 
+// clear the buffer bytes to zero; should be used to clear encryption keys
 func ClearBytes(buf []byte) {
     for i := range buf {
         buf[i] = 0

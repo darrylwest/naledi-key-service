@@ -15,6 +15,7 @@ install-deps:
 	go get golang.org/x/crypto/nacl/secretbox
 	go get golang.org/x/crypto/nacl/box
 	go get golang.org/x/crypto/scrypt
+	go get github.com/agl/ed25519
 
 format:
 	( gofmt -s -w src/*.go src/*/*.go test/*.go )
