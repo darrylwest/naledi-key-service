@@ -18,7 +18,7 @@ type Config struct {
 	privateLocalKey *[KeySize]byte
 }
 
-func (c Config) ToMap() map[string]interface{} {
+func (c *Config) ToMap() map[string]interface{} {
 	hash := make(map[string]interface{})
 
 	hash["name"] = c.name
@@ -33,8 +33,24 @@ func (c Config) ToMap() map[string]interface{} {
 	return hash
 }
 
-func (c Config) GetPrivateLocalKey() *[KeySize]byte {
+func (c *Config) GetPrivateLocalKey() *[KeySize]byte {
 	return c.privateLocalKey
+}
+
+func (c *Config) GetAppKey() string {
+	return c.appkey
+}
+
+func (c *Config) GetBaseURI() string {
+	return c.baseURI
+}
+
+func (c *Config) GetPrimaryRedisOptions() *redis.Options {
+	return c.primaryRedisOptions
+}
+
+func (c *Config) GetSecondaryRedisOptions() *redis.Options {
+	return c.secondaryRedisOptions
 }
 
 func ReadConfig(path string) (*Config, error) {

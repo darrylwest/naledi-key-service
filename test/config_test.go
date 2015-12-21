@@ -56,7 +56,9 @@ func TestConfig(t *testing.T) {
 
 			g.Assert(hash["name"]).Equal("KeyServiceTestConfig")
 			g.Assert(hash["appkey"]).Equal("669a3a9db3f2456f9e1d5ffe9b13b340")
+			g.Assert(config.GetAppKey()).Equal("669a3a9db3f2456f9e1d5ffe9b13b340")
 			g.Assert(hash["baseURI"]).Equal("KeyService")
+			g.Assert(config.GetBaseURI()).Equal("KeyService")
 
 			g.Assert(hash["primaryRedisOptions"] != nil).Equal(true)
 			g.Assert(hash["secondaryRedisOptions"] != nil).Equal(true)
@@ -96,7 +98,9 @@ func TestConfig(t *testing.T) {
 
 			g.Assert(hash["name"]).Equal("KeyServiceTestConfig")
 			g.Assert(hash["appkey"]).Equal("c2b4d9bf-652e-4915-ab23-7a0e0e32e362")
+			g.Assert(config.GetAppKey()).Equal("c2b4d9bf-652e-4915-ab23-7a0e0e32e362")
 			g.Assert(hash["baseURI"]).Equal("KeyService")
+			g.Assert(config.GetBaseURI()).Equal("KeyService")
 
 			g.Assert(hash["primaryRedisOptions"] != nil).Equal(true)
 			g.Assert(hash["secondaryRedisOptions"] != nil).Equal(true)
@@ -108,9 +112,19 @@ func TestConfig(t *testing.T) {
 			g.Assert(opts.Password).Equal("flarb")
 			g.Assert(opts.DB).Equal(int64(0))
 
+			opts = config.GetPrimaryRedisOptions()
+			g.Assert(opts.Addr).Equal("localhost:8443")
+			g.Assert(opts.Password).Equal("flarb")
+			g.Assert(opts.DB).Equal(int64(0))
+
 			opts, ok = hash["secondaryRedisOptions"].(*redis.Options)
 
 			g.Assert(ok).Equal(true)
+			g.Assert(opts.Addr).Equal("localhost:8444")
+			g.Assert(opts.Password).Equal("blarf")
+			g.Assert(opts.DB).Equal(int64(1))
+
+			opts = config.GetSecondaryRedisOptions()
 			g.Assert(opts.Addr).Equal("localhost:8444")
 			g.Assert(opts.Password).Equal("blarf")
 			g.Assert(opts.DB).Equal(int64(1))
