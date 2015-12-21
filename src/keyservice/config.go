@@ -54,12 +54,11 @@ func (c *Config) GetSecondaryRedisOptions() *redis.Options {
 }
 
 func ReadConfig(path string) (*Config, error) {
-	log.Info("read the configuration file: %s", path)
+	// log.Info("read the configuration file: %s", path)
 
 	data, err := ioutil.ReadFile(path)
 
 	if err != nil {
-		log.Error("config file read error: ", err)
 		return nil, err
 	}
 
@@ -80,7 +79,6 @@ func ParseConfig(data []byte) (*Config, error) {
 	var hash map[string]interface{}
 
 	if err := json.Unmarshal(data, &hash); err != nil {
-		log.Error("parse error: ", err)
 		return nil, err
 	}
 
@@ -94,8 +92,6 @@ func ParseConfig(data []byte) (*Config, error) {
 	config.secondaryRedisOptions = ParseRedisOptions(hash["secondaryRedisOptions"].(map[string]interface{}))
 
 	if key, ok := hash["privateLocalKey"].(string); ok == true {
-		log.Debug("key: %s", key)
-
 		decoded, err := hex.DecodeString(key)
 		if err != nil {
 			log.Error("error decoding private local key")
@@ -103,9 +99,7 @@ func ParseConfig(data []byte) (*Config, error) {
 			var pk *[KeySize]byte = new([KeySize]byte)
 			copy(pk[:], decoded)
 			config.privateLocalKey = pk
-			log.Info("private local key: %v", config.privateLocalKey)
 		}
-
 	}
 
 	return config, nil
