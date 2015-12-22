@@ -4,7 +4,7 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>130</x>
+      <x>150</x>
       <y>80</y>
       <w>100</w>
       <h>30</h>
@@ -16,7 +16,7 @@ bg=orange</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>480</x>
+      <x>500</x>
       <y>80</y>
       <w>100</w>
       <h>30</h>
@@ -28,7 +28,7 @@ bg=red</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>170</x>
+      <x>190</x>
       <y>160</y>
       <w>20</w>
       <h>390</h>
@@ -40,8 +40,8 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>520</x>
-      <y>160</y>
+      <x>540</x>
+      <y>170</y>
       <w>20</w>
       <h>110</h>
     </coordinates>
@@ -52,8 +52,8 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>180</x>
-      <y>160</y>
+      <x>200</x>
+      <y>170</y>
       <w>360</w>
       <h>40</h>
     </coordinates>
@@ -65,12 +65,13 @@ client pubkey</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>590</x>
+      <x>610</x>
       <y>180</y>
       <w>160</w>
-      <h>70</h>
+      <h>90</h>
     </coordinates>
-    <panel_attributes>parse peer pub key
+    <panel_attributes>decrypt request
+parse peer pub key
 create pub/priv keys
 create session
 encrypt ssid, pub key</panel_attributes>
@@ -79,7 +80,7 @@ encrypt ssid, pub key</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>180</x>
+      <x>200</x>
       <y>240</y>
       <w>360</w>
       <h>40</h>
@@ -92,7 +93,7 @@ ssid, server pubkey</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>530</x>
+      <x>550</x>
       <y>190</y>
       <w>80</w>
       <h>30</h>
@@ -103,8 +104,8 @@ ssid, server pubkey</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>530</x>
-      <y>220</y>
+      <x>550</x>
+      <y>240</y>
       <w>80</w>
       <h>30</h>
     </coordinates>
@@ -114,7 +115,7 @@ ssid, server pubkey</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>180</x>
+      <x>200</x>
       <y>290</y>
       <w>360</w>
       <h>60</h>
@@ -128,7 +129,7 @@ encrypted with server's pubkey
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>520</x>
+      <x>540</x>
       <y>300</y>
       <w>20</w>
       <h>130</h>
@@ -140,7 +141,7 @@ bg=red</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>590</x>
+      <x>610</x>
       <y>310</y>
       <w>170</w>
       <h>100</h>
@@ -154,7 +155,7 @@ return encrypted user obj</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>530</x>
+      <x>550</x>
       <y>320</y>
       <w>80</w>
       <h>30</h>
@@ -165,7 +166,7 @@ return encrypted user obj</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>530</x>
+      <x>550</x>
       <y>380</y>
       <w>80</w>
       <h>30</h>
@@ -176,7 +177,7 @@ return encrypted user obj</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>180</x>
+      <x>200</x>
       <y>390</y>
       <w>360</w>
       <h>40</h>
@@ -189,13 +190,13 @@ encrypted with peer key</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>180</x>
+      <x>200</x>
       <y>450</y>
       <w>360</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>lt=-&gt;&gt;
-request document access
+request document access list
 with encrypted user id
 </panel_attributes>
     <additional_attributes>10.0;20.0;340.0;20.0</additional_attributes>
@@ -203,7 +204,7 @@ with encrypted user id
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>520</x>
+      <x>540</x>
       <y>460</y>
       <w>20</w>
       <h>90</h>
@@ -215,7 +216,7 @@ bg=red</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>590</x>
+      <x>610</x>
       <y>470</y>
       <w>160</w>
       <h>60</h>
@@ -228,7 +229,7 @@ encrypt with shared key</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>530</x>
+      <x>550</x>
       <y>470</y>
       <w>80</w>
       <h>30</h>
@@ -239,7 +240,7 @@ encrypt with shared key</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>530</x>
+      <x>550</x>
       <y>510</y>
       <w>80</w>
       <h>30</h>
@@ -250,7 +251,7 @@ encrypt with shared key</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>180</x>
+      <x>200</x>
       <y>510</y>
       <w>360</w>
       <h>40</h>
@@ -278,7 +279,7 @@ Version 0.90.10</panel_attributes>
     <coordinates>
       <x>20</x>
       <y>0</y>
-      <w>760</w>
+      <w>780</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>valign=center
@@ -291,7 +292,7 @@ Naledi Key Service Sequence Diagram</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>170</x>
+      <x>190</x>
       <y>100</y>
       <w>30</w>
       <h>80</h>
@@ -302,41 +303,42 @@ Naledi Key Service Sequence Diagram</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>520</x>
+      <x>540</x>
       <y>100</y>
       <w>30</w>
-      <h>80</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
       <x>30</x>
       <y>150</y>
-      <w>100</w>
-      <h>40</h>
+      <w>130</w>
+      <h>60</h>
     </coordinates>
-    <panel_attributes>create pub/priv
-keys</panel_attributes>
+    <panel_attributes>create pub/priv keys
+select peer pub key
+encrypt request</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>120</x>
-      <y>160</y>
-      <w>70</w>
+      <x>150</x>
+      <y>170</y>
+      <w>60</w>
       <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>50.0;10.0;10.0;10.0</additional_attributes>
+    <additional_attributes>40.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>170</x>
+      <x>190</x>
       <y>730</y>
       <w>20</w>
       <h>120</h>
@@ -348,7 +350,7 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>20</x>
+      <x>30</x>
       <y>240</y>
       <w>120</w>
       <h>60</h>
@@ -362,7 +364,7 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>20</x>
+      <x>30</x>
       <y>580</y>
       <w>130</w>
       <h>120</h>
@@ -380,7 +382,7 @@ bg=yellow</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>180</x>
+      <x>200</x>
       <y>580</y>
       <w>360</w>
       <h>40</h>
@@ -393,7 +395,7 @@ persist to remote db</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>520</x>
+      <x>540</x>
       <y>580</y>
       <w>20</w>
       <h>110</h>
@@ -405,7 +407,7 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>180</x>
+      <x>200</x>
       <y>650</y>
       <w>360</w>
       <h>40</h>
@@ -418,7 +420,7 @@ encrypted with shared key</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>590</x>
+      <x>610</x>
       <y>580</y>
       <w>160</w>
       <h>120</h>
@@ -435,7 +437,7 @@ in remote key db</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>530</x>
+      <x>550</x>
       <y>600</y>
       <w>80</w>
       <h>30</h>
@@ -446,7 +448,7 @@ in remote key db</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>530</x>
+      <x>550</x>
       <y>660</y>
       <w>80</w>
       <h>30</h>
@@ -457,7 +459,7 @@ in remote key db</panel_attributes>
   <element>
     <id>UMLNote</id>
     <coordinates>
-      <x>20</x>
+      <x>30</x>
       <y>740</y>
       <w>130</w>
       <h>100</h>
@@ -474,7 +476,7 @@ bg=yellow</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>170</x>
+      <x>190</x>
       <y>580</y>
       <w>20</w>
       <h>110</h>
@@ -486,7 +488,7 @@ bg=yellow</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>180</x>
+      <x>200</x>
       <y>730</y>
       <w>360</w>
       <h>40</h>
@@ -499,7 +501,7 @@ encrypted with pub key</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>520</x>
+      <x>540</x>
       <y>740</y>
       <w>20</w>
       <h>110</h>
@@ -511,7 +513,7 @@ bg=red</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>180</x>
+      <x>200</x>
       <y>810</y>
       <w>360</w>
       <h>40</h>
@@ -524,7 +526,7 @@ encrypted with peer key</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>590</x>
+      <x>610</x>
       <y>750</y>
       <w>160</w>
       <h>90</h>
@@ -539,7 +541,7 @@ encrypt with peer key</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>530</x>
+      <x>550</x>
       <y>760</y>
       <w>80</w>
       <h>30</h>
@@ -550,7 +552,7 @@ encrypt with peer key</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>530</x>
+      <x>550</x>
       <y>810</y>
       <w>80</w>
       <h>30</h>
