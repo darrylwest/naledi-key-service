@@ -5,6 +5,7 @@ import (
     "github.com/darrylwest/cassava-logger/logger"
     "crypto/rand"
     "golang.org/x/crypto/nacl/box"
+    // "fmt"
 
     "keyservice"
 
@@ -85,10 +86,14 @@ func TestCrypto(t *testing.T) {
         })
 
         g.It("should decrypt a box encrypted message", func() {
-            pub, priv, _ := box.GenerateKey( rand.Reader )
+            // created by the server, and peer public key is passed to client
+            srvpub, srvpriv, _ := box.GenerateKey( rand.Reader )
+            clientpub, clientpriv, _ := box.GenerateKey( rand.Reader )
 
-            enc, _ := keyservice.EncryptBox(pub, priv, plainTextMessage)
-            dec, err := keyservice.DecryptBox(pub, priv, enc)
+            enc, err := keyservice.EncryptBox(srvpub, clientpriv, plainTextMessage)
+            g.Assert(err == nil).IsTrue()
+
+            dec, err := keyservice.DecryptBox(clientpub, srvpriv, enc)
 
             g.Assert(err == nil).IsTrue()
             g.Assert(dec).Equal(plainTextMessage)

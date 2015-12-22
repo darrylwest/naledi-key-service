@@ -22,7 +22,7 @@ func CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
 
 	// pull required public key
 
-	fmt.Fprintf(w, "expire session not implemented yet\r\n")
+	fmt.Fprintf(w, "create session not implemented yet\r\n")
 }
 
 func ExpireSessionHandler(w http.ResponseWriter, r *http.Request) {

@@ -66,8 +66,8 @@ func DecryptSymmetric(key *[KeySize]byte, message []byte) ([]byte, error) {
     return out, nil
 }
 
-// encrypt with pub/priv keys ; prepend the output with nonce
-func EncryptBox(pub, priv *[KeySize]byte, message []byte) ([]byte, error) {
+// encrypt with peer pub/priv keys ; prepend the output with nonce
+func EncryptBox(peer, priv *[KeySize]byte, message []byte) ([]byte, error) {
     nonce, err := GenerateNonce()
     if err != nil {
         log.Error(encryptFailedMessage, err)
@@ -76,13 +76,13 @@ func EncryptBox(pub, priv *[KeySize]byte, message []byte) ([]byte, error) {
 
     out := make([]byte, len(nonce))
     copy(out, nonce[:])
-    out = box.Seal(out, message, nonce, pub, priv)
+    out = box.Seal(out, message, nonce, peer, priv)
 
     return out, nil
 }
 
-// decrypt with pub/priv keys by first stripping the prepended nonce
-func DecryptBox(pub, priv *[KeySize]byte, message []byte) ([]byte, error) {
+// decrypt with peer pub/priv keys by first stripping the prepended nonce
+func DecryptBox(peer, priv *[KeySize]byte, message []byte) ([]byte, error) {
     if len(message) < (box.Overhead + NonceSize) {
         log.Error(decryptFailedMessage, "message too short")
         return nil, errors.New(fmt.Sprintf(decryptFailedMessage, "message too short"))
@@ -91,7 +91,7 @@ func DecryptBox(pub, priv *[KeySize]byte, message []byte) ([]byte, error) {
     var nonce [NonceSize]byte
     copy(nonce[:], message[:NonceSize])
 
-    out, ok := box.Open(nil, message[NonceSize:], &nonce, pub, priv)
+    out, ok := box.Open(nil, message[NonceSize:], &nonce, peer, priv)
     if !ok {
         log.Error(decryptFailedMessage, "message could not be decrypted")
         return nil, errors.New(fmt.Sprintf(decryptFailedMessage, "message could not be decrypted"))
