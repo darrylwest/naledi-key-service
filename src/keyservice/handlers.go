@@ -73,7 +73,7 @@ func CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
 
 	body := make([]byte, r.ContentLength)
 	n, err := r.Body.Read(body)
-	if err != nil && n == 0{
+	if err != nil && n == 0 {
 		log.Error("bad session request, body read error: ", err.Error())
 		badRequestHandler(w, r)
 		return

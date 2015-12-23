@@ -92,6 +92,18 @@ func createSession() error {
     body, _ := ioutil.ReadAll( resp.Body )
     fmt.Println("body:", string(body))
 
+    // TODO : decrypt the response
+    // check message number == 1
+
+    // verify signature 
+
+    // grab the keys
+
+    // decrypt the response
+
+    // pull the session number and expires data
+
+
     return nil
 }
 
