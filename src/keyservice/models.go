@@ -53,7 +53,7 @@ type Message struct {
     Number int
     MyKey *[KeySize]byte // my public box key
     YourKey *[KeySize]byte // the peer's public box key
-    Message *[]byte // message including nonce
+    EncryptedMessage *[]byte // encrypted message including nonce
 }
 
 func DecodeMessageFromString(encoded string) (*Message, error) {
@@ -72,7 +72,7 @@ func (m *Message) EncodeMessageToString() (string, error) {
     out[2] = fmt.Sprintf("%d", m.Number )
     out[3] = hex.EncodeToString( m.MyKey[:] )
     out[4] = hex.EncodeToString( m.YourKey[:] )
-    out[5] = hex.EncodeToString( *m.Message )
+    out[5] = hex.EncodeToString( *m.EncryptedMessage )
 
     return strings.Join(out, ":"), nil
 }

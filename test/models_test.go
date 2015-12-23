@@ -31,8 +31,8 @@ func createMessage() *keyservice.Message {
 	msg.YourKey = yourpub
 
 	m, _ := keyservice.EncryptBox(yourpub, mypriv, plainTextMessage)
-	msg.Message = &m
-	msg.Signature = ed25519.Sign(sigpriv, *msg.Message)
+	msg.EncryptedMessage = &m
+	msg.Signature = ed25519.Sign(sigpriv, *msg.EncryptedMessage)
 
 	return msg
 }
@@ -56,7 +56,7 @@ func TestModels(t *testing.T) {
 			g.Assert(msg.Signature != nil).IsTrue()
 			g.Assert(msg.MyKey != nil).IsTrue()
 			g.Assert(msg.YourKey != nil).IsTrue()
-			g.Assert(msg.Message != nil).IsTrue()
+			g.Assert(msg.EncryptedMessage != nil).IsTrue()
 		})
 
 		g.It("should encode a message to hex string", func() {
