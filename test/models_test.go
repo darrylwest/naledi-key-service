@@ -65,7 +65,7 @@ func TestModels(t *testing.T) {
 		g.It("should encode a message to hex string", func() {
 			msg := createMessage()
 
-			str, err := msg.EncodeMessageToString()
+			str, err := msg.EncodeToString()
 
 			// fmt.Printf("%s\n\n", str)
 

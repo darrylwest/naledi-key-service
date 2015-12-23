@@ -29,6 +29,9 @@ test:
 watch:
 	./watcher.js
 
+client:
+	( . ./.setpath ; cd clienttest ; go run start-session.go )
+
 run:
 	( . ./.setpath ; go run src/main.go --env=staging --configFile=test/test-config.json )
 

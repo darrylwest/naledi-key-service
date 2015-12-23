@@ -77,7 +77,7 @@ func parseKey64(str string) *[64]byte {
     if len(str) != 128 {
         return nil
     }
-    
+
     v, err := hex.DecodeString( str )
     if err != nil {
         return nil
@@ -120,7 +120,7 @@ func DecodeMessageFromString(encoded string) (*Message, error) {
     return msg, nil
 }
 
-func (m *Message) EncodeMessageToString() (string, error) {
+func (m *Message) EncodeToString() (string, error) {
     out := make([]string, 6)
 
     // TODO test all inputs to validate the message...
