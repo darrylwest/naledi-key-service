@@ -7,6 +7,7 @@ import (
     "encoding/hex"
     "net/http"
     "crypto/rand"
+    "io/ioutil"
     "golang.org/x/crypto/nacl/box"
     "github.com/agl/ed25519"
 )
@@ -62,12 +63,12 @@ func createSession() error {
     msg.SignatureKey = sigpub
     msg.Signature = ed25519.Sign(sigpriv, *msg.EncryptedMessage)
 
-    body, err := msg.EncodeToString()
+    mbody, err := msg.EncodeToString()
     if err != nil {
         return err
     }
 
-    request, err := http.NewRequest("POST", url, bytes.NewBufferString( body ))
+    request, err := http.NewRequest("POST", url, bytes.NewBufferString( mbody ))
     if err != nil {
         return err
     }
@@ -77,6 +78,19 @@ func createSession() error {
     request.Header.Set("Accept", "text/plain")
 
     fmt.Println( request )
+
+    client := &http.Client{}
+    resp, err := client.Do( request )
+    if err != nil {
+        return err
+    }
+    defer resp.Body.Close()
+
+    fmt.Println("status:", resp.Status)
+    fmt.Println("headers:", resp.Header)
+
+    body, _ := ioutil.ReadAll( resp.Body )
+    fmt.Println("body:", string(body))
 
     return nil
 }
