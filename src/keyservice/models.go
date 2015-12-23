@@ -2,6 +2,9 @@ package keyservice
 
 import (
     "time"
+    "encoding/hex"
+    "fmt"
+    "strings"
 )
 
 type DocumentIdentifier struct {
@@ -45,10 +48,31 @@ type AccessKey struct {
 }
 
 type Message struct {
-    peerPubKey *[KeySize]byte
-    nonce *[NonceSize]byte
-    sigPubKey *[KeySize]byte
-    sig *[64]byte
-    number uint32
-    message *[]byte
+    SignatureKey *[KeySize]byte
+    Signature *[64]byte
+    Number int
+    MyKey *[KeySize]byte // my public box key
+    YourKey *[KeySize]byte // the peer's public box key
+    Message *[]byte // message including nonce
+}
+
+func DecodeMessageFromString(encoded string) (*Message, error) {
+    msg := new(Message)
+
+    return msg, nil
+}
+
+func (m *Message) EncodeMessageToString() (string, error) {
+    out := make([]string, 6)
+
+    // TODO test all inputs to validate the message...
+
+    out[0] = hex.EncodeToString( m.SignatureKey[:] )
+    out[1] = hex.EncodeToString( m.Signature[:] )
+    out[2] = fmt.Sprintf("%d", m.Number )
+    out[3] = hex.EncodeToString( m.MyKey[:] )
+    out[4] = hex.EncodeToString( m.YourKey[:] )
+    out[5] = hex.EncodeToString( *m.Message )
+
+    return strings.Join(out, ":"), nil
 }

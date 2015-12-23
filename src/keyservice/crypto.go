@@ -7,6 +7,7 @@ import (
     "fmt"
     "golang.org/x/crypto/nacl/secretbox"
     "golang.org/x/crypto/nacl/box"
+    "encoding/hex"
 )
 
 const (
@@ -98,6 +99,26 @@ func DecryptBox(peer, priv *[KeySize]byte, message []byte) ([]byte, error) {
     }
 
     return out, nil
+}
+
+func DecodeKeyPair(spub, spriv string) (*[32]byte, *[32]byte, error) {
+    pub, err := hex.DecodeString(spub)
+    if err != nil {
+        return nil, nil, err
+    }
+
+    priv, err := hex.DecodeString(spriv)
+    if err != nil {
+        return nil, nil, err
+    }
+
+    var pk *[32]byte = new([32]byte)
+    var vk *[32]byte = new([32]byte)
+
+    copy(pk[:], pub)
+    copy(vk[:], priv)
+
+    return pk, vk, nil
 }
 
 // clear the buffer bytes to zero; should be used to clear encryption keys

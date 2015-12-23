@@ -16,6 +16,8 @@ func TestCrypto(t *testing.T) {
     g := Goblin(t)
 
     g.Describe("Crypto", func() {
+        spub := "587b2d753c8409bbf876e7f9dc682b01a411cdd2ce6f0c66046d69c6343c1a1d"
+        spriv := "1d4f58f4f1e40c72dc695836902119ac553b84693904efac931731ae2ea27b48"
         plainTextMessage := []byte("this is a standard text message with some length to it that will be encrypted.  maybe")
         log := func() *logger.Logger {
 			ctx := keyservice.NewContextForEnvironment("test")
@@ -87,7 +89,7 @@ func TestCrypto(t *testing.T) {
 
         g.It("should decrypt a box encrypted message", func() {
             // created by the server, and peer public key is passed to client
-            srvpub, srvpriv, _ := box.GenerateKey( rand.Reader )
+            srvpub, srvpriv, _ := keyservice.DecodeKeyPair( spub, spriv )
             clientpub, clientpriv, _ := box.GenerateKey( rand.Reader )
 
             enc, err := keyservice.EncryptBox(srvpub, clientpriv, plainTextMessage)
