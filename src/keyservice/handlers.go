@@ -64,6 +64,7 @@ func sendNewSessionResponse(w http.ResponseWriter, r *http.Request, session *Ses
 }
 
 func CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
+	log.Info("create session, request length: %d", r.ContentLength)
 	if r.Method != "POST" || r.ContentLength < 420 {
 		log.Warn("bad session request: ", r)
 		badRequestHandler(w, r)
@@ -72,8 +73,8 @@ func CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
 
 	body := make([]byte, r.ContentLength)
 	n, err := r.Body.Read(body)
-	if err != nil {
-		log.Error("bad session request, body read error: ", err)
+	if err != nil && n == 0{
+		log.Error("bad session request, body read error: ", err.Error())
 		badRequestHandler(w, r)
 		return
 	}
