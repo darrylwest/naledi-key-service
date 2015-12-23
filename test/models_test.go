@@ -18,7 +18,7 @@ import (
 var (
 	spub = "587b2d753c8409bbf876e7f9dc682b01a411cdd2ce6f0c66046d69c6343c1a1d"
 	spriv = "1d4f58f4f1e40c72dc695836902119ac553b84693904efac931731ae2ea27b48"
-	plainTextMessage = []byte("this is a standard text message with some length to it that will be encrypted.  maybe")
+	plainTextMessage = []byte("license:this is a standard text message with some length to it that will be encrypted.  maybe")
 )
 
 func createMessage() *keyservice.Message {
@@ -29,7 +29,7 @@ func createMessage() *keyservice.Message {
 	sigpub, sigpriv, _ := ed25519.GenerateKey( rand.Reader )
 
 	msg.SignatureKey = sigpub
-	msg.Number = 5
+	msg.Number = 1
 	msg.MyKey = mypub
 	msg.YourKey = yourpub
 
@@ -54,7 +54,7 @@ func TestModels(t *testing.T) {
 
 			log.Info("%v", msg )
 
-			g.Assert(msg.Number).Equal( 5 )
+			g.Assert(msg.Number).Equal( 1 )
 			g.Assert(msg.SignatureKey != nil).IsTrue()
 			g.Assert(msg.Signature != nil).IsTrue()
 			g.Assert(msg.MyKey != nil).IsTrue()
@@ -70,7 +70,7 @@ func TestModels(t *testing.T) {
 			// fmt.Printf("%s\n\n", str)
 
 			g.Assert(err == nil).IsTrue()
-			g.Assert(len(str)).Equal( 576 )
+			g.Assert(len(str)).Equal( 592 )
 
 			// TODO split string and examine sizes...
 			parts := strings.Split( str, ":")
@@ -85,7 +85,7 @@ func TestModels(t *testing.T) {
 					g.Assert(b != nil).IsTrue()
 				} else {
 					// fmt.Println( part )
-					g.Assert(part).Equal("5")
+					g.Assert(part).Equal("1")
 				}
 			}
 

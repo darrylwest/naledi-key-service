@@ -47,15 +47,18 @@ func TestSessions(t *testing.T) {
 			// g.Assert(len(ssid)).Equal(36)
 		})
 
-		g.It("should purge all sessions", func() {
+		g.It("should purge expired sessions", func() {
+            keyservice.PurgeAllSessions()
 			sessions := keyservice.GetSessions()
 
+            g.Assert(sessions.Len()).Equal( 0 )
+
 			for sessions.Len() < 10 {
-				keyservice.CreateSession(expires) // , nil)
+				keyservice.CreateSession(expires)
 			}
 
 			g.Assert(sessions.Len()).Equal(10)
-			keyservice.PurgeSessions()
+			keyservice.PurgeExpiredSessions()
 			g.Assert(sessions.Len()).Equal(0)
 
 		})

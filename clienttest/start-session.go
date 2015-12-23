@@ -108,7 +108,7 @@ func readConfig() error {
     conf.hostPubKey = new([KeySize]byte)
     copy(conf.hostPubKey[:], key)
 
-    conf.license = []byte("this is my license")
+    conf.license = []byte("license:this is my license")
 
     config = conf
 

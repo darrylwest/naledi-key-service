@@ -2,6 +2,8 @@ package keyservice
 
 import (
     "code.google.com/p/go-uuid/uuid"
+    "golang.org/x/crypto/nacl/box"
+    "crypto/rand"
     "sync"
     "time"
 )
@@ -9,7 +11,12 @@ import (
 type Session struct {
     ssid  string
     expires int64
-
+    clientPub *[KeySize]byte
+    serverPub *[KeySize]byte
+    serverPriv *[KeySize]byte
+    license *[]byte
+    user *User
+    messageCount int
 }
 
 func (ss *Session) GetSSID() string {
@@ -55,6 +62,14 @@ func CreateSession(expires int64) *Session {
     }
 
     // session meta data
+    pub, priv, err := box.GenerateKey( rand.Reader )
+	if err != nil {
+		log.Error("could not generate box keys: ", err)
+		return nil
+	}
+
+    session.serverPub = pub
+    session.serverPriv = priv
 
     sessions.Lock()
     sessions.hash[ session.ssid ] = *session
@@ -102,8 +117,18 @@ func RemoveSession(ssid string) {
 	sessions.Unlock()
 }
 
-func PurgeSessions() {
-	log.Info("purge sessions: %d", len(sessions.hash))
+func PurgeAllSessions() {
+    log.Info("purge all sessions: %d", len(sessions.hash))
+    sessions.Lock()
+    defer sessions.Unlock()
+
+    for k, _ := range sessions.hash {
+        delete(sessions.hash, k)
+    }
+}
+
+func PurgeExpiredSessions() {
+	log.Info("purge expired sessions: %d", len(sessions.hash))
 	now := time.Now().Unix()
 
 	for k, session := range sessions.hash {
