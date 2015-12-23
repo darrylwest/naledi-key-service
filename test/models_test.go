@@ -4,6 +4,9 @@ import (
 	"keyservice"
 	"testing"
 	"crypto/rand"
+	"strings"
+	"encoding/hex"
+	// "fmt"
 
 	"golang.org/x/crypto/nacl/box"
 	"github.com/darrylwest/cassava-logger/logger"
@@ -64,20 +67,57 @@ func TestModels(t *testing.T) {
 
 			str, err := msg.EncodeMessageToString()
 
+			// fmt.Printf("%s\n\n", str)
+
 			g.Assert(err == nil).IsTrue()
 			g.Assert(len(str)).Equal( 576 )
 
 			// TODO split string and examine sizes...
+			parts := strings.Split( str, ":")
+			g.Assert(len(parts)).Equal(6)
+
+			for i, part := range parts {
+				// fmt.Println( part )
+				if i != 2 {
+					b, err := hex.DecodeString( part )
+
+					g.Assert(err == nil).IsTrue()
+					g.Assert(b != nil).IsTrue()
+				} else {
+					// fmt.Println( part )
+					g.Assert(part).Equal("5")
+				}
+			}
 
 		})
 
 		g.It("should decode a known hex string", func() {
-			str := "86362ac25e94ff2c07156720d92756b2ed8b227e20c8ddcb5d65b948fe8ee26d:5d7db588042f97934b68f317bde4274e117ff74974484e206a369f76ba76efd21fc067e1b4bfcc7d5376706013f9237ce4beba65d888a75471108fffc453130f:0005:2094e5f036ec09e7fd517832a5866e2cdb72e9c1b03e5c03099941e3528f3d25:587b2d753c8409bbf876e7f9dc682b01a411cdd2ce6f0c66046d69c6343c1a1d:379909be3fb3b812b0315143375cca421d32f320beeaa3fc496a5e6780d12f24ebc0ba33a6528272b14cac69116743fd6fe3366338e9eccfe38ec352f8c1f3c094ab99da3a37e707153876ed097db6bbb1cadb5b1f06a88c7e2ae574cc0cc2f7ca573ec8185ffabd5e69a406d1bd6fd4fca83aa3b8a9426dd70eb3c303"
+			str := "e388c370815d453c3158178f549c94e3a5eb4efc1d4e6a450e9e0a2c998f801a:dc150713852bbbea8c4c202f59a6386471590c6aac557e4d784200369aeb9936038df223933b74654d3f1170cd6776a1e1899f257a109a25131d9844c19cd809:5:7e3df2eae53f770a0480214982828378e83e4e415e3e311d8fb0145d6cca275b:587b2d753c8409bbf876e7f9dc682b01a411cdd2ce6f0c66046d69c6343c1a1d:35ce0b60e9de37a4dcd7162e2c1fe365782992d0b7debe01c5731972cab8247a5f816a434759ccba4bcaf46860e4875e7f950db06a7657da727c0d928bf516123e13f25d958125e882f35dc4a9f7b40cc67b7237b1eaebeb03c43cd3b79bf4ffd2594ea4fd360bb7cf2ca180a9818f63af62c0883faea7ad96b46d194d"
 
 			msg, err := keyservice.DecodeMessageFromString( str )
 
+			// fmt.Printf("%v\n", msg)
 			g.Assert(err == nil).IsTrue()
 			g.Assert(msg != nil).IsTrue()
+			// g.Assert(len(msg) >= 2).IsTrue()
+
+			g.Assert(msg.Number).Equal( 5 )
+			g.Assert(msg.SignatureKey != nil).IsTrue()
+			g.Assert(msg.Signature != nil).IsTrue()
+			g.Assert(msg.MyKey != nil).IsTrue()
+			g.Assert(msg.YourKey != nil).IsTrue()
+			g.Assert(msg.EncryptedMessage != nil).IsTrue()
+
+		})
+
+		g.It("should reject a bad message", func() {
+			str := "c370815d453c3158178f549c94e3a5eb4efc1d4e6a450e9e0a2c998f801a:dc150713852bbbea8c4c202f59a6386471590c6aac557e4d784200369aeb9936038df223933b74654d3f1170cd6776a1e1899f257a109a25131d9844c19cd809:5:7e3df2eae53f770a0480214982828378e83e4e415e3e311d8fb0145d6cca275b:587b2d753c8409bbf876e7f9dc682b01a411cdd2ce6f0c66046d69c6343c1a1d:35ce0b60e9de37a4dcd7162e2c1fe365782992d0b7debe01c5731972cab8247a5f816a434759ccba4bcaf46860e4875e7f950db06a7657da727c0d928bf516123e13f25d958125e882f35dc4a9f7b40cc67b7237b1eaebeb03c43cd3b79bf4ffd2594ea4fd360bb7cf2ca180a9818f63af62c0883faea7ad96b46d194d"
+
+			msg, err := keyservice.DecodeMessageFromString( str )
+
+			// fmt.Printf("%v\n", msg)
+			g.Assert(err != nil).IsTrue()
+			g.Assert(msg == nil).IsTrue()
 		})
     })
 }

@@ -3,8 +3,9 @@ package keyservice
 import (
     "time"
     "encoding/hex"
-    "fmt"
+    "strconv"
     "strings"
+    "errors"
 )
 
 type DocumentIdentifier struct {
@@ -56,8 +57,65 @@ type Message struct {
     EncryptedMessage *[]byte // encrypted message including nonce
 }
 
+func parseKey(str string) *[KeySize]byte {
+    if len(str) != 64 {
+        return nil
+    }
+
+    v, err := hex.DecodeString( str )
+    if err != nil {
+        return nil
+    }
+
+    var buf [KeySize]byte
+    copy(buf[:], v)
+
+    return &buf
+}
+
+func parseKey64(str string) *[64]byte {
+    if len(str) != 128 {
+        return nil
+    }
+    
+    v, err := hex.DecodeString( str )
+    if err != nil {
+        return nil
+    }
+
+    var buf [64]byte
+    copy(buf[:], v)
+
+    return &buf
+}
+
 func DecodeMessageFromString(encoded string) (*Message, error) {
     msg := new(Message)
+
+    parts := strings.Split(encoded, ":")
+
+    msg.SignatureKey = parseKey(parts[0])
+    msg.Signature = parseKey64(parts[1])
+    n, err := strconv.Atoi( parts[2] )
+    if err != nil {
+        return nil, err
+    }
+
+    msg.Number = n
+
+    msg.MyKey = parseKey( parts[3] )
+    msg.YourKey = parseKey( parts[4] )
+
+    m, err := hex.DecodeString( parts[5] )
+    if err != nil {
+        return nil, err
+    }
+
+    msg.EncryptedMessage = &m
+
+    if msg.SignatureKey == nil || msg.Signature == nil || msg.MyKey == nil || msg.YourKey == nil {
+        return nil, errors.New("could not decode Message from string...")
+    }
 
     return msg, nil
 }
@@ -69,7 +127,7 @@ func (m *Message) EncodeMessageToString() (string, error) {
 
     out[0] = hex.EncodeToString( m.SignatureKey[:] )
     out[1] = hex.EncodeToString( m.Signature[:] )
-    out[2] = fmt.Sprintf("%d", m.Number )
+    out[2] = strconv.Itoa( m.Number )
     out[3] = hex.EncodeToString( m.MyKey[:] )
     out[4] = hex.EncodeToString( m.YourKey[:] )
     out[5] = hex.EncodeToString( *m.EncryptedMessage )
