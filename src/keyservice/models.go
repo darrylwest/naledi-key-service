@@ -123,7 +123,10 @@ func DecodeMessageFromString(encoded string) (*Message, error) {
 func (m *Message) EncodeToString() (string, error) {
     out := make([]string, 6)
 
-    // TODO test all inputs to validate the message...
+    errs := m.Validate()
+    if len(errs) > 0 {
+        return "", errors.New("message structure is not valid")
+    }
 
     out[0] = hex.EncodeToString( m.SignatureKey[:] )
     out[1] = hex.EncodeToString( m.Signature[:] )
@@ -135,7 +138,7 @@ func (m *Message) EncodeToString() (string, error) {
     return strings.Join(out, ":"), nil
 }
 
-func (m *Message) IsValid() []error {
+func (m *Message) Validate() []error {
     list := make([]error, 0, 6)
 
     if m.SignatureKey == nil {

@@ -54,7 +54,7 @@ func TestModels(t *testing.T) {
 
 			log.Info("%v", msg )
 
-			g.Assert(len(msg.IsValid())).Equal( 0 )
+			g.Assert(len(msg.Validate())).Equal( 0 )
 
 			g.Assert(msg.Number).Equal( 1 )
 			g.Assert(msg.SignatureKey != nil).IsTrue()
@@ -67,7 +67,7 @@ func TestModels(t *testing.T) {
 		g.It("should return error if message is invalid", func() {
 			msg := new(keyservice.Message)
 
-			errs := msg.IsValid()
+			errs := msg.Validate()
 
 			g.Assert(len(errs)).Equal( 6 )
 		})
