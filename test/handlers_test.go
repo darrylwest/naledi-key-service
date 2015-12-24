@@ -2,6 +2,7 @@ package keyservicetest
 
 import (
 	"keyservice"
+	"keyservice/models"
 	"testing"
 	"fmt"
 
@@ -51,7 +52,7 @@ func TestHandlers(t *testing.T) {
 			g.Assert(sessions.Len()).Equal(1)
 
 			// now decrypt the message to verify the session, expires, EncryptSymmetric
-			msg, err := keyservice.DecodeMessageFromString( recorder.Body.String() )
+			msg, err := models.DecodeMessageFromString( recorder.Body.String() )
 			g.Assert( err == nil ).IsTrue()
 			g.Assert( msg != nil ).IsTrue()
 

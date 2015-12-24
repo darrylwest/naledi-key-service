@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "keyservice"
+    "keyservice/models"
     "bytes"
     "encoding/hex"
     "net/http"
@@ -40,7 +41,7 @@ var config *Config
 func createSession() error {
     url := config.host + "/KeyService/session/create"
 
-    msg := new(keyservice.Message)
+    msg := new(models.Message)
 
     config.CreateKeys()
 

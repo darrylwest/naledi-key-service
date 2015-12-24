@@ -1,6 +1,7 @@
 package keyservice
 
 import (
+    "keyservice/models"
 	"github.com/agl/ed25519"
 	"crypto/rand"
 	"encoding/hex"
@@ -38,7 +39,7 @@ func sendNewSessionResponse(w http.ResponseWriter, r *http.Request, session *Ses
 		return
 	}
 
-	msg := new(Message)
+	msg := new(models.Message)
 	msg.MyKey = session.serverPub
 	msg.YourKey = session.clientPub
 	msg.SignatureKey = sigpub
@@ -81,7 +82,7 @@ func CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Info("bytes read: %d from body: %s", n, body)
 
-	msg, err := DecodeMessageFromString( string(body) )
+	msg, err := models.DecodeMessageFromString( string(body) )
 	if err != nil {
 		log.Warn("error decoding message: %v", err)
 		badRequestHandler(w, r)

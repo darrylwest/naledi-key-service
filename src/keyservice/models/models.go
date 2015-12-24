@@ -1,4 +1,4 @@
-package keyservice
+package models
 
 import (
     "time"
@@ -7,6 +7,8 @@ import (
     "strings"
     "errors"
 )
+
+const KeySize = 32
 
 type DocumentIdentifier struct {
     id string
