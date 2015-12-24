@@ -16,5 +16,14 @@ func TestUserModel(t *testing.T) {
 
 			g.Assert(user != nil).IsTrue()
 		})
+
+		g.It("should validate a user struct", func() {
+			user := new(models.User)
+
+			errs, ok := user.Validate()
+
+			g.Assert(ok == false).IsTrue()
+			g.Assert(len(errs) > 0).IsTrue()
+		})
 	})
 }
