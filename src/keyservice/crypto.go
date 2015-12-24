@@ -8,10 +8,11 @@ import (
     "golang.org/x/crypto/nacl/secretbox"
     "golang.org/x/crypto/nacl/box"
     "encoding/hex"
+    "keyservice/models"
 )
 
 const (
-    KeySize = 32
+    KeySize = models.KeySize
     NonceSize = 24
 )
 
@@ -112,8 +113,8 @@ func DecodeKeyPair(spub, spriv string) (*[32]byte, *[32]byte, error) {
         return nil, nil, err
     }
 
-    var pk *[32]byte = new([32]byte)
-    var vk *[32]byte = new([32]byte)
+    var pk *[KeySize]byte = new([KeySize]byte)
+    var vk *[KeySize]byte = new([KeySize]byte)
 
     copy(pk[:], pub)
     copy(vk[:], priv)

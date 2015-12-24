@@ -7,11 +7,14 @@ import (
     "errors"
 )
 
-const KeySize = 32
+const (
+    KeySize = 32
+    DoubleKeySize = 64
+)
 
 type Message struct {
     SignatureKey *[KeySize]byte
-    Signature *[64]byte
+    Signature *[DoubleKeySize]byte
     Number int
     MyKey *[KeySize]byte // my public box key
     YourKey *[KeySize]byte // the peer's public box key
@@ -34,7 +37,7 @@ func parseKey(str string) *[KeySize]byte {
     return &buf
 }
 
-func parseKey64(str string) *[64]byte {
+func parseKey64(str string) *[DoubleKeySize]byte {
     if len(str) != 128 {
         return nil
     }
