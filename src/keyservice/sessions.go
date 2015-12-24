@@ -27,6 +27,19 @@ func (ss *Session) GetExpires() int64 {
     return ss.expires
 }
 
+func (ss *Session) SetPubPrivKeys(pub, priv *[KeySize]byte) {
+    ss.serverPub = pub
+    ss.serverPriv = priv
+}
+
+func (ss *Session) GetUser() *User {
+    return ss.user
+}
+
+func (ss *Session) GetMessageCount() int {
+    return ss.messageCount
+}
+
 type SessionMap struct {
     hash map[string]Session
     sync.RWMutex
@@ -39,7 +52,7 @@ var (
 
 func init() {
     sessions = SessionMap{ hash: make(map[string]Session )}
-    dfltTimeout = 60 * 5 // five minutes
+    dfltTimeout = 60 * 3 // three minutes
 }
 
 func (ss *SessionMap) Len() int {

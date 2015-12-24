@@ -134,3 +134,33 @@ func (m *Message) EncodeToString() (string, error) {
 
     return strings.Join(out, ":"), nil
 }
+
+func (m *Message) IsValid() []error {
+    list := make([]error, 0, 6)
+
+    if m.SignatureKey == nil {
+        list = append(list, errors.New("signature key is nil"))
+    }
+
+    if m.Signature == nil {
+        list = append(list, errors.New("signature is nil"))
+    }
+
+    if m.Number < 1 {
+        list = append(list, errors.New("number cannot be zero"))
+    }
+
+    if m.MyKey == nil {
+        list = append(list, errors.New("my box key is nil"))
+    }
+
+    if m.YourKey == nil {
+        list = append(list, errors.New("you box key is nil"))
+    }
+
+    if m.EncryptedMessage == nil || len(*m.EncryptedMessage) == 0 {
+        list = append(list, errors.New("encrypted message is nil or zero length"))
+    }
+
+    return list
+}
