@@ -1,35 +1,35 @@
 package keyservicetest
 
 import (
-    "testing"
-	"time"
+	"github.com/darrylwest/cassava-logger/logger"
 	"keyservice"
-    "github.com/darrylwest/cassava-logger/logger"
+	"testing"
+	"time"
 	// "fmt"
 
 	. "github.com/franela/goblin"
 )
 
 func TestSessions(t *testing.T) {
-    g := Goblin(t)
+	g := Goblin(t)
 
-    g.Describe("Sessions", func() {
-        log := func() *logger.Logger {
+	g.Describe("Sessions", func() {
+		log := func() *logger.Logger {
 			ctx := keyservice.NewContextForEnvironment("test")
 			return ctx.CreateLogger()
 		}()
 
 		expires := time.Now().Unix() - 1
 
-        g.It("should have a valid session map", func() {
-            log.Info("test the sessions map")
-            sessions := keyservice.GetSessions()
+		g.It("should have a valid session map", func() {
+			log.Info("test the sessions map")
+			sessions := keyservice.GetSessions()
 
-            g.Assert( sessions != nil ).IsTrue()
-            g.Assert( sessions.Len() >= 0 ).IsTrue()
-        })
+			g.Assert(sessions != nil).IsTrue()
+			g.Assert(sessions.Len() >= 0).IsTrue()
+		})
 
-        g.It("should create a sessions object", func() {
+		g.It("should create a sessions object", func() {
 			sessions := keyservice.GetSessions()
 			count := sessions.Len()
 
@@ -48,10 +48,10 @@ func TestSessions(t *testing.T) {
 		})
 
 		g.It("should purge expired sessions", func() {
-            keyservice.PurgeAllSessions()
+			keyservice.PurgeAllSessions()
 			sessions := keyservice.GetSessions()
 
-            g.Assert(sessions.Len()).Equal( 0 )
+			g.Assert(sessions.Len()).Equal(0)
 
 			for sessions.Len() < 10 {
 				keyservice.CreateSession(expires)

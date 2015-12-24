@@ -1,36 +1,36 @@
 package models
 
 import (
-    "time"
+	"time"
 )
 
 type DocumentIdentifier struct {
-    id string
-    dateCreated time.Time
-    lastUpdated time.Time
-    version int64
+	id          string
+	dateCreated time.Time
+	lastUpdated time.Time
+	version     int64
 }
 
 type UserDocument struct {
-    doi DocumentIdentifier
-    owner string // User.doi.id
-    name string
-    meta string
-    share string // User.doi.id
-    expires time.Time
-    status string // Valid|Expired
+	doi     DocumentIdentifier
+	owner   string // User.doi.id
+	name    string
+	meta    string
+	share   string // User.doi.id
+	expires time.Time
+	status  string // Valid|Expired
 }
 
 type ChallengeCode struct {
-    doi DocumentIdentifier
-    challengeType string // Document, Access
-    sendTo string
-    sendDate time.Time
-    expires time.Time
-    status string // Active, Canceled, Expired
+	doi           DocumentIdentifier
+	challengeType string // Document, Access
+	sendTo        string
+	sendDate      time.Time
+	expires       time.Time
+	status        string // Active, Canceled, Expired
 }
 
 type AccessKey struct {
-    id string
-    key []byte
+	id  string
+	key []byte
 }

@@ -1,95 +1,95 @@
 package keyservice
 
 import (
-    "keyservice/models"
-    "code.google.com/p/go-uuid/uuid"
-    "golang.org/x/crypto/nacl/box"
-    "crypto/rand"
-    "sync"
-    "time"
+	"code.google.com/p/go-uuid/uuid"
+	"crypto/rand"
+	"golang.org/x/crypto/nacl/box"
+	"keyservice/models"
+	"sync"
+	"time"
 )
 
 type Session struct {
-    ssid  string
-    expires int64
-    clientPub *[KeySize]byte
-    serverPub *[KeySize]byte
-    serverPriv *[KeySize]byte
-    license *[]byte
-    user *models.User
-    messageCount int
+	ssid         string
+	expires      int64
+	clientPub    *[KeySize]byte
+	serverPub    *[KeySize]byte
+	serverPriv   *[KeySize]byte
+	license      *[]byte
+	user         *models.User
+	messageCount int
 }
 
 func (ss *Session) GetSSID() string {
-    return ss.ssid
+	return ss.ssid
 }
 
 func (ss *Session) GetExpires() int64 {
-    return ss.expires
+	return ss.expires
 }
 
 func (ss *Session) SetPubPrivKeys(pub, priv *[KeySize]byte) {
-    ss.serverPub = pub
-    ss.serverPriv = priv
+	ss.serverPub = pub
+	ss.serverPriv = priv
 }
 
 func (ss *Session) GetUser() *models.User {
-    return ss.user
+	return ss.user
 }
 
 func (ss *Session) GetMessageCount() int {
-    return ss.messageCount
+	return ss.messageCount
 }
 
 type SessionMap struct {
-    hash map[string]Session
-    sync.RWMutex
+	hash map[string]Session
+	sync.RWMutex
 }
 
 var (
-    sessions SessionMap
-    dfltTimeout int64
+	sessions    SessionMap
+	dfltTimeout int64
 )
 
 func init() {
-    sessions = SessionMap{ hash: make(map[string]Session )}
-    dfltTimeout = 60 * 3 // three minutes
+	sessions = SessionMap{hash: make(map[string]Session)}
+	dfltTimeout = 60 * 3 // three minutes
 }
 
 func (ss *SessionMap) Len() int {
-    return len(ss.hash)
+	return len(ss.hash)
 }
 
 func GetSessions() *SessionMap {
-    return &sessions
+	return &sessions
 }
 
 func CreateSession(expires int64) *Session {
-    session := new(Session)
+	session := new(Session)
 
-    session.ssid = uuid.New()
+	session.ssid = uuid.New()
 
-    if expires <= 0 {
-        session.expires = time.Now().Unix() + dfltTimeout
-    } else {
-        session.expires = expires
-    }
+	if expires <= 0 {
+		session.expires = time.Now().Unix() + dfltTimeout
+	} else {
+		session.expires = expires
+	}
 
-    // session meta data
-    pub, priv, err := box.GenerateKey( rand.Reader )
+	// session meta data
+	pub, priv, err := box.GenerateKey(rand.Reader)
 	if err != nil {
 		log.Error("could not generate box keys: ", err)
 		return nil
 	}
 
-    session.serverPub = pub
-    session.serverPriv = priv
+	session.serverPub = pub
+	session.serverPriv = priv
 
-    sessions.Lock()
-    sessions.hash[ session.ssid ] = *session
-    sessions.Unlock()
+	sessions.Lock()
+	sessions.hash[session.ssid] = *session
+	sessions.Unlock()
 
-    return session
+	return session
 }
 
 func ValidateSession(ssid string) bool {
@@ -132,13 +132,13 @@ func RemoveSession(ssid string) {
 }
 
 func PurgeAllSessions() {
-    log.Info("purge all sessions: %d", len(sessions.hash))
-    sessions.Lock()
-    defer sessions.Unlock()
+	log.Info("purge all sessions: %d", len(sessions.hash))
+	sessions.Lock()
+	defer sessions.Unlock()
 
-    for k, _ := range sessions.hash {
-        delete(sessions.hash, k)
-    }
+	for k := range sessions.hash {
+		delete(sessions.hash, k)
+	}
 }
 
 func PurgeExpiredSessions() {

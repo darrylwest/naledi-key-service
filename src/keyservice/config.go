@@ -1,8 +1,8 @@
 package keyservice
 
 import (
-	"encoding/json"
 	"encoding/hex"
+	"encoding/json"
 	"gopkg.in/redis.v3"
 	"io/ioutil"
 )
@@ -28,7 +28,7 @@ func (c *Config) ToMap() map[string]interface{} {
 	hash["primaryRedisOptions"] = c.primaryRedisOptions
 	hash["secondaryRedisOptions"] = c.secondaryRedisOptions
 
-	hash["privateLocalKey"] = hex.EncodeToString( c.privateLocalKey[:] )
+	hash["privateLocalKey"] = hex.EncodeToString(c.privateLocalKey[:])
 
 	return hash
 }

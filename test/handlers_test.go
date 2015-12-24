@@ -1,19 +1,19 @@
 package keyservicetest
 
 import (
+	"fmt"
 	"keyservice"
 	"keyservice/models"
 	"testing"
-	"fmt"
 
 	// "code.google.com/p/go-uuid/uuid"
 	// "golang.org/x/crypto/nacl/box"
-	"github.com/agl/ed25519"
+	"bytes"
 	"encoding/json"
+	"github.com/agl/ed25519"
 	"github.com/codegangsta/negroni"
 	"net/http"
 	"net/http/httptest"
-	"bytes"
 
 	. "github.com/franela/goblin"
 )
@@ -32,8 +32,8 @@ func TestHandlers(t *testing.T) {
 			server := negroni.New()
 			server.UseHandler(mux)
 
-			request, err := http.NewRequest("POST", "http://test.com/session/create", bytes.NewBufferString( body ))
-			g.Assert( err == nil ).IsTrue()
+			request, err := http.NewRequest("POST", "http://test.com/session/create", bytes.NewBufferString(body))
+			g.Assert(err == nil).IsTrue()
 
 			request.Header.Set("x-api-key", "my-api-key")
 			request.Header.Set("Content-Type", "text/plain")
@@ -42,7 +42,7 @@ func TestHandlers(t *testing.T) {
 			recorder := httptest.NewRecorder()
 
 			server.ServeHTTP(recorder, request)
-			fmt.Println( recorder.Body.String() )
+			fmt.Println(recorder.Body.String())
 			// log.Info("status response: %s", recorder.Body.String())
 
 			g.Assert(recorder.Code).Equal(200)
@@ -52,18 +52,18 @@ func TestHandlers(t *testing.T) {
 			g.Assert(sessions.Len()).Equal(1)
 
 			// now decrypt the message to verify the session, expires, EncryptSymmetric
-			msg, err := models.DecodeMessageFromString( recorder.Body.String() )
-			g.Assert( err == nil ).IsTrue()
-			g.Assert( msg != nil ).IsTrue()
+			msg, err := models.DecodeMessageFromString(recorder.Body.String())
+			g.Assert(err == nil).IsTrue()
+			g.Assert(msg != nil).IsTrue()
 
-			g.Assert( msg.YourKey != nil ).IsTrue()
-			g.Assert( msg.MyKey != nil ).IsTrue()
-			g.Assert( msg.SignatureKey != nil ).IsTrue()
-			g.Assert( msg.Signature != nil).IsTrue()
-			g.Assert( msg.EncryptedMessage != nil).IsTrue()
-			g.Assert( msg.Number ).Equal(1)
+			g.Assert(msg.YourKey != nil).IsTrue()
+			g.Assert(msg.MyKey != nil).IsTrue()
+			g.Assert(msg.SignatureKey != nil).IsTrue()
+			g.Assert(msg.Signature != nil).IsTrue()
+			g.Assert(msg.EncryptedMessage != nil).IsTrue()
+			g.Assert(msg.Number).Equal(1)
 
-			g.Assert( ed25519.Verify(msg.SignatureKey, *msg.EncryptedMessage, msg.Signature )).IsTrue()
+			g.Assert(ed25519.Verify(msg.SignatureKey, *msg.EncryptedMessage, msg.Signature)).IsTrue()
 
 			// TODO : create a session and test decryption against sendNewSessionResponse
 			// plain, err := keyservice.DecryptBox( msg.YourKey, )

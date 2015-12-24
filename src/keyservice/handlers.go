@@ -1,12 +1,12 @@
 package keyservice
 
 import (
-    "keyservice/models"
-	"github.com/agl/ed25519"
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/agl/ed25519"
+	"keyservice/models"
 	"net/http"
 	"os"
 	"os/exec"
@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-func findPrivateKey(pub *[KeySize]byte) (*[KeySize]byte,error) {
+func findPrivateKey(pub *[KeySize]byte) (*[KeySize]byte, error) {
 	// TODO lookup the key from the key store
 	pk, _ := hex.DecodeString("1d4f58f4f1e40c72dc695836902119ac553b84693904efac931731ae2ea27b48")
 
@@ -31,7 +31,7 @@ func badRequestHandler(w http.ResponseWriter, r *http.Request) {
 func sendNewSessionResponse(w http.ResponseWriter, r *http.Request, session *Session) {
 	w.Header().Set("Content-Type", "text/plain")
 
-	sigpub, sigpriv, err := ed25519.GenerateKey( rand.Reader )
+	sigpub, sigpriv, err := ed25519.GenerateKey(rand.Reader)
 	if err != nil {
 		log.Error("could not generate signature keys: ", err)
 		RemoveSession(session.ssid)
@@ -47,8 +47,8 @@ func sendNewSessionResponse(w http.ResponseWriter, r *http.Request, session *Ses
 
 	now := time.Now().Unix()
 	// todo create a json blob for return message...
-	str := fmt.Sprintf("ssid=%s,expires:%d\r\n", session.ssid,session.expires - now)
-	enc, err := EncryptBox(session.clientPub, session.serverPriv, []byte( str ) )
+	str := fmt.Sprintf("ssid=%s,expires:%d\r\n", session.ssid, session.expires-now)
+	enc, err := EncryptBox(session.clientPub, session.serverPriv, []byte(str))
 	if err != nil {
 		log.Error("could not box encode: ", err)
 		RemoveSession(session.ssid)
@@ -82,7 +82,7 @@ func CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Info("bytes read: %d from body: %s", n, body)
 
-	msg, err := models.DecodeMessageFromString( string(body) )
+	msg, err := models.DecodeMessageFromString(string(body))
 	if err != nil {
 		log.Warn("error decoding message: %v", err)
 		badRequestHandler(w, r)
@@ -115,7 +115,7 @@ func CreateSessionHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Info( string(license) )
+	log.Info(string(license))
 	// TODO validate the license key...
 
 	session := CreateSession(int64(0))

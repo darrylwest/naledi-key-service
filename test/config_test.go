@@ -80,7 +80,7 @@ func TestConfig(t *testing.T) {
 			key := config.GetPrivateLocalKey()
 
 			g.Assert(len(key)).Equal(32)
-			skey := hex.EncodeToString( key[:] )
+			skey := hex.EncodeToString(key[:])
 			g.Assert(skey).Equal("c2c3f31d02109189c1d22fc5c9e2ecf6bc4384a1117393d23614d1b91bed9271")
 		})
 
@@ -132,7 +132,7 @@ func TestConfig(t *testing.T) {
 			key := config.GetPrivateLocalKey()
 
 			g.Assert(len(key)).Equal(32)
-			skey := hex.EncodeToString( key[:] )
+			skey := hex.EncodeToString(key[:])
 			g.Assert(skey).Equal("c2c3f31d02109189c1d22fc5c9e2ecf6bc4384a1117393d23614d1b91bed9271")
 		})
 
