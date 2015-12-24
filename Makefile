@@ -24,7 +24,7 @@ qtest:
 	@( . ./.setpath ; cd test ; go test )
 
 test:
-	@( . ./.setpath ; go vet src/*/*.go ; go vet src/*.go ; cd test ; go test )
+	@( . ./.setpath ; go vet src/*.go ; go vet src/*/*.go ; go vet src/keyservice/models/*.go ; cd test ; go test )
 
 watch:
 	./watcher.js

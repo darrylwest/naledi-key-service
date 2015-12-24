@@ -11,15 +11,6 @@ type DocumentIdentifier struct {
     version int64
 }
 
-type User struct {
-    doi  DocumentIdentifier
-    username string
-    fullname string
-    email string
-    sms string
-    status string // Active, Inactive, Banned
-}
-
 type UserDocument struct {
     doi DocumentIdentifier
     owner string // User.doi.id

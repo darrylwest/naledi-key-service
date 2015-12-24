@@ -5,6 +5,7 @@ import (
     "strings"
     "strconv"
     "errors"
+    "fmt"
 )
 
 const (
@@ -19,38 +20,6 @@ type Message struct {
     MyKey *[KeySize]byte // my public box key
     YourKey *[KeySize]byte // the peer's public box key
     EncryptedMessage *[]byte // encrypted message including nonce
-}
-
-func parseKey(str string) *[KeySize]byte {
-    if len(str) != 64 {
-        return nil
-    }
-
-    v, err := hex.DecodeString( str )
-    if err != nil {
-        return nil
-    }
-
-    var buf [KeySize]byte
-    copy(buf[:], v)
-
-    return &buf
-}
-
-func parseKey64(str string) *[DoubleKeySize]byte {
-    if len(str) != 128 {
-        return nil
-    }
-
-    v, err := hex.DecodeString( str )
-    if err != nil {
-        return nil
-    }
-
-    var buf [64]byte
-    copy(buf[:], v)
-
-    return &buf
 }
 
 func DecodeMessageFromString(encoded string) (*Message, error) {
@@ -87,9 +56,10 @@ func DecodeMessageFromString(encoded string) (*Message, error) {
 func (m *Message) EncodeToString() (string, error) {
     out := make([]string, 6)
 
-    errs := m.Validate()
-    if len(errs) > 0 {
-        return "", errors.New("message structure is not valid")
+    if errs, ok := m.Validate(); !ok {
+        str := fmt.Sprintf("message structure is not valid, error count: %d", len(errs))
+
+        return "", errors.New(str)
     }
 
     out[0] = hex.EncodeToString( m.SignatureKey[:] )
@@ -102,8 +72,8 @@ func (m *Message) EncodeToString() (string, error) {
     return strings.Join(out, ":"), nil
 }
 
-func (m *Message) Validate() []error {
-    list := make([]error, 0, 6)
+func (m *Message) Validate() (list []error, ok bool) {
+    list = make([]error, 0, 6)
 
     if m.SignatureKey == nil {
         list = append(list, errors.New("signature key is nil"))
@@ -129,5 +99,37 @@ func (m *Message) Validate() []error {
         list = append(list, errors.New("encrypted message is nil or zero length"))
     }
 
-    return list
+    return list, len(list) == 0
+}
+
+func parseKey(str string) *[KeySize]byte {
+    if len(str) != 64 {
+        return nil
+    }
+
+    v, err := hex.DecodeString( str )
+    if err != nil {
+        return nil
+    }
+
+    var buf [KeySize]byte
+    copy(buf[:], v)
+
+    return &buf
+}
+
+func parseKey64(str string) *[DoubleKeySize]byte {
+    if len(str) != 128 {
+        return nil
+    }
+
+    v, err := hex.DecodeString( str )
+    if err != nil {
+        return nil
+    }
+
+    var buf [64]byte
+    copy(buf[:], v)
+
+    return &buf
 }
