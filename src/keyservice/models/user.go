@@ -96,18 +96,16 @@ func (u *User) FromMap(hash map[string]interface{}) error {
 func (u *User) Validate() (list []error, ok bool) {
 	list = make([]error, 0, 10)
 
-	if u.username == "" {
-		list = append(list, errors.New("user name is empty"))
-	} else if len(u.username) < 6 {
-		list = append(list, errors.New("user name is not valid, must be at least 6 characters"))
+	if !validateEmail(u.username) {
+		list = append(list, errors.New("user name is not valid, it should look like an email"))
 	}
 
 	if !validateEmail(u.email) {
 		list = append(list, errors.New("user must have a vaild email address"))
 	}
 
-	if value, ok := UserStatusCodes[ u.status ]; ok != true {
-		list = append(list, errors.New(fmt.Sprintf("status code: %s is not a recognized status", value)))
+	if _, ok := UserStatusCodes[ u.status ]; ok != true {
+		list = append(list, errors.New(fmt.Sprintf("status code: %s is not a recognized status", u.status)))
 	}
 
 	return list, len(list) == 0
