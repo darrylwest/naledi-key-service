@@ -68,12 +68,11 @@ func TestDocumentIdentifierModel(t *testing.T) {
 
             json, err := doi.GetDateCreated().MarshalJSON()
             g.Assert(err == nil).IsTrue()
-            fmt.Printf("%s\n", json)
+            fmt.Sprintf("%s\n", json)
 
             g.Assert(doi.GetDateCreated()).Equal(dateCreated)
             g.Assert(doi.GetLastUpdated()).Equal(lastUpdated)
             g.Assert(doi.GetVersion()).Equal(version)
         })
-
 	})
 }
