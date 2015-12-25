@@ -105,7 +105,7 @@ func (u *User) Validate() (list []error, ok bool) {
 	}
 
 	if _, ok := UserStatusCodes[ u.status ]; ok != true {
-		list = append(list, errors.New(fmt.Sprintf("status code: %s is not a recognized status", u.status)))
+		list = append(list, errors.New(fmt.Sprintf("status code: %s is not a recognized status for user", u.status)))
 	}
 
 	return list, len(list) == 0

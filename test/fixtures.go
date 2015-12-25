@@ -33,3 +33,9 @@ func (f *Fixtures) CreateUserMap() map[string]interface{} {
 
     return hash
 }
+
+func (f *Fixtures) CreateUserDocumentModel() *models.UserDocument {
+    model := new(models.UserDocument)
+
+    return model
+}

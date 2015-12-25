@@ -28,16 +28,6 @@ func init() {
 	ModelStatus.Canceled = "canceled"
 }
 
-type UserDocument struct {
-	doi     DocumentIdentifier
-	owner   string // User.doi.id
-	name    string
-	meta    string
-	share   string // User.doi.id
-	expires time.Time
-	status  string // Valid|Expired
-}
-
 type ChallengeCode struct {
 	doi           DocumentIdentifier
 	challengeType string // Document, Access
@@ -48,6 +38,6 @@ type ChallengeCode struct {
 }
 
 type AccessKey struct {
-	id  string
-	key []byte
+	id  string  // prefixed and hashed, eg BoxKey:209eca2d...
+	key []byte  // encrypted with private local key
 }
