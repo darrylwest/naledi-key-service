@@ -16,7 +16,7 @@ var run = function() {
 
     try {
         var cmd = 'make';
-        var runner = spawn( cmd, [ 'test' ] );
+        var runner = spawn( cmd, [ 'testmodels' ] );
 
         runner.stdout.on('data', function( data ) {
             process.stdout.write( data );

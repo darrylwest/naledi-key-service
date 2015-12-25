@@ -4,13 +4,6 @@ import (
 	"time"
 )
 
-type DocumentIdentifier struct {
-	id          string
-	dateCreated time.Time
-	lastUpdated time.Time
-	version     int64
-}
-
 type UserDocument struct {
 	doi     DocumentIdentifier
 	owner   string // User.doi.id

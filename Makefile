@@ -20,6 +20,9 @@ install-deps:
 format:
 	( gofmt -s -w src/*.go src/*/*.go src/*/*/*.go test/*.go )
 
+testmodels:
+	@( . ./.setpath ; cd test ; go test -run Model )
+
 qtest:
 	@( . ./.setpath ; cd test ; go test )
 
