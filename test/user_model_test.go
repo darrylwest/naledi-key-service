@@ -104,7 +104,10 @@ func TestUserModel(t *testing.T) {
 
 			model.SetFullName("John Doe")
 
+			// fmt.Println(model)
+
 			json, err := models.MapToJSON( model.ToMap() )
+			// fmt.Printf("%s", json)
 			g.Assert(err == nil).IsTrue()
 
 			hash, err := models.MapFromJSON( json )
@@ -112,9 +115,11 @@ func TestUserModel(t *testing.T) {
 
 			user := new(models.User)
 			err = user.FromMap( hash )
-			
-			g.Assert(err).Equal(nil)
 
+			g.Assert(err).Equal(nil)
+			g.Assert(user.GetUsername()).Equal(model.GetUsername())
+			g.Assert(user.GetFullname()).Equal(model.GetFullname())
+			g.Assert(user.GetDOI()).Equal(model.GetDOI())
 		})
 	})
 }

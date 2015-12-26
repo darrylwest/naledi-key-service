@@ -49,17 +49,22 @@ func TestDocumentIdentifierModel(t *testing.T) {
             doi := models.NewDocumentIdentifier()
 
             hash := doi.ToMap()
+
             fmt.Sprintln( hash )
 
             g.Assert(hash["id"].(string)).Equal(doi.GetId())
-            g.Assert(hash["version"].(int64)).Equal(doi.GetVersion())
+
+			vers := int64( hash["version"].(float64) )
+            g.Assert(vers).Equal(doi.GetVersion())
         })
 
         g.It("should create a doi from a compatible map", func() {
             hash := models.NewDocumentIdentifier().ToMap()
-            dateCreated, _ := hash["dateCreated"].(time.Time)
-            lastUpdated, _ := hash["lastUpdated"].(time.Time)
-            version, _ := hash["version"].(int64)
+			dflt := (*new(time.Time))
+
+            dateCreated, _ := models.ParseJSONDate( hash, "dateCreated", dflt )
+            lastUpdated, _ := models.ParseJSONDate( hash, "lastUpdated", dflt )
+            version := int64( hash["version"].(float64) )
 
             doi := new(models.DocumentIdentifier)
             doi.FromMap( hash )

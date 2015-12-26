@@ -61,7 +61,10 @@ func (u *UserDocument) ToMap() map[string]interface{} {
 	hash["name"] = u.name
 	hash["meta"] = u.meta
 	hash["share"] = u.share
-    hash["expires"] = u.expires
+
+	if dts, err := u.expires.MarshalJSON(); err == nil {
+    	hash["expires"] = string(dts)
+	}
 
 	hash["status"] = u.status
 
@@ -81,7 +84,8 @@ func (u *UserDocument) FromMap(hash map[string]interface{}) error {
 
     if expires, ok := hash["expires"].(time.Time); ok {
         u.expires = expires
-    }
+	}
+
 	u.status = hash["status"].(string)
 
 	return nil

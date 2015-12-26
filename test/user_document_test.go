@@ -3,6 +3,7 @@ package keyservicetest
 import (
 	"keyservice/models"
 	"testing"
+	"time"
 	"fmt"
 
 	. "github.com/franela/goblin"
@@ -52,14 +53,31 @@ func TestUserDocumentModel(t *testing.T) {
 
         g.It("should create a user document object from the hash map", func() {
             hash := fixtures.CreateUserDocumentMap()
+			// fmt.Printf("%v\n", hash)
 
             doc := new(models.UserDocument)
             doc.FromMap( hash )
+
+			// fmt.Printf("%v\n", doc)
 
             g.Assert(doc.GetStatus()).Equal(models.ModelStatus.Valid)
 
             doi := doc.GetDOI()
             g.Assert(doi.GetId()).Equal(hash["id"].(string))
+
+			dflt := time.Now()
+			dt, err := models.ParseJSONDate( hash, "dateCreated", dflt)
+			// fmt.Println(doi.GetDateCreated(), dt)
+			g.Assert(err).Equal(nil)
+			g.Assert(doi.GetDateCreated()).Equal(dt)
+
+			dt, err = models.ParseJSONDate( hash, "lastUpdated", dflt)
+			// fmt.Println(doi.GetDateCreated(), dt)
+			g.Assert(err).Equal(nil)
+			g.Assert(doi.GetLastUpdated()).Equal(dt)
+
+			// g.Assert(doi.GetLastUpdated()).Equal(hash["lastUpdated"].(string))
+			g.Assert(doi.GetVersion()).Equal(int64(hash["version"].(float64)))
         })
     })
 }

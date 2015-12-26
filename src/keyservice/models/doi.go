@@ -56,10 +56,11 @@ func (doi *DocumentIdentifier) updateVersion() int64 {
 func (doi *DocumentIdentifier) ToMap() map[string]interface{} {
     var mp = map[string]interface{} {
         "id": doi.id,
-        "dateCreated": doi.dateCreated,
-        "lastUpdated": doi.lastUpdated,
-        "version": doi.version,
     }
+
+    mp["dateCreated"] = FormatJSONDate(doi.dateCreated)
+    mp["lastUpdated"] = FormatJSONDate(doi.lastUpdated)
+    mp["version"] = float64( doi.version )
 
     return mp
 }
@@ -67,11 +68,13 @@ func (doi *DocumentIdentifier) ToMap() map[string]interface{} {
 func (doi *DocumentIdentifier) FromMap(v map[string]interface{}) error {
     doi.id = v["id"].(string)
 
-    if dt, ok := v["dateCreated"].(time.Time); ok {
+    dflt := time.Now().UTC()
+
+    if dt, err := ParseJSONDate(v, "dateCreated", dflt); err == nil {
         doi.dateCreated = dt
     }
 
-    if dt, ok := v["lastUpdated"].(time.Time); ok {
+    if dt, err := ParseJSONDate(v, "lastUpdated", dflt); err == nil {
         doi.lastUpdated = dt
     }
 
