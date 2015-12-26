@@ -54,3 +54,12 @@ func (f *Fixtures) CreateUserDocumentMap() map[string]interface{} {
 
     return hash
 }
+
+func (f *Fixtures) CreateAccessKeyMap() map[string]interface{} {
+    mp := map[string]interface{} {
+        "id":"my-access-key-id",
+        "key":"my-access-key-value",
+    }
+
+    return mp
+}

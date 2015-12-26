@@ -40,10 +40,6 @@ type ChallengeCode struct {
 	status        string // Active, Canceled, Expired
 }
 
-type AccessKey struct {
-	id  string  // prefixed and hashed, eg BoxKey:209eca2d...
-	key []byte  // encrypted with private local key
-}
 
 // TODO move this to JSON helper delegate
 func ParseJSONDate(json map[string]interface{}, node string, dflt time.Time) (time.Time, error) {

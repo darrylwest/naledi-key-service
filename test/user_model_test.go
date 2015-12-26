@@ -120,6 +120,7 @@ func TestUserModel(t *testing.T) {
 			g.Assert(user.GetUsername()).Equal(model.GetUsername())
 			g.Assert(user.GetFullname()).Equal(model.GetFullname())
 			g.Assert(user.GetDOI()).Equal(model.GetDOI())
+			g.Assert(user.GetStatus()).Equal(model.GetStatus())
 		})
 	})
 }
