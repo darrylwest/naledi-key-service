@@ -2,6 +2,7 @@ package models
 
 import (
 	"time"
+	"encoding/json"
 )
 
 var ModelStatus *ModelStatusType
@@ -40,4 +41,8 @@ type ChallengeCode struct {
 type AccessKey struct {
 	id  string  // prefixed and hashed, eg BoxKey:209eca2d...
 	key []byte  // encrypted with private local key
+}
+
+func ModelToJson(v map[string]interface{}) ([]byte, error) {
+	return json.MarshalIndent( v, "", "  ")
 }

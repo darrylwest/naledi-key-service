@@ -36,6 +36,57 @@ func NewUserDocument(user *User, name string) *UserDocument {
     return doc
 }
 
+func (u *UserDocument) GetDOI() DocumentIdentifier {
+	return u.doi
+}
+
+func (u *UserDocument) GetStatus() string {
+    return u.status
+}
+
+func (u *UserDocument) SetStatus(status string) {
+    u.status = status
+}
+
+func (u *UserDocument) UpdateVersion() int64 {
+	u.doi.updateVersion()
+
+	return u.doi.version
+}
+
+func (u *UserDocument) ToMap() map[string]interface{} {
+	hash := u.doi.ToMap()
+
+	hash["owner"] = u.owner
+	hash["name"] = u.name
+	hash["meta"] = u.meta
+	hash["share"] = u.share
+    hash["expires"] = u.expires
+
+	hash["status"] = u.status
+
+	return hash
+}
+
+func (u *UserDocument) FromMap(hash map[string]interface{}) error {
+	u.doi.FromMap( hash )
+
+	u.owner = hash["owner"].(string)
+	u.name = hash["name"].(string)
+	u.meta = hash["meta"].(string)
+
+    if share, ok := hash["share"].(string); ok {
+        u.share = share
+    }
+
+    if expires, ok := hash["expires"].(time.Time); ok {
+        u.expires = expires
+    }
+	u.status = hash["status"].(string)
+
+	return nil
+}
+
 func (u *UserDocument) Validate() (list []error, ok bool) {
 	list = make([]error, 0, 10)
 

@@ -34,8 +34,23 @@ func (f *Fixtures) CreateUserMap() map[string]interface{} {
     return hash
 }
 
-func (f *Fixtures) CreateUserDocumentModel() *models.UserDocument {
-    model := new(models.UserDocument)
+func (f *Fixtures) CreateUserDocumentModel(user *models.User) *models.UserDocument {
+    model := models.NewUserDocument(f.CreateUserModel(), "My Fixture Created User Document")
 
     return model
+}
+
+func (f *Fixtures) CreateUserDocumentMap() map[string]interface{} {
+    user := f.CreateUserModel()
+    doi := models.NewDocumentIdentifier()
+    hash := doi.ToMap()
+
+    hash["name"] = "My Fixture Map Generated Document"
+
+    udoi := user.GetDOI()
+	hash["owner"] = udoi.GetId()
+	hash["meta"] = "this is my documentmeta data"
+	hash["status"] = models.ModelStatus.Valid
+
+    return hash
 }

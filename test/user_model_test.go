@@ -79,5 +79,22 @@ func TestUserModel(t *testing.T) {
 			g.Assert(user.GetSMS()).Equal(hash["sms"].(string))
 			g.Assert(user.GetStatus()).Equal(hash["status"].(string))
 		})
+
+		g.It("should create a json string from the populated user model", func() {
+			user := fixtures.CreateUserModel()
+			user.SetStatus(models.ModelStatus.Banned)
+			user.UpdateVersion()
+
+			user.SetFullName("John Doe")
+
+			json, err := models.ModelToJson( user.ToMap() )
+
+			if err != nil {
+				fmt.Println( string(json) )
+			}
+
+			g.Assert(err == nil).IsTrue()
+			g.Assert(json != nil).IsTrue()
+		})
 	})
 }

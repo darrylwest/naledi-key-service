@@ -45,6 +45,13 @@ func (doi *DocumentIdentifier) GetVersion() int64 {
     return doi.version
 }
 
+func (doi *DocumentIdentifier) updateVersion() int64 {
+    doi.version++
+    doi.lastUpdated = time.Now().UTC()
+
+    return doi.version
+}
+
 func (doi *DocumentIdentifier) ToMap() map[string]interface{} {
     var mp = map[string]interface{} {
         "id": doi.id,

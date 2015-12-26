@@ -51,6 +51,10 @@ func (u *User) GetFullname() string {
 	return u.fullname
 }
 
+func (u *User) SetFullName(name string) {
+	u.fullname = name
+}
+
 func (u *User) GetEmail() string {
 	return u.email
 }
@@ -65,6 +69,12 @@ func (u *User) GetStatus() string {
 
 func (u *User) SetStatus(status string) {
 	u.status = status
+}
+
+func (u *User) UpdateVersion() int64 {
+	u.doi.updateVersion()
+
+	return u.doi.version
 }
 
 func (u *User) ToMap() map[string]interface{} {
