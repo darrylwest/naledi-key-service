@@ -38,7 +38,7 @@ func TestUserDocumentModel(t *testing.T) {
 			doc.SetStatus(models.ModelStatus.Expired)
 			doc.UpdateVersion()
 
-			json, err := models.ModelToJson( doc.ToMap() )
+			json, err := models.MapToJSON( doc.ToMap() )
 
 			if err != nil {
 				fmt.Println( string(json) )

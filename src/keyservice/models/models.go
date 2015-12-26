@@ -43,6 +43,13 @@ type AccessKey struct {
 	key []byte  // encrypted with private local key
 }
 
-func ModelToJson(v map[string]interface{}) ([]byte, error) {
+func MapToJSON(v map[string]interface{}) ([]byte, error) {
 	return json.MarshalIndent( v, "", "  ")
+}
+
+func MapFromJSON(bytes []byte) (map[string]interface{}, error) {
+	hash := make(map[string]interface{})
+	err := json.Unmarshal(bytes, &hash)
+
+	return hash, err
 }

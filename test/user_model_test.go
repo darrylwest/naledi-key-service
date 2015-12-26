@@ -87,7 +87,7 @@ func TestUserModel(t *testing.T) {
 
 			user.SetFullName("John Doe")
 
-			json, err := models.ModelToJson( user.ToMap() )
+			json, err := models.MapToJSON( user.ToMap() )
 
 			if err != nil {
 				fmt.Println( string(json) )
@@ -95,6 +95,26 @@ func TestUserModel(t *testing.T) {
 
 			g.Assert(err == nil).IsTrue()
 			g.Assert(json != nil).IsTrue()
+		})
+
+		g.It("should create a user map from the json object", func() {
+			model := fixtures.CreateUserModel()
+			model.SetStatus(models.ModelStatus.Banned)
+			model.UpdateVersion()
+
+			model.SetFullName("John Doe")
+
+			json, err := models.MapToJSON( model.ToMap() )
+			g.Assert(err == nil).IsTrue()
+
+			hash, err := models.MapFromJSON( json )
+			g.Assert(err == nil).IsTrue()
+
+			user := new(models.User)
+			err = user.FromMap( hash )
+			
+			g.Assert(err).Equal(nil)
+
 		})
 	})
 }

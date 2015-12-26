@@ -3,6 +3,7 @@ package models
 import (
 	"time"
     "strings"
+    "strconv"
     "code.google.com/p/go-uuid/uuid"
 )
 
@@ -74,7 +75,18 @@ func (doi *DocumentIdentifier) FromMap(v map[string]interface{}) error {
         doi.lastUpdated = dt
     }
 
-    doi.version = v["version"].(int64)
+    version := v["version"]
+
+    switch version.(type) {
+    case float64:
+        doi.version = int64( version.(float64) )
+    case int64:
+        doi.version = version.(int64)
+    case string:
+        if val, err := strconv.ParseInt( version.(string), 10, 64 ); err == nil {
+            doi.version = val
+        }
+    }
 
     return nil
 }
