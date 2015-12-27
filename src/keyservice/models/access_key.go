@@ -5,8 +5,8 @@ import (
 )
 
 type AccessKey struct {
-	id  string  // prefixed and hashed, eg BoxKey:209eca2d...
-	key []byte  // encrypted with private local key
+	id  string  // plain id; encryption happens at DAO
+	key []byte  // plain key; encrypted with private local key at DAO
 }
 
 func NewAccessKey(id string, key []byte) *AccessKey {

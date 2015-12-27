@@ -158,6 +158,21 @@ func (c *Context) ToMap() map[string]interface{} {
 	return hash
 }
 
+func (c *Context) ReadConfig() error {
+	log.Info("read configuration from: %s", c.configFile)
+	conf, err := ReadConfig(c.configFile)
+
+	if err != nil {
+		return err
+	}
+
+	log.Info("config parsed, name: %s", conf.name)
+	config = conf
+	c.apikey = conf.appkey
+
+	return nil
+}
+
 func (c *Context) StartService() error {
 	if log == nil {
 		log = c.CreateLogger()
@@ -166,16 +181,10 @@ func (c *Context) StartService() error {
 	log.Info("StartService, version: %s, env: %s", version, c.env)
 
 	if config == nil {
-		log.Info("read configuration from: %s", c.configFile)
-		conf, err := ReadConfig(c.configFile)
-
+		err := c.ReadConfig()
 		if err != nil {
-			panic(err)
+			panic( err )
 		}
-
-		log.Info("config parsed, name: %s", conf.name)
-		config = conf
-		c.apikey = conf.appkey
 	}
 
 	log.Info("start the servers with context: %v", c.ToMap())
