@@ -49,7 +49,7 @@ func (u *UserDocument) SetStatus(status string) {
 }
 
 func (u *UserDocument) UpdateVersion() int64 {
-	u.doi.updateVersion()
+	u.doi.UpdateVersion()
 
 	return u.doi.version
 }

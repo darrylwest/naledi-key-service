@@ -62,18 +62,29 @@ func FormatJSONDate(dt time.Time) string {
 	return dts
 }
 
-func MapToJSON(v map[string]interface{}) ([]byte, error) {
-	for k, v := range v {
+func FilterModelMap(hash map[string]interface{}) error {
+	for k, v := range hash {
 		// fmt.Println(k, v)
 		switch t := v.(type) {
 		case float64, string, bool:
 			fmt.Sprintf("%T\n", t )
+		case time.Time:
+			hash[ k ] = FormatJSONDate( v.(time.Time))
 		default:
-			fmt.Printf("error: %s is a %T\n", k, t )
+			s := fmt.Sprintf("error: %s is a %T\n", k, t )
+			return errors.New( s )
 		}
 	}
 
-	return json.MarshalIndent( v, "", "  ")
+	return nil
+}
+
+func MapToJSON(v map[string]interface{}) ([]byte, error) {
+	if err := FilterModelMap( v ); err != nil {
+		return nil, err
+	}
+
+	return json.Marshal( v )
 }
 
 func MapFromJSON(bytes []byte) (map[string]interface{}, error) {

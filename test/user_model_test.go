@@ -17,9 +17,12 @@ func TestUserModel(t *testing.T) {
 		g.It("should create a user model", func() {
 			user := new(models.User)
 
+
+			// fmt.Println( user.GetDOI().GetDateCreated().Year() )
+
 			// g.Assert(user.GetDOI()).IsTrue()
-			doi := user.GetDOI()
-			g.Assert(doi.GetId() == "").IsTrue()
+			g.Assert(user.GetDOI().GetId()).Equal("")
+			g.Assert(user.GetDOI().GetVersion()).Equal(int64(0))
 			g.Assert(user.GetUsername()).Equal("")
 			g.Assert(user.GetFullname()).Equal("")
 			g.Assert(user.GetEmail()).Equal("")
@@ -38,7 +41,7 @@ func TestUserModel(t *testing.T) {
 			user.SetStatus("flarb")
 			errs, ok = user.Validate()
 
-			fmt.Sprintf("%v\n", user )
+			// fmt.Sprintf("%v\n", user )
 
 			g.Assert(ok).Equal(false)
 			g.Assert(len(errs)).Equal(1)
@@ -49,7 +52,7 @@ func TestUserModel(t *testing.T) {
 
 			hash := user.ToMap()
 
-			fmt.Sprintln( hash )
+			// fmt.Sprintln( hash )
 
 			doi := user.GetDOI()
 			g.Assert(hash["id"].(string)).Equal(doi.GetId())
@@ -87,7 +90,7 @@ func TestUserModel(t *testing.T) {
 
 			user.SetFullName("John Doe")
 
-			json, err := models.MapToJSON( user.ToMap() )
+			json, err := user.ToJSON()
 
 			if err != nil {
 				fmt.Println( string(json) )
@@ -106,7 +109,7 @@ func TestUserModel(t *testing.T) {
 
 			// fmt.Println(model)
 
-			json, err := models.MapToJSON( model.ToMap() )
+			json, err := model.ToJSON()
 			// fmt.Printf("%s", json)
 			g.Assert(err == nil).IsTrue()
 

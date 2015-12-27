@@ -4,6 +4,7 @@ import (
 	"time"
     "strings"
     "strconv"
+	"fmt"
     "code.google.com/p/go-uuid/uuid"
 )
 
@@ -30,23 +31,31 @@ func NewDocumentIdentifier() *DocumentIdentifier {
     return doi
 }
 
-func (doi *DocumentIdentifier) GetId() string {
+func (doi DocumentIdentifier) GetId() string {
     return doi.id
 }
 
-func (doi *DocumentIdentifier) GetDateCreated() time.Time {
+func (doi DocumentIdentifier) GetDateCreated() time.Time {
     return doi.dateCreated
 }
 
-func (doi *DocumentIdentifier) GetLastUpdated() time.Time {
+func (doi DocumentIdentifier) GetLastUpdated() time.Time {
     return doi.lastUpdated
 }
 
-func (doi *DocumentIdentifier) GetVersion() int64 {
+func (doi DocumentIdentifier) GetVersion() int64 {
     return doi.version
 }
 
-func (doi *DocumentIdentifier) updateVersion() int64 {
+func (doi DocumentIdentifier) String() string {
+	return fmt.Sprintf("%s, %v, %v, %d", doi.id, doi.dateCreated, doi.lastUpdated, doi.version)
+}
+
+func (doi *DocumentIdentifier) UpdateVersion() int64 {
+	if doi.dateCreated.Year() == 1 {
+		doi.dateCreated = time.Now().UTC()
+	}
+	
     doi.version++
     doi.lastUpdated = time.Now().UTC()
 

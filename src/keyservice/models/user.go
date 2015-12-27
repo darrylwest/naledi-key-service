@@ -44,7 +44,7 @@ func NewUserFromJSON(bytes []byte) (*User, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	user := new(User)
 	user.FromMap( hash )
 
@@ -84,9 +84,28 @@ func (u *User) SetStatus(status string) {
 }
 
 func (u *User) UpdateVersion() int64 {
-	u.doi.updateVersion()
+	u.doi.UpdateVersion()
 
 	return u.doi.version
+}
+
+func (u *User) ToJSON() ([]byte, error) {
+	return MapToJSON( u.ToMap() )
+}
+
+func UserFromJSON(json []byte) (*User, error) {
+	mp, err := MapFromJSON( json )
+	if err != nil {
+		return nil, err
+	}
+
+	u := new(User)
+	if err = u.FromMap( mp ); err != nil {
+		return nil, err
+	}
+
+	return u, nil
+
 }
 
 func (u *User) ToMap() map[string]interface{} {
