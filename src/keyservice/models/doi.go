@@ -20,13 +20,13 @@ func NewModelId() string {
 	return strings.Join(parts, "")
 }
 
-func NewDocumentIdentifier() *DocumentIdentifier {
-	doi := new(DocumentIdentifier)
-
-	doi.id = NewModelId()
-	doi.dateCreated = time.Now().UTC()
-	doi.lastUpdated = time.Now().UTC()
-	doi.version = 0
+func NewDocumentIdentifier() DocumentIdentifier {
+	doi := DocumentIdentifier{
+		id: NewModelId(),
+		dateCreated: time.Now().UTC(),
+		lastUpdated: time.Now().UTC(),
+		version: int64(0),
+	}
 
 	return doi
 }

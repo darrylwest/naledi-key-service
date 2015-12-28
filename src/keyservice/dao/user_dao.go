@@ -27,7 +27,7 @@ func (dao *UserDao) CreateDomainKey(key string) string {
 	return "User:" + key
 }
 
-func (dao *UserDao) Save(user *models.User) (*models.User, error) {
+func (dao *UserDao) Save(user models.User) (models.User, error) {
 	user.UpdateVersion()
 
 	key := dao.CreateDomainKey(user.GetDOI().GetId())

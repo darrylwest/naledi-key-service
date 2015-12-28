@@ -34,11 +34,11 @@ func init() {
 type DataModelType interface {
 	GetDOI() DocumentIdentifier
 	Validate() (list []error, ok bool)
-	UpdateVersion() int64
 	ToMap() map[string]interface{}
 	ToJSON() ([]byte, error)
-	FromMap(map[string]interface{}) error
-	FromJSON(json []byte) error
+	// UpdateVersion() int64
+	// FromMap(map[string]interface{}) error
+	// FromJSON(json []byte) error
 }
 
 type ChallengeCode struct {

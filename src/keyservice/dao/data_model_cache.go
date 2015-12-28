@@ -5,28 +5,28 @@ import (
 	"sync"
 )
 
-type Cache struct {
+type DataModelCache struct {
 	values map[string]models.DataModelType
 	sync.RWMutex
 }
 
-func NewCache() *Cache {
-	cache := Cache{
+func NewDataModelCache() *DataModelCache {
+	cache := DataModelCache{
 		values: make(map[string]models.DataModelType),
 	}
 
 	return &cache
 }
 
-func (c *Cache) GetValues() map[string]models.DataModelType {
+func (c *DataModelCache) GetValues() map[string]models.DataModelType {
 	return c.values
 }
 
-func (c *Cache) Len() int {
+func (c *DataModelCache) Len() int {
 	return len(c.values)
 }
 
-func (c *Cache) Get(key string) models.DataModelType {
+func (c *DataModelCache) Get(key string) models.DataModelType {
 	c.RLock()
 	value := c.values[key]
 	c.RUnlock()
@@ -36,7 +36,7 @@ func (c *Cache) Get(key string) models.DataModelType {
 	return value
 }
 
-func (c *Cache) Set(key string, value models.DataModelType) error {
+func (c *DataModelCache) Set(key string, value models.DataModelType) error {
 	c.Lock()
 	c.values[key] = value
 	c.Unlock()
@@ -46,7 +46,7 @@ func (c *Cache) Set(key string, value models.DataModelType) error {
 	return nil
 }
 
-func (c *Cache) Delete(key string) models.DataModelType {
+func (c *DataModelCache) Delete(key string) models.DataModelType {
 	if value, ok := c.values[key]; ok {
 		c.Lock()
 		delete(c.values, key)

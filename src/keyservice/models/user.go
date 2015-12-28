@@ -26,9 +26,9 @@ func init() {
 	}
 }
 
-func NewUser(username, email, sms string) *User {
-	user := new(User)
-	user.doi = (*NewDocumentIdentifier())
+func NewUser(username, email, sms string) User {
+	user := User{}
+	user.doi = NewDocumentIdentifier()
 
 	user.username = username
 	user.email = email
@@ -51,15 +51,15 @@ func NewUserFromJSON(bytes []byte) (*User, error) {
 	return user, nil
 }
 
-func (u *User) GetDOI() DocumentIdentifier {
+func (u User) GetDOI() DocumentIdentifier {
 	return u.doi
 }
 
-func (u *User) GetUsername() string {
+func (u User) GetUsername() string {
 	return u.username
 }
 
-func (u *User) GetFullname() string {
+func (u User) GetFullname() string {
 	return u.fullname
 }
 
@@ -67,15 +67,15 @@ func (u *User) SetFullName(name string) {
 	u.fullname = name
 }
 
-func (u *User) GetEmail() string {
+func (u User) GetEmail() string {
 	return u.email
 }
 
-func (u *User) GetSMS() string {
+func (u User) GetSMS() string {
 	return u.sms
 }
 
-func (u *User) GetStatus() string {
+func (u User) GetStatus() string {
 	return u.status
 }
 

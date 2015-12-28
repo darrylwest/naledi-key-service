@@ -8,7 +8,7 @@ import (
 
 type DataSource struct {
 	client *redis.Client
-	cache  *Cache
+	cache  *DataModelCache
 }
 
 // create a new datasource with optional recis client; cache is always created...
@@ -16,7 +16,7 @@ func NewDataSource(client *redis.Client) DataSource {
 	ds := DataSource{}
 
 	ds.client = client
-	ds.cache = NewCache()
+	ds.cache = NewDataModelCache()
 
 	return ds
 }
@@ -25,7 +25,7 @@ func NewCachedDataSource(client *redis.Client) DataSource {
 	ds := DataSource{}
 
 	ds.client = client
-	ds.cache = NewCache()
+	ds.cache = NewDataModelCache()
 
 	return ds
 }
@@ -55,7 +55,7 @@ func (ds *DataSource) Delete(key string) interface{} {
 	return value
 }
 
-func (ds *DataSource) GetCache() *Cache {
+func (ds *DataSource) GetCache() *DataModelCache {
 	return ds.cache
 }
 

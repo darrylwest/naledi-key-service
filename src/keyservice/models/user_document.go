@@ -25,9 +25,10 @@ func init() {
 	}
 }
 
-func NewUserDocument(user *User, name string) *UserDocument {
-	doc := new(UserDocument)
-	doc.doi = (*NewDocumentIdentifier())
+func NewUserDocument(user User, name string) UserDocument {
+	doc := UserDocument{}
+
+	doc.doi = NewDocumentIdentifier()
 	doc.owner = user.doi.id
 	doc.name = name
 
@@ -36,11 +37,11 @@ func NewUserDocument(user *User, name string) *UserDocument {
 	return doc
 }
 
-func (u *UserDocument) GetDOI() DocumentIdentifier {
+func (u UserDocument) GetDOI() DocumentIdentifier {
 	return u.doi
 }
 
-func (u *UserDocument) GetStatus() string {
+func (u UserDocument) GetStatus() string {
 	return u.status
 }
 

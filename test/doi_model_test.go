@@ -59,7 +59,8 @@ func TestDocumentIdentifierModel(t *testing.T) {
 		})
 
 		g.It("should create a doi from a compatible map", func() {
-			hash := models.NewDocumentIdentifier().ToMap()
+			ref := models.NewDocumentIdentifier()
+			hash := (&ref).ToMap()
 			dflt := (*new(time.Time))
 
 			dateCreated, _ := models.ParseJSONDate(hash, "dateCreated", dflt)

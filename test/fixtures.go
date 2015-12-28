@@ -31,7 +31,7 @@ func (f *Fixtures) CreateDOIMap() map[string]interface{} {
 	return doi.ToMap()
 }
 
-func (f *Fixtures) CreateUserModel() *models.User {
+func (f *Fixtures) CreateUserModel() models.User {
 	user := models.NewUser("john@ymail.com", "john@gmail.com", "7742502211@messaging.sprint.com")
 
 	return user
@@ -51,7 +51,7 @@ func (f *Fixtures) CreateUserMap() map[string]interface{} {
 	return hash
 }
 
-func (f *Fixtures) CreateUserDocumentModel(user *models.User) *models.UserDocument {
+func (f *Fixtures) CreateUserDocumentModel(user models.User) models.UserDocument {
 	model := models.NewUserDocument(f.CreateUserModel(), "My Fixture Created User Document")
 
 	return model
