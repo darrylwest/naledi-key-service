@@ -31,6 +31,16 @@ func init() {
 	ModelStatus.Canceled = "canceled"
 }
 
+type DataModelType interface {
+	GetDOI() DocumentIdentifier
+	Validate() (list []error, ok bool)
+	UpdateVersion() int64
+	ToMap() map[string]interface{}
+	ToJSON() ([]byte, error)
+	FromMap(map[string]interface{}) error
+	FromJSON(json []byte) error
+}
+
 type ChallengeCode struct {
 	doi           DocumentIdentifier
 	challengeType string // Document, Access

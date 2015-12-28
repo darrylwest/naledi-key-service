@@ -1,23 +1,24 @@
 package dao
 
 import (
+	"keyservice/models"
 	"sync"
 )
 
 type Cache struct {
-	values map[string]interface{}
+	values map[string]models.DataModelType
 	sync.RWMutex
 }
 
 func NewCache() *Cache {
 	cache := Cache{
-		values: make(map[string]interface{}),
+		values: make(map[string]models.DataModelType),
 	}
 
 	return &cache
 }
 
-func (c *Cache) GetValues() map[string]interface{} {
+func (c *Cache) GetValues() map[string]models.DataModelType {
 	return c.values
 }
 
@@ -25,7 +26,7 @@ func (c *Cache) Len() int {
 	return len(c.values)
 }
 
-func (c *Cache) Get(key string) interface{} {
+func (c *Cache) Get(key string) models.DataModelType {
 	c.RLock()
 	value := c.values[key]
 	c.RUnlock()
@@ -35,7 +36,7 @@ func (c *Cache) Get(key string) interface{} {
 	return value
 }
 
-func (c *Cache) Set(key, value string) error {
+func (c *Cache) Set(key string, value models.DataModelType) error {
 	c.Lock()
 	c.values[key] = value
 	c.Unlock()
@@ -45,7 +46,7 @@ func (c *Cache) Set(key, value string) error {
 	return nil
 }
 
-func (c *Cache) Delete(key string) interface{} {
+func (c *Cache) Delete(key string) models.DataModelType {
 	if value, ok := c.values[key]; ok {
 		c.Lock()
 		delete(c.values, key)

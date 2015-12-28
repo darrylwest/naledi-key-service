@@ -2,6 +2,7 @@ package dao
 
 import (
 	"gopkg.in/redis.v3"
+	"keyservice/models"
 	// "github.com/darrylwest/cassava-logger/logger"
 )
 
@@ -29,10 +30,8 @@ func NewCachedDataSource(client *redis.Client) DataSource {
 	return ds
 }
 
-func (ds *DataSource) Get(key string) (interface{}, error) {
-	var value interface{}
-
-	value = ds.cache.Get(key)
+func (ds *DataSource) Get(key string) (models.DataModelType, error) {
+	value := ds.cache.Get(key)
 
 	// if value == nil, try to pull from redis
 	log.Info("get: %s=%v", key, value)
@@ -40,18 +39,16 @@ func (ds *DataSource) Get(key string) (interface{}, error) {
 	return value, nil
 }
 
-func (ds *DataSource) Set(key, value string) error {
+func (ds *DataSource) Set(key string, value models.DataModelType) error {
 	ds.cache.Set(key, value)
 
-	log.Info("set: %s=%s", key, value)
+	log.Info("set: %s=%v", key, value)
 
 	return nil
 }
 
 func (ds *DataSource) Delete(key string) interface{} {
-	var value interface{}
-
-	value = ds.cache.Delete(key)
+	value := ds.cache.Delete(key)
 
 	// TODO : remove from redis
 

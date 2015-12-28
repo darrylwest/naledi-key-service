@@ -89,26 +89,11 @@ func (u *User) UpdateVersion() int64 {
 	return u.doi.version
 }
 
-func (u *User) ToJSON() ([]byte, error) {
+func (u User) ToJSON() ([]byte, error) {
 	return MapToJSON(u.ToMap())
 }
 
-func UserFromJSON(json []byte) (*User, error) {
-	mp, err := MapFromJSON(json)
-	if err != nil {
-		return nil, err
-	}
-
-	u := new(User)
-	if err = u.FromMap(mp); err != nil {
-		return nil, err
-	}
-
-	return u, nil
-
-}
-
-func (u *User) ToMap() map[string]interface{} {
+func (u User) ToMap() map[string]interface{} {
 	hash := u.doi.ToMap()
 
 	hash["username"] = u.username
@@ -119,6 +104,15 @@ func (u *User) ToMap() map[string]interface{} {
 	hash["status"] = u.status
 
 	return hash
+}
+
+func (u *User) FromJSON(json []byte) error {
+	mp, err := MapFromJSON(json)
+	if err != nil {
+		return err
+	}
+
+	return u.FromMap(mp)
 }
 
 func (u *User) FromMap(hash map[string]interface{}) error {
@@ -134,7 +128,7 @@ func (u *User) FromMap(hash map[string]interface{}) error {
 	return nil
 }
 
-func (u *User) Validate() (list []error, ok bool) {
+func (u User) Validate() (list []error, ok bool) {
 	list = make([]error, 0, 10)
 
 	if !validateEmail(u.username) {

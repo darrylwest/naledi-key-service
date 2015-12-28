@@ -30,32 +30,26 @@ func (dao *UserDao) CreateDomainKey(key string) string {
 func (dao *UserDao) Save(user *models.User) (*models.User, error) {
 	user.UpdateVersion()
 
-	json, err := user.ToJSON()
-	if err != nil {
-		return nil, err
-	}
-
 	key := dao.CreateDomainKey(user.GetDOI().GetId())
-
-	// fmt.Println( key, string(json) )
-	err = dao.dataSource.Set(key, string(json))
+	err := dao.dataSource.Set(key, user)
 
 	return user, err
 }
 
 func (dao *UserDao) Query() ([]*models.User, error) {
-	return nil, NotImplementedYet
+	var list []*models.User
+	return list, NotImplementedYet
 }
 
 func (dao *UserDao) FindById(id string) (*models.User, error) {
 	var user *models.User
 	key := dao.CreateDomainKey(id)
 
-	if val, err := dao.dataSource.Get(key); err != nil {
-		return nil, err
-	} else if str, ok := val.(string); ok {
-		user, err = models.UserFromJSON([]byte(str))
+	obj, err := dao.dataSource.Get(key)
+
+	if obj != nil {
+		user = obj.(*models.User)
 	}
 
-	return user, nil
+	return user, err
 }

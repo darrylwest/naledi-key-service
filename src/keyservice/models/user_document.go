@@ -54,7 +54,20 @@ func (u *UserDocument) UpdateVersion() int64 {
 	return u.doi.version
 }
 
-func (u *UserDocument) ToMap() map[string]interface{} {
+func (u UserDocument) ToJSON() ([]byte, error) {
+	return MapToJSON(u.ToMap())
+}
+
+func (u *UserDocument) FromJSON(json []byte) error {
+	mp, err := MapFromJSON(json)
+	if err != nil {
+		return err
+	}
+
+	return u.FromMap(mp)
+}
+
+func (u UserDocument) ToMap() map[string]interface{} {
 	hash := u.doi.ToMap()
 
 	hash["owner"] = u.owner
@@ -91,7 +104,7 @@ func (u *UserDocument) FromMap(hash map[string]interface{}) error {
 	return nil
 }
 
-func (u *UserDocument) Validate() (list []error, ok bool) {
+func (u UserDocument) Validate() (list []error, ok bool) {
 	list = make([]error, 0, 10)
 
 	if len(u.owner) != 32 {
