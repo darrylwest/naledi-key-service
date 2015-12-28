@@ -1,9 +1,9 @@
 package keyservicetest
 
 import (
+	"fmt"
 	"keyservice/models"
 	"testing"
-	"fmt"
 
 	. "github.com/franela/goblin"
 )
@@ -16,7 +16,6 @@ func TestUserModel(t *testing.T) {
 
 		g.It("should create a user model", func() {
 			user := new(models.User)
-
 
 			// fmt.Println( user.GetDOI().GetDateCreated().Year() )
 
@@ -69,7 +68,7 @@ func TestUserModel(t *testing.T) {
 			hash := fixtures.CreateUserMap()
 
 			user := new(models.User)
-			if err := user.FromMap( hash ); err != nil {
+			if err := user.FromMap(hash); err != nil {
 				fmt.Println(err)
 			}
 
@@ -93,7 +92,7 @@ func TestUserModel(t *testing.T) {
 			json, err := user.ToJSON()
 
 			if err != nil {
-				fmt.Println( string(json) )
+				fmt.Println(string(json))
 			}
 
 			g.Assert(err == nil).IsTrue()
@@ -113,11 +112,11 @@ func TestUserModel(t *testing.T) {
 			// fmt.Printf("%s", json)
 			g.Assert(err == nil).IsTrue()
 
-			hash, err := models.MapFromJSON( json )
+			hash, err := models.MapFromJSON(json)
 			g.Assert(err == nil).IsTrue()
 
 			user := new(models.User)
-			err = user.FromMap( hash )
+			err = user.FromMap(hash)
 
 			g.Assert(err).Equal(nil)
 			g.Assert(user.GetUsername()).Equal(model.GetUsername())

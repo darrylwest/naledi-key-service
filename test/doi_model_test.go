@@ -1,18 +1,18 @@
 package keyservicetest
 
 import (
+	"fmt"
 	"keyservice/models"
 	"testing"
-    "time"
-    "fmt"
+	"time"
 
 	. "github.com/franela/goblin"
 )
 
 func CreateDocumentIdentifierMap() map[string]interface{} {
-    doi := models.NewDocumentIdentifier()
+	doi := models.NewDocumentIdentifier()
 
-    return doi.ToMap()
+	return doi.ToMap()
 }
 
 func TestDocumentIdentifierModel(t *testing.T) {
@@ -23,61 +23,61 @@ func TestDocumentIdentifierModel(t *testing.T) {
 			doi := new(models.DocumentIdentifier)
 
 			g.Assert(doi != nil).IsTrue()
-            g.Assert(doi.GetId()).Equal("")
+			g.Assert(doi.GetId()).Equal("")
 		})
 
-        g.It("should create a new model id", func() {
-            id := models.NewModelId()
+		g.It("should create a new model id", func() {
+			id := models.NewModelId()
 
-            g.Assert(len(id)).Equal( 32 )
-            // println( id )
+			g.Assert(len(id)).Equal(32)
+			// println( id )
 
-        })
+		})
 
-        g.It("should create a new valid instance", func() {
-            now := time.Now().UTC()
-            doi := models.NewDocumentIdentifier()
+		g.It("should create a new valid instance", func() {
+			now := time.Now().UTC()
+			doi := models.NewDocumentIdentifier()
 
-            g.Assert(len(doi.GetId())).Equal( 32 )
-            // fmt.Println( doi.GetDateCreated().Sub(now).Seconds() )
-            g.Assert(doi.GetDateCreated().Sub(now).Seconds() < 0.001 ).IsTrue()
-            g.Assert(doi.GetLastUpdated().Sub(now).Seconds() < 0.001 ).IsTrue()
-            g.Assert(doi.GetVersion()).Equal( int64(0) )
-        })
+			g.Assert(len(doi.GetId())).Equal(32)
+			// fmt.Println( doi.GetDateCreated().Sub(now).Seconds() )
+			g.Assert(doi.GetDateCreated().Sub(now).Seconds() < 0.001).IsTrue()
+			g.Assert(doi.GetLastUpdated().Sub(now).Seconds() < 0.001).IsTrue()
+			g.Assert(doi.GetVersion()).Equal(int64(0))
+		})
 
-        g.It("should create a map of doi values", func() {
-            doi := models.NewDocumentIdentifier()
+		g.It("should create a map of doi values", func() {
+			doi := models.NewDocumentIdentifier()
 
-            hash := doi.ToMap()
+			hash := doi.ToMap()
 
-            fmt.Sprintln( hash )
+			fmt.Sprintln(hash)
 
-            g.Assert(hash["id"].(string)).Equal(doi.GetId())
+			g.Assert(hash["id"].(string)).Equal(doi.GetId())
 
-			vers := int64( hash["version"].(float64) )
-            g.Assert(vers).Equal(doi.GetVersion())
-        })
+			vers := int64(hash["version"].(float64))
+			g.Assert(vers).Equal(doi.GetVersion())
+		})
 
-        g.It("should create a doi from a compatible map", func() {
-            hash := models.NewDocumentIdentifier().ToMap()
+		g.It("should create a doi from a compatible map", func() {
+			hash := models.NewDocumentIdentifier().ToMap()
 			dflt := (*new(time.Time))
 
-            dateCreated, _ := models.ParseJSONDate( hash, "dateCreated", dflt )
-            lastUpdated, _ := models.ParseJSONDate( hash, "lastUpdated", dflt )
-            version := int64( hash["version"].(float64) )
+			dateCreated, _ := models.ParseJSONDate(hash, "dateCreated", dflt)
+			lastUpdated, _ := models.ParseJSONDate(hash, "lastUpdated", dflt)
+			version := int64(hash["version"].(float64))
 
-            doi := new(models.DocumentIdentifier)
-            doi.FromMap( hash )
+			doi := new(models.DocumentIdentifier)
+			doi.FromMap(hash)
 
-            g.Assert(hash["id"].(string)).Equal(doi.GetId())
+			g.Assert(hash["id"].(string)).Equal(doi.GetId())
 
-            json, err := doi.GetDateCreated().MarshalJSON()
-            g.Assert(err == nil).IsTrue()
-            fmt.Sprintf("%s\n", json)
+			json, err := doi.GetDateCreated().MarshalJSON()
+			g.Assert(err == nil).IsTrue()
+			fmt.Sprintf("%s\n", json)
 
-            g.Assert(doi.GetDateCreated()).Equal(dateCreated)
-            g.Assert(doi.GetLastUpdated()).Equal(lastUpdated)
-            g.Assert(doi.GetVersion()).Equal(version)
-        })
+			g.Assert(doi.GetDateCreated()).Equal(dateCreated)
+			g.Assert(doi.GetLastUpdated()).Equal(lastUpdated)
+			g.Assert(doi.GetVersion()).Equal(version)
+		})
 	})
 }

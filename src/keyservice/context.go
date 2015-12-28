@@ -183,7 +183,7 @@ func (c *Context) StartService() error {
 	if config == nil {
 		err := c.ReadConfig()
 		if err != nil {
-			panic( err )
+			panic(err)
 		}
 	}
 

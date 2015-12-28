@@ -6,7 +6,6 @@ import (
 
 	"fmt"
 	"github.com/codegangsta/negroni"
-	"github.com/darrylwest/cassava-logger/logger"
 	"net/http"
 	"net/http/httptest"
 
@@ -17,14 +16,8 @@ func TestMiddleware(t *testing.T) {
 	g := Goblin(t)
 
 	g.Describe("Middleware", func() {
-		log := func() *logger.Logger {
-			ctx := keyservice.NewContextForEnvironment("test")
-			return ctx.CreateLogger()
-		}()
 
 		g.It("should accept a https proto request", func() {
-			log.Info("test the https proto request")
-
 			msg := "write success to service"
 			recorder := httptest.NewRecorder()
 			ctx := keyservice.NewDefaultContext()

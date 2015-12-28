@@ -10,7 +10,6 @@ import (
 	// "fmt"
 
 	"github.com/agl/ed25519"
-	"github.com/darrylwest/cassava-logger/logger"
 	"golang.org/x/crypto/nacl/box"
 
 	. "github.com/franela/goblin"
@@ -44,16 +43,9 @@ func createMessage() *models.Message {
 func TestMessageModel(t *testing.T) {
 	g := Goblin(t)
 
-	log := func() *logger.Logger {
-		ctx := keyservice.NewContextForEnvironment("test")
-		return ctx.CreateLogger()
-	}()
-
 	g.Describe("MessageModel", func() {
 		g.It("should create a message object and populate", func() {
 			msg := createMessage()
-
-			log.Info("%v", msg)
 
 			errs, ok := msg.Validate()
 			g.Assert(len(errs)).Equal(0)

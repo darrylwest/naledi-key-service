@@ -18,17 +18,21 @@ install-deps:
 	go get github.com/agl/ed25519
 
 format:
-	( gofmt -s -w src/*.go src/*/*.go src/*/*/*.go test/*.go )
+	( gofmt -s -w src/*.go src/keyservice/*.go src/keyservice/*/*.go test/*.go )
 
 testmodels:
 	@( . ./.setpath ; cd test ; go test -run Model )
+
+testdao:
+	@( . ./.setpath ; go vet src/keyservice/dao/*.go )
+	@( . ./.setpath ; cd test ; go test -run 'Cache|Dao' )
 
 qtest:
 	@( . ./.setpath ; cd test ; go test )
 
 test:
 	@( make qtest ) | tee /tmp/keyservice.test
-	@( . ./.setpath ; go vet src/*.go ; go vet src/*/*.go ; go vet src/keyservice/models/*.go ) | tee /tmp/keyservice.vet
+	@( . ./.setpath ; go vet src/*.go ; go vet src/keyservice/*.go ; go vet src/keyservice/models/*.go ; go vet src/keyservice/dao/*.go ) | tee /tmp/keyservice.vet
 
 watch:
 	./watcher.js

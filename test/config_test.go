@@ -1,13 +1,10 @@
 package keyservicetest
 
 import (
-	"fmt"
-	"keyservice"
-	// "strings"
 	"encoding/hex"
+	"keyservice"
 	"testing"
 
-	"github.com/darrylwest/cassava-logger/logger"
 	"gopkg.in/redis.v3"
 
 	. "github.com/franela/goblin"
@@ -29,17 +26,8 @@ func createConfigJson() []byte {
 func TestConfig(t *testing.T) {
 	g := Goblin(t)
 
-	// use this to retain reference to fmt...
-	_ = fmt.Sprintf("%v\n", g)
-
 	g.Describe("Config", func() {
-		log := func() *logger.Logger {
-			ctx := keyservice.NewContextForEnvironment("test")
-			return ctx.CreateLogger()
-		}()
-
 		g.It("should create an instance of config", func() {
-			log.Info("create a config struct")
 
 			config := new(keyservice.Config)
 

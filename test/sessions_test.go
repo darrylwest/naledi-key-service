@@ -1,7 +1,6 @@
 package keyservicetest
 
 import (
-	"github.com/darrylwest/cassava-logger/logger"
 	"keyservice"
 	"testing"
 	"time"
@@ -14,15 +13,9 @@ func TestSessions(t *testing.T) {
 	g := Goblin(t)
 
 	g.Describe("Sessions", func() {
-		log := func() *logger.Logger {
-			ctx := keyservice.NewContextForEnvironment("test")
-			return ctx.CreateLogger()
-		}()
-
 		expires := time.Now().Unix() - 1
 
 		g.It("should have a valid session map", func() {
-			log.Info("test the sessions map")
 			sessions := keyservice.GetSessions()
 
 			g.Assert(sessions != nil).IsTrue()

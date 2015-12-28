@@ -2,8 +2,8 @@ package models
 
 import (
 	"errors"
-	"net/mail"
 	"fmt"
+	"net/mail"
 )
 
 type User struct {
@@ -19,10 +19,10 @@ var UserStatusCodes map[string]bool
 
 func init() {
 	UserStatusCodes = map[string]bool{
-		ModelStatus.Active:true,
-		ModelStatus.Inactive:true,
-		ModelStatus.Banned:true,
-		ModelStatus.Deleted:true,
+		ModelStatus.Active:   true,
+		ModelStatus.Inactive: true,
+		ModelStatus.Banned:   true,
+		ModelStatus.Deleted:  true,
 	}
 }
 
@@ -46,7 +46,7 @@ func NewUserFromJSON(bytes []byte) (*User, error) {
 	}
 
 	user := new(User)
-	user.FromMap( hash )
+	user.FromMap(hash)
 
 	return user, nil
 }
@@ -90,17 +90,17 @@ func (u *User) UpdateVersion() int64 {
 }
 
 func (u *User) ToJSON() ([]byte, error) {
-	return MapToJSON( u.ToMap() )
+	return MapToJSON(u.ToMap())
 }
 
 func UserFromJSON(json []byte) (*User, error) {
-	mp, err := MapFromJSON( json )
+	mp, err := MapFromJSON(json)
 	if err != nil {
 		return nil, err
 	}
 
 	u := new(User)
-	if err = u.FromMap( mp ); err != nil {
+	if err = u.FromMap(mp); err != nil {
 		return nil, err
 	}
 
@@ -122,7 +122,7 @@ func (u *User) ToMap() map[string]interface{} {
 }
 
 func (u *User) FromMap(hash map[string]interface{}) error {
-	u.doi.FromMap( hash )
+	u.doi.FromMap(hash)
 
 	u.username = hash["username"].(string)
 	u.fullname = hash["fullname"].(string)
@@ -145,7 +145,7 @@ func (u *User) Validate() (list []error, ok bool) {
 		list = append(list, errors.New("user must have a vaild email address"))
 	}
 
-	if _, ok := UserStatusCodes[ u.status ]; ok != true {
+	if _, ok := UserStatusCodes[u.status]; ok != true {
 		list = append(list, errors.New(fmt.Sprintf("status code: %s is not a recognized status for user", u.status)))
 	}
 
@@ -153,7 +153,7 @@ func (u *User) Validate() (list []error, ok bool) {
 }
 
 func validateEmail(email string) bool {
-	_, err := mail.ParseAddress( email )
+	_, err := mail.ParseAddress(email)
 
 	return err == nil
 }

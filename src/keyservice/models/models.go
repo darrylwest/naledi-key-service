@@ -1,21 +1,21 @@
 package models
 
 import (
-	"time"
 	"encoding/json"
-	"fmt"
 	"errors"
+	"fmt"
+	"time"
 )
 
 var ModelStatus *ModelStatusType
 
 type ModelStatusType struct {
-	Active string
+	Active   string
 	Inactive string
-	Deleted string
-	Banned string
-	Valid string
-	Expired string
+	Deleted  string
+	Banned   string
+	Valid    string
+	Expired  string
 	Canceled string
 }
 
@@ -40,7 +40,6 @@ type ChallengeCode struct {
 	status        string // Active, Canceled, Expired
 }
 
-
 // TODO move this to JSON helper delegate
 func ParseJSONDate(json map[string]interface{}, node string, dflt time.Time) (time.Time, error) {
 	if dts, ok := json[node].(string); ok {
@@ -57,7 +56,7 @@ func ParseJSONDate(json map[string]interface{}, node string, dflt time.Time) (ti
 }
 
 func FormatJSONDate(dt time.Time) string {
-	dts := dt.Format( time.RFC3339Nano )
+	dts := dt.Format(time.RFC3339Nano)
 
 	return dts
 }
@@ -67,12 +66,12 @@ func FilterModelMap(hash map[string]interface{}) error {
 		// fmt.Println(k, v)
 		switch t := v.(type) {
 		case float64, string, bool:
-			fmt.Sprintf("%T\n", t )
+			fmt.Sprintf("%T\n", t)
 		case time.Time:
-			hash[ k ] = FormatJSONDate( v.(time.Time))
+			hash[k] = FormatJSONDate(v.(time.Time))
 		default:
-			s := fmt.Sprintf("error: %s is a %T\n", k, t )
-			return errors.New( s )
+			s := fmt.Sprintf("error: %s is a %T\n", k, t)
+			return errors.New(s)
 		}
 	}
 
@@ -80,11 +79,11 @@ func FilterModelMap(hash map[string]interface{}) error {
 }
 
 func MapToJSON(v map[string]interface{}) ([]byte, error) {
-	if err := FilterModelMap( v ); err != nil {
+	if err := FilterModelMap(v); err != nil {
 		return nil, err
 	}
 
-	return json.Marshal( v )
+	return json.Marshal(v)
 }
 
 func MapFromJSON(bytes []byte) (map[string]interface{}, error) {
