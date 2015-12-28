@@ -2,7 +2,6 @@ package keyservicetest
 
 import (
 	"crypto/rand"
-	"github.com/darrylwest/cassava-logger/logger"
 	"golang.org/x/crypto/nacl/box"
 	"testing"
 	// "fmt"
@@ -19,14 +18,8 @@ func TestCrypto(t *testing.T) {
 		spub := "587b2d753c8409bbf876e7f9dc682b01a411cdd2ce6f0c66046d69c6343c1a1d"
 		spriv := "1d4f58f4f1e40c72dc695836902119ac553b84693904efac931731ae2ea27b48"
 		plainTextMessage := []byte("this is a standard text message with some length to it that will be encrypted.  maybe")
-		log := func() *logger.Logger {
-			ctx := keyservice.NewContextForEnvironment("test")
-			return ctx.CreateLogger()
-		}()
 
 		g.It("should generate a standard symmetric key", func() {
-			log.Info("symmetric key generation")
-
 			key, err := keyservice.GenerateSymmetricKey()
 
 			g.Assert(err == nil).IsTrue()
@@ -35,8 +28,6 @@ func TestCrypto(t *testing.T) {
 		})
 
 		g.It("should generate a standard nonce", func() {
-			log.Info("standard nonce generation")
-
 			key, err := keyservice.GenerateNonce()
 
 			g.Assert(err == nil).IsTrue()
@@ -51,8 +42,6 @@ func TestCrypto(t *testing.T) {
 
 			g.Assert(err == nil).IsTrue()
 			g.Assert(enc != nil).IsTrue()
-
-			log.Info("encrypted: %v", enc)
 		})
 
 		g.It("should decrypt a symmetrically encrypted message", func() {
@@ -72,7 +61,6 @@ func TestCrypto(t *testing.T) {
 
 			dec, err := keyservice.DecryptSymmetric(key, enc)
 
-			log.Info("error: %s", err)
 			g.Assert(err != nil).IsTrue()
 			g.Assert(dec == nil).IsTrue()
 		})
