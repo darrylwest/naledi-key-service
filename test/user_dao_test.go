@@ -14,15 +14,6 @@ import (
     . "github.com/franela/goblin"
 )
 
-
-// TODO : refactor to mocks createMockDataSouce
-func createDataSource() dao.DataSource {
-    cache := make(map[string]interface{})
-    client := dao.NewDataSource(nil, cache)
-
-    return client
-}
-
 func TestUserDao(t *testing.T) {
     g := Goblin(t)
 
@@ -35,19 +26,21 @@ func TestUserDao(t *testing.T) {
 			return ctx.CreateLogger()
 		}()
 
+        dao.InitializeDao(ctx, log)
+
         g.It("should create an instance of user dao", func() {
             log.Info("create the user dao")
-            ds := createDataSource()
+            ds := dao.NewCachedDataSource(nil)
             userDao := dao.CreateUserDao(ds)
 
-            g.Assert(len(ds.GetCache())).Equal(0)
+            g.Assert(ds.GetCacheLen()).Equal(0)
             val, err := userDao.FindById("mykey")
             g.Assert(err).Equal(nil)
             g.Assert(val).Equal((*models.User)(nil))
         })
 
         g.It("should save a user model and update last updated and version", func() {
-            ds := createDataSource()
+            ds := dao.NewCachedDataSource(nil)
             dao := dao.CreateUserDao(ds)
             user := fixtures.CreateUserModel()
 
@@ -70,7 +63,7 @@ func TestUserDao(t *testing.T) {
         })
 
         g.It("should create a user domain key", func() {
-            ds := createDataSource()
+            ds := dao.NewCachedDataSource(nil)
             dao := dao.CreateUserDao(ds)
             user := fixtures.CreateUserModel()
             id := user.GetDOI().GetId()

@@ -5,7 +5,7 @@ import (
     "keyservice/models"
 	// "gopkg.in/redis.v3"
     "errors"
-    "fmt"
+    // "fmt"
 )
 
 var (
@@ -40,7 +40,7 @@ func (dao *UserDao) Save(user *models.User) (*models.User, error) {
 
     key := dao.CreateDomainKey( user.GetDOI().GetId() )
 
-    fmt.Println( key, string(json) )
+    // fmt.Println( key, string(json) )
     err = dao.dataSource.Set( key, string(json) )
 
     return user, err
