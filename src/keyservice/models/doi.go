@@ -22,10 +22,10 @@ func NewModelId() string {
 
 func NewDocumentIdentifier() DocumentIdentifier {
 	doi := DocumentIdentifier{
-		id: NewModelId(),
+		id:          NewModelId(),
 		dateCreated: time.Now().UTC(),
 		lastUpdated: time.Now().UTC(),
-		version: int64(0),
+		version:     int64(0),
 	}
 
 	return doi

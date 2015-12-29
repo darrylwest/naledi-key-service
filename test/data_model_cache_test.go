@@ -4,6 +4,8 @@ import (
 	"keyservice/dao"
 	"keyservice/models"
 	"testing"
+	"time"
+	"fmt"
 
 	. "github.com/franela/goblin"
 )
@@ -25,6 +27,8 @@ func TestCache(t *testing.T) {
 
 			ref := fixtures.CreateUserModel()
 			key := ref.GetDOI().GetId()
+
+			g.Assert(cache.Len()).Equal(0)
 
 			cache.Set(key, ref)
 			g.Assert(cache.Len()).Equal(1)
@@ -49,6 +53,56 @@ func TestCache(t *testing.T) {
 			g.Assert(ok).IsTrue()
 			g.Assert(udoc.GetDOI().GetId()).Equal(ref1.GetDOI().GetId())
 
+			// insure that a bad cast won't panic if second parameter (ok) is used
+			_, ok = model.(models.User)
+			g.Assert(ok).IsFalse()
 		})
+
+		g.It("should update access and cached time stamps for get/set", func() {
+			cache := dao.NewDataModelCache()
+
+			ref := fixtures.CreateUserModel()
+			key := ref.GetDOI().GetId()
+
+			g.Assert(cache.Len()).Equal(0)
+
+			now := time.Now().Unix()
+			cache.Set(key, ref)
+			g.Assert(cache.Len()).Equal(1)
+
+			item := cache.GetItem(key)
+			g.Assert(item != nil).IsTrue()
+
+			model, cached, accessed := item.Values()
+
+			g.Assert(model.GetDOI().GetId()).Equal(ref.GetDOI().GetId())
+			g.Assert(cached >= now).IsTrue()
+			g.Assert(accessed >= now).IsTrue()
+
+			fmt.Sprintf("%v %d %d", model, cached, accessed )
+		})
+
+		g.It("should delete a model", func() {
+			cache := dao.NewDataModelCache()
+
+			ref := fixtures.CreateUserModel()
+			key := ref.GetDOI().GetId()
+
+			g.Assert(cache.Len()).Equal(0)
+
+			cache.Set(key, ref)
+			g.Assert(cache.Len()).Equal(1)
+
+			model := cache.Delete(key)
+			g.Assert(cache.Len()).Equal(0)
+			g.Assert(model != nil).IsTrue()
+
+			model = cache.Delete(key)
+			g.Assert(cache.Len()).Equal(0)
+			g.Assert(model).Equal(nil)
+		})
+
+		g.It("should flush/clear all cached items")
+
 	})
 }
