@@ -33,7 +33,8 @@ func TestCache(t *testing.T) {
 
 			g.Assert(cache.Len()).Equal(1)
 			g.Assert(model != nil).IsTrue()
-			user := model.(models.User)
+			user, ok := model.(models.User)
+			g.Assert(ok).IsTrue()
 			g.Assert(user.GetDOI()).Equal(ref.GetDOI())
 			g.Assert(user.GetUsername()).Equal(ref.GetUsername())
 
@@ -42,9 +43,12 @@ func TestCache(t *testing.T) {
 			cache.Set(key, ref1)
 			g.Assert(cache.Len()).Equal(2)
 
-			udoc := cache.Get(key)
+			model = cache.Get(key)
 			g.Assert(cache.Len()).Equal(2)
-			g.Assert(udoc != nil).IsTrue()
+			udoc, ok := model.(models.UserDocument)
+			g.Assert(ok).IsTrue()
+			g.Assert(udoc.GetDOI().GetId()).Equal(ref1.GetDOI().GetId())
+
 		})
 	})
 }
