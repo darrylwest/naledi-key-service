@@ -40,6 +40,24 @@ func (ds *DataSource) Get(key string) (models.DataModelType, error) {
 	return value, nil
 }
 
+func (ds *DataSource) GetByType(key string, model models.DataModelType) (interface{}, error) {
+	if ds.client == nil {
+		return nil, nil
+	}
+
+	str, err := ds.client.Get(key).Result()
+	if err != nil {
+		return nil, err
+	}
+
+	value, err := model.FromJSON([]byte(str))
+	if err != nil {
+		return nil, err
+	}
+
+	return value, nil
+}
+
 func (ds *DataSource) Set(key string, value models.DataModelType) error {
 	ds.cache.Set(key, value)
 
