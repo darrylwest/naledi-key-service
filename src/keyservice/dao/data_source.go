@@ -16,6 +16,8 @@ func NewDataSource(client *redis.Client) DataSource {
 	ds := DataSource{}
 
 	ds.client = client
+
+	// make this a no-op cache
 	ds.cache = NewDataModelCache()
 
 	return ds

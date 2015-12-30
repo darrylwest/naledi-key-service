@@ -8,12 +8,12 @@ import (
 
 type CacheItem struct {
 	model models.DataModelType
-	cached int64 // unix seconds when this item was last set
-	accessed int64 // unix seconds when this itme was last get
+	timeCached int64 // unix seconds when this item was last set
+	lastAccessed int64 // unix seconds when this itme was last get
 }
 
 func (item CacheItem) Values() (models.DataModelType, int64, int64) {
-	return item.model, item.cached, item.accessed
+	return item.model, item.timeCached, item.lastAccessed
 }
 
 type DataModelCache struct {
@@ -59,7 +59,7 @@ func (c *DataModelCache) GetItem(key string) *CacheItem {
 
 	if ok {
 		c.Lock()
-		item.accessed = time.Now().Unix()
+		item.lastAccessed = time.Now().Unix()
 		c.Unlock()
 
 		return &item
@@ -72,8 +72,8 @@ func (c *DataModelCache) Set(key string, value models.DataModelType) error {
 	now := time.Now().Unix()
 	item := CacheItem{
 		model: value,
-		cached: now,
-		accessed: now,
+		timeCached: now,
+		lastAccessed: now,
 	}
 
 	c.Lock()
