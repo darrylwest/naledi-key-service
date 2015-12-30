@@ -1,13 +1,8 @@
 package dao
 
 import (
-	"errors"
+	"fmt"
 	"keyservice/models"
-)
-
-var (
-	NotImplementedYet = errors.New("not implemented yet")
-	NotFound          = errors.New("not found")
 )
 
 type UserDao struct {
@@ -38,7 +33,7 @@ func (dao *UserDao) Save(user models.User) (models.User, error) {
 
 func (dao *UserDao) Query() ([]*models.User, error) {
 	var list []*models.User
-	return list, NotImplementedYet
+	return list, fmt.Errorf(NotImplementedYet, "query")
 }
 
 func (dao *UserDao) FindById(id string) (*models.User, error) {

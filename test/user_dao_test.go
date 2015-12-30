@@ -5,6 +5,7 @@ import (
 	"keyservice/models"
 	"strings"
 	"testing"
+	"fmt"
 
 	. "github.com/franela/goblin"
 )
@@ -19,6 +20,8 @@ func TestUserDao(t *testing.T) {
 		g.It("should create an instance of user dao", func() {
 			ds := dao.NewCachedDataSource(nil)
 			userDao := dao.CreateUserDao(ds)
+
+			g.Assert(fmt.Sprintf("%T", userDao)).Equal("dao.UserDao")
 
 			g.Assert(ds.GetCacheLen()).Equal(0)
 			val, err := userDao.FindById("mykey")

@@ -6,10 +6,16 @@ import (
 	"github.com/darrylwest/cassava-logger/logger"
 )
 
+const (
+	NotImplementedYet = "%s not implemented yet"
+	NotFound          = "%s not found for %s"
+)
+
 var (
 	log *logger.Logger
 	ctx *keyservice.Context
 )
+
 
 func InitializeDao(context *keyservice.Context, logger *logger.Logger) {
 	ctx = context
