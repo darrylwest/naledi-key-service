@@ -6,10 +6,17 @@ import (
 	"time"
 )
 
+// CacheItemStats to speed update operations ?
+type CacheItemStats struct {
+	timeCached int64 // unix seconds when this item was last set
+	lastAccessed int64 // unix seconds when this item was last get
+	lastSavedToDb int64  // unix seconds when this item was saved to the database
+}
+
 type CacheItem struct {
 	model models.DataModelType
 	timeCached int64 // unix seconds when this item was last set
-	lastAccessed int64 // unix seconds when this itme was last get
+	lastAccessed int64 // unix seconds when this item was last get
 }
 
 func (item CacheItem) Values() (models.DataModelType, int64, int64) {

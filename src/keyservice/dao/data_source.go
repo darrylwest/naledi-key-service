@@ -36,6 +36,7 @@ func (ds *DataSource) Get(key string) (models.DataModelType, error) {
 	value := ds.cache.Get(key)
 
 	// if value == nil, try to pull from redis
+	// if value found in redis, then push to cache
 	log.Info("get: %s=%v", key, value)
 
 	return value, nil
@@ -45,6 +46,7 @@ func (ds *DataSource) Set(key string, value models.DataModelType) error {
 	ds.cache.Set(key, value)
 
 	log.Info("set: %s=%v", key, value)
+	// use go routine or queue to save data to redis
 
 	return nil
 }

@@ -36,9 +36,9 @@ type DataModelType interface {
 	Validate() (list []error, ok bool)
 	ToMap() map[string]interface{}
 	ToJSON() ([]byte, error)
-	// UpdateVersion() int64
-	// FromMap(map[string]interface{}) error
-	// FromJSON(json []byte) error
+	// UpdateVersion(doi *DocumentIdentifier)
+	// FromMap(map[string]interface{}) (*DataModelType, error)
+	// FromJSON(json []byte) (*DataModelType, error)
 }
 
 type ChallengeCode struct {
