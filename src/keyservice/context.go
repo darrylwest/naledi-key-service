@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	version = "0.90.102"
+	version = "0.90.103"
 )
 
 type Context struct {
@@ -72,6 +72,10 @@ func NewContextForEnvironment(env string) *Context {
 
 	if !IsProduction(env) {
 		ctx.logname = env + "-keyservice"
+
+		if env == "test" {
+			ctx.configFile = "../test/test-config.json"
+		}
 	}
 
 	return ctx
@@ -163,6 +167,7 @@ func (c *Context) ReadConfig() error {
 	conf, err := ReadConfig(c.configFile)
 
 	if err != nil {
+		log.Error("could not read config from file: ", c.configFile)
 		return err
 	}
 
