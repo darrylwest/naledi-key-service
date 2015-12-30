@@ -76,7 +76,7 @@ func FilterModelMap(hash map[string]interface{}) error {
 		// fmt.Println(k, v)
 		switch t := v.(type) {
 		case float64, string, bool:
-			fmt.Sprintf("%T\n", t)
+			_ = fmt.Sprintf("%T\n", t)
 		case time.Time:
 			hash[k] = FormatJSONDate(v.(time.Time))
 		default:
