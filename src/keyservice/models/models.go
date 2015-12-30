@@ -37,8 +37,8 @@ type DataModelType interface {
 	ToMap() map[string]interface{}
 	ToJSON() ([]byte, error)
 	// UpdateVersion(doi *DocumentIdentifier)
-	// FromMap(map[string]interface{}) (*DataModelType, error)
-	// FromJSON(json []byte) (*DataModelType, error)
+	FromMap(map[string]interface{}) (interface{}, error)
+	FromJSON(json []byte) (interface{}, error)
 }
 
 type ChallengeCode struct {

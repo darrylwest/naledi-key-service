@@ -56,7 +56,11 @@ func TestUserDocumentModel(t *testing.T) {
 			// fmt.Printf("%v\n", hash)
 
 			doc := new(models.UserDocument)
-			doc.FromMap(hash)
+			if model, err := doc.FromMap(hash); err == nil {
+				v, ok := model.(models.UserDocument)
+				g.Assert(ok).IsTrue()
+				doc = &v
+			}
 
 			// fmt.Printf("%v\n", doc)
 

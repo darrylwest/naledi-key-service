@@ -59,15 +59,6 @@ func (u UserDocument) ToJSON() ([]byte, error) {
 	return MapToJSON(u.ToMap())
 }
 
-func (u *UserDocument) FromJSON(json []byte) error {
-	mp, err := MapFromJSON(json)
-	if err != nil {
-		return err
-	}
-
-	return u.FromMap(mp)
-}
-
 func (u UserDocument) ToMap() map[string]interface{} {
 	hash := u.doi.ToMap()
 
@@ -85,7 +76,7 @@ func (u UserDocument) ToMap() map[string]interface{} {
 	return hash
 }
 
-func (u *UserDocument) FromMap(hash map[string]interface{}) error {
+func (u UserDocument) FromMap(hash map[string]interface{}) (interface{}, error) {
 	u.doi.FromMap(hash)
 
 	u.owner = hash["owner"].(string)
@@ -102,7 +93,16 @@ func (u *UserDocument) FromMap(hash map[string]interface{}) error {
 
 	u.status = hash["status"].(string)
 
-	return nil
+	return u, nil
+}
+
+func (u UserDocument) FromJSON(json []byte) (interface{}, error) {
+	mp, err := MapFromJSON(json)
+	if err != nil {
+		return nil, err
+	}
+
+	return u.FromMap(mp)
 }
 
 func (u UserDocument) Validate() (list []error, ok bool) {

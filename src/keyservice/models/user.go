@@ -106,16 +106,16 @@ func (u User) ToMap() map[string]interface{} {
 	return hash
 }
 
-func (u *User) FromJSON(json []byte) error {
+func (u User) FromJSON(json []byte) (interface{}, error) {
 	mp, err := MapFromJSON(json)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	return u.FromMap(mp)
 }
 
-func (u *User) FromMap(hash map[string]interface{}) error {
+func (u User) FromMap(hash map[string]interface{}) (interface{}, error) {
 	u.doi.FromMap(hash)
 
 	u.username = hash["username"].(string)
@@ -125,7 +125,7 @@ func (u *User) FromMap(hash map[string]interface{}) error {
 	u.sms = hash["sms"].(string)
 	u.status = hash["status"].(string)
 
-	return nil
+	return u, nil
 }
 
 func (u User) Validate() (list []error, ok bool) {

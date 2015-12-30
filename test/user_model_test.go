@@ -68,8 +68,17 @@ func TestUserModel(t *testing.T) {
 			hash := fixtures.CreateUserMap()
 
 			user := new(models.User)
-			if err := user.FromMap(hash); err != nil {
+			if model,err := user.FromMap(hash); err == nil {
+				// fmt.Printf("model type: %T\n", model)
+
+				v, ok := model.(models.User)
+
+				g.Assert(ok).Equal( true )
+				user = &v
+				g.Assert(fmt.Sprintf("%T", user)).Equal("*models.User")
+			} else {
 				fmt.Println(err)
+				g.Assert(false).Equal(true)
 			}
 
 			doi := user.GetDOI()
@@ -93,6 +102,7 @@ func TestUserModel(t *testing.T) {
 
 			if err != nil {
 				fmt.Println(string(json))
+				g.Assert(false).Equal(true)
 			}
 
 			g.Assert(err == nil).IsTrue()
@@ -116,9 +126,15 @@ func TestUserModel(t *testing.T) {
 			g.Assert(err == nil).IsTrue()
 
 			user := new(models.User)
-			err = user.FromMap(hash)
+			if model, err := user.FromMap(hash); err == nil {
+				// fmt.Printf("%T", model)
+				v, ok := model.(models.User)
+				g.Assert(ok).IsTrue()
+				user = &v
+			} else {
+				g.Assert(false).Equal(true)
+			}
 
-			g.Assert(err).Equal(nil)
 			g.Assert(user.GetUsername()).Equal(model.GetUsername())
 			g.Assert(user.GetFullname()).Equal(model.GetFullname())
 			g.Assert(user.GetDOI()).Equal(model.GetDOI())
