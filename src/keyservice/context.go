@@ -173,6 +173,10 @@ func (c *Context) ReadConfig() error {
 	return nil
 }
 
+func (c *Context) GetConfig() *Config {
+	return config
+}
+
 func (c *Context) StartService() error {
 	if log == nil {
 		log = c.CreateLogger()

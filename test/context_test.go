@@ -18,6 +18,7 @@ func TestContext(t *testing.T) {
 			ctx := new(keyservice.Context)
 
 			g.Assert(ctx.GetShutdownPort()).Equal(0)
+			g.Assert(ctx.GetConfig() != nil).IsTrue()
 		})
 
 		g.It("should return a three part version string", func() {

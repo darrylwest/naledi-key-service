@@ -25,7 +25,7 @@ testmodels:
 
 testdao:
 	@( . ./.setpath ; go vet src/keyservice/dao/*.go )
-	@( . ./.setpath ; cd test ; go test -run 'Cache|Dao' )
+	@( . ./.setpath ; cd test ; go test -run 'DataSource|Cache|Dao' )
 
 qtest:
 	@( . ./.setpath ; cd test ; go test )

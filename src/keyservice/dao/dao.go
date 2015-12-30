@@ -2,7 +2,7 @@ package dao
 
 import (
 	"keyservice"
-	// "gopkg.in/redis.v3"
+	"gopkg.in/redis.v3"
 	"github.com/darrylwest/cassava-logger/logger"
 )
 
@@ -14,6 +14,9 @@ const (
 var (
 	log *logger.Logger
 	ctx *keyservice.Context
+
+	primaryClient *redis.Client
+	secondaryClient *redis.Client
 )
 
 
@@ -22,5 +25,38 @@ func InitializeDao(context *keyservice.Context, logger *logger.Logger) {
 	log = logger
 }
 
-// func getPrimaryClient() *redis.Client
-// func getSecondaryClient() *.redis.Client
+func GetPrimaryClient() *redis.Client {
+	if primaryClient == nil {
+		conf := ctx.GetConfig()
+		opts := conf.GetPrimaryRedisOptions()
+		log.Info("create the primary client: %s", opts.addr)
+		primaryClient = redis.NewClient(opts)
+
+		pong, err := primaryClient.Ping().Result()
+		if err != nil {
+			panic( err )
+		}
+
+		log.Info("ping->%s", pong)
+	}
+
+	return primaryClient
+}
+
+func GetSecondaryClient() *redis.Client {
+	if secondaryClient == nil {
+		conf := ctx.GetConfig()
+		opts := conf.GetSecondaryRedisOptions()
+		log.Info("create the secondary client: %s", opts.addr)
+		secondaryClient = redis.NewClient(opts)
+
+		pong, err := secondaryClient.Ping().Result()
+		if err != nil {
+			panic( err )
+		}
+
+		log.Info("ping->%s", pong)
+	}
+
+	return secondaryClient
+}
