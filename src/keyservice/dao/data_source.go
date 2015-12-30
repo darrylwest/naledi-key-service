@@ -35,8 +35,6 @@ func NewCachedDataSource(client *redis.Client) DataSource {
 func (ds *DataSource) Get(key string) (models.DataModelType, error) {
 	value := ds.cache.Get(key)
 
-	// if value == nil, try to pull from redis
-	// if value found in redis, then push to cache
 	log.Info("get: %s=%v", key, value)
 
 	return value, nil
@@ -46,7 +44,11 @@ func (ds *DataSource) Set(key string, value models.DataModelType) error {
 	ds.cache.Set(key, value)
 
 	log.Info("set: %s=%v", key, value)
-	// use go routine or queue to save data to redis
+	if ds.client != nil {
+		err := ds.client.Set(key, value, 0).Err()
+
+		return err
+	}
 
 	return nil
 }
@@ -55,6 +57,9 @@ func (ds *DataSource) Delete(key string) interface{} {
 	value := ds.cache.Delete(key)
 
 	// TODO : remove from redis
+	if ds.client != nil {
+		ds.client.Del( key )
+	}
 
 	return value
 }

@@ -96,26 +96,26 @@ func TestConfig(t *testing.T) {
 			opts, ok := hash["primaryRedisOptions"].(*redis.Options)
 
 			g.Assert(ok).Equal(true)
-			g.Assert(opts.Addr).Equal("localhost:8443")
-			g.Assert(opts.Password).Equal("flarb")
+			g.Assert(opts.Addr).Equal("localhost:15101")
+			g.Assert(opts.Password).Equal("")
 			g.Assert(opts.DB).Equal(int64(0))
 
 			opts = config.GetPrimaryRedisOptions()
-			g.Assert(opts.Addr).Equal("localhost:8443")
-			g.Assert(opts.Password).Equal("flarb")
+			g.Assert(opts.Addr).Equal("localhost:15101")
+			g.Assert(opts.Password).Equal("")
 			g.Assert(opts.DB).Equal(int64(0))
 
 			opts, ok = hash["secondaryRedisOptions"].(*redis.Options)
 
 			g.Assert(ok).Equal(true)
-			g.Assert(opts.Addr).Equal("localhost:8444")
-			g.Assert(opts.Password).Equal("blarf")
-			g.Assert(opts.DB).Equal(int64(1))
+			g.Assert(opts.Addr).Equal("localhost:15102")
+			g.Assert(opts.Password).Equal("")
+			g.Assert(opts.DB).Equal(int64(0))
 
 			opts = config.GetSecondaryRedisOptions()
-			g.Assert(opts.Addr).Equal("localhost:8444")
-			g.Assert(opts.Password).Equal("blarf")
-			g.Assert(opts.DB).Equal(int64(1))
+			g.Assert(opts.Addr).Equal("localhost:15102")
+			g.Assert(opts.Password).Equal("")
+			g.Assert(opts.DB).Equal(int64(0))
 
 			key := config.GetPrivateLocalKey()
 

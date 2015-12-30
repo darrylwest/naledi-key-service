@@ -3,14 +3,14 @@
     "appkey":"c2b4d9bf-652e-4915-ab23-7a0e0e32e362",
     "baseURI":"KeyService",
     "primaryRedisOptions":{
-        "addr":"localhost:8443",
-        "password":"flarb",
+        "addr":"localhost:15101",
+        "password":"",
         "db":0
     },
     "secondaryRedisOptions":{
-        "addr":"localhost:8444",
-        "password":"blarf",
-        "db":1
+        "addr":"localhost:15102",
+        "password":"",
+        "db":0
     },
     "privateLocalKey":"c2c3f31d02109189c1d22fc5c9e2ecf6bc4384a1117393d23614d1b91bed9271"
 }
