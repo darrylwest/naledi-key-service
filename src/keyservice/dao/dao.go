@@ -15,3 +15,6 @@ func InitializeDao(context *keyservice.Context, logger *logger.Logger) {
 	ctx = context
 	log = logger
 }
+
+// func getPrimaryClient() *redis.Client
+// func getSecondaryClient() *.redis.Client

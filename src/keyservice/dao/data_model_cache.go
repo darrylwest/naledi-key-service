@@ -96,3 +96,10 @@ func (c *DataModelCache) Delete(key string) models.DataModelType {
 
 	return nil
 }
+
+// TODO : implement this
+func (c *DataModelCache) PurgeOldItems(age int64) int {
+	// this method activates a crawler that continuously sweeps the cache to remove old items
+
+	return 0
+}
