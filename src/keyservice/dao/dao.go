@@ -29,7 +29,7 @@ func GetPrimaryClient() *redis.Client {
 	if primaryClient == nil {
 		conf := ctx.GetConfig()
 		opts := conf.GetPrimaryRedisOptions()
-		log.Info("create the primary client: %s", opts.addr)
+		log.Info("create the primary client: %s", opts)
 		primaryClient = redis.NewClient(opts)
 
 		pong, err := primaryClient.Ping().Result()
@@ -47,7 +47,7 @@ func GetSecondaryClient() *redis.Client {
 	if secondaryClient == nil {
 		conf := ctx.GetConfig()
 		opts := conf.GetSecondaryRedisOptions()
-		log.Info("create the secondary client: %s", opts.addr)
+		log.Info("create the secondary client: %s", opts)
 		secondaryClient = redis.NewClient(opts)
 
 		pong, err := secondaryClient.Ping().Result()
