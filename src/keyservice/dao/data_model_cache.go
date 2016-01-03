@@ -8,14 +8,14 @@ import (
 
 // CacheItemStats to speed update operations ?
 type CacheItemStats struct {
-	timeCached int64 // unix seconds when this item was last set
-	lastAccessed int64 // unix seconds when this item was last get
-	lastSavedToDb int64  // unix seconds when this item was saved to the database
+	timeCached    int64 // unix seconds when this item was last set
+	lastAccessed  int64 // unix seconds when this item was last get
+	lastSavedToDb int64 // unix seconds when this item was saved to the database
 }
 
 type CacheItem struct {
-	model models.DataModelType
-	timeCached int64 // unix seconds when this item was last set
+	model        models.DataModelType
+	timeCached   int64 // unix seconds when this item was last set
 	lastAccessed int64 // unix seconds when this item was last get
 }
 
@@ -39,7 +39,7 @@ func NewDataModelCache() *DataModelCache {
 func (c *DataModelCache) GetValues() []models.DataModelType {
 	list := make([]models.DataModelType, len(c.values))
 
-	for _,v := range c.values {
+	for _, v := range c.values {
 		list = append(list, v.model)
 	}
 
@@ -78,8 +78,8 @@ func (c *DataModelCache) GetItem(key string) *CacheItem {
 func (c *DataModelCache) Set(key string, value models.DataModelType) error {
 	now := time.Now().Unix()
 	item := CacheItem{
-		model: value,
-		timeCached: now,
+		model:        value,
+		timeCached:   now,
 		lastAccessed: now,
 	}
 

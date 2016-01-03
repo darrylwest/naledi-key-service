@@ -1,11 +1,11 @@
 package keyservicetest
 
 import (
+	"fmt"
 	"keyservice/dao"
 	"keyservice/models"
 	"strings"
 	"testing"
-	"fmt"
 
 	. "github.com/franela/goblin"
 )

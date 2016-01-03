@@ -68,12 +68,12 @@ func TestUserModel(t *testing.T) {
 			hash := fixtures.CreateUserMap()
 
 			user := new(models.User)
-			if model,err := user.FromMap(hash); err == nil {
+			if model, err := user.FromMap(hash); err == nil {
 				// fmt.Printf("model type: %T\n", model)
 
 				v, ok := model.(models.User)
 
-				g.Assert(ok).Equal( true )
+				g.Assert(ok).Equal(true)
 				user = &v
 				g.Assert(fmt.Sprintf("%T", user)).Equal("*models.User")
 			} else {

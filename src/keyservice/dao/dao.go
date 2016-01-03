@@ -1,9 +1,9 @@
 package dao
 
 import (
-	"keyservice"
-	"gopkg.in/redis.v3"
 	"github.com/darrylwest/cassava-logger/logger"
+	"gopkg.in/redis.v3"
+	"keyservice"
 )
 
 const (
@@ -15,10 +15,9 @@ var (
 	log *logger.Logger
 	ctx *keyservice.Context
 
-	primaryClient *redis.Client
+	primaryClient   *redis.Client
 	secondaryClient *redis.Client
 )
-
 
 func InitializeDao(context *keyservice.Context, logger *logger.Logger) {
 	ctx = context
@@ -34,7 +33,7 @@ func GetPrimaryClient() *redis.Client {
 
 		pong, err := primaryClient.Ping().Result()
 		if err != nil {
-			panic( err )
+			panic(err)
 		}
 
 		log.Info("ping->%s", pong)
@@ -52,7 +51,7 @@ func GetSecondaryClient() *redis.Client {
 
 		pong, err := secondaryClient.Ping().Result()
 		if err != nil {
-			panic( err )
+			panic(err)
 		}
 
 		log.Info("ping->%s", pong)

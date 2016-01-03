@@ -76,7 +76,7 @@ func (ds *DataSource) Delete(key string) interface{} {
 
 	// TODO : remove from redis
 	if ds.client != nil {
-		ds.client.Del( key )
+		ds.client.Del(key)
 	}
 
 	return value

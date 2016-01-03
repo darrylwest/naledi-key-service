@@ -1,11 +1,11 @@
 package keyservicetest
 
 import (
+	"fmt"
 	"keyservice/dao"
 	"keyservice/models"
 	"testing"
 	"time"
-	"fmt"
 
 	. "github.com/franela/goblin"
 )
@@ -79,7 +79,7 @@ func TestCache(t *testing.T) {
 			g.Assert(cached >= now).IsTrue()
 			g.Assert(accessed >= now).IsTrue()
 
-			fmt.Sprintf("%v %d %d", model, cached, accessed )
+			fmt.Sprintf("%v %d %d", model, cached, accessed)
 		})
 
 		g.It("should delete a model", func() {
