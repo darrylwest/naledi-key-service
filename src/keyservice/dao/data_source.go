@@ -32,6 +32,7 @@ func NewCachedDataSource(client *redis.Client) DataSource {
 	return ds
 }
 
+// returns an interface from cache or database; if item is not found, a nil is returned
 func (ds *DataSource) Get(key string) (interface{}, error) {
 	value := ds.cache.Get(key)
 
@@ -45,6 +46,7 @@ func (ds *DataSource) Get(key string) (interface{}, error) {
 	return value, nil
 }
 
+// sets cache and database; returns error or nil on no errors
 func (ds *DataSource) Set(key string, value models.DataModelType) error {
 	ds.cache.Set(key, value)
 
@@ -65,6 +67,7 @@ func (ds *DataSource) Set(key string, value models.DataModelType) error {
 	return nil
 }
 
+// delete from cache and database and return the item (if in cache)
 func (ds *DataSource) Delete(key string) interface{} {
 	value := ds.cache.Delete(key)
 

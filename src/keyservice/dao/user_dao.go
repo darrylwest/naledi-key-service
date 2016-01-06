@@ -3,26 +3,33 @@ package dao
 import (
 	"fmt"
 	"keyservice/models"
+	"strings"
 )
 
 type UserDao struct {
 	dataSource DataSource
+	prefix string
 }
 
 // the context contains keys to access primary and secondary data sources
 func CreateUserDao(ds DataSource) UserDao {
 	dao := UserDao{
 		dataSource: ds,
+		prefix: "User:",
 	}
 
 	return dao
 }
 
-func (dao *UserDao) CreateDomainKey(key string) string {
-	return "User:" + key
+func (dao UserDao) CreateDomainKey(key string) string {
+	if strings.HasPrefix( key, dao.prefix ) {
+		return key
+	} else {
+		return dao.prefix + key
+	}
 }
 
-func (dao *UserDao) Save(user models.User) (models.User, error) {
+func (dao UserDao) Save(user models.User) (models.User, error) {
 	user.UpdateVersion()
 
 	key := dao.CreateDomainKey(user.GetDOI().GetId())
@@ -31,20 +38,45 @@ func (dao *UserDao) Save(user models.User) (models.User, error) {
 	return user, err
 }
 
-func (dao *UserDao) Query() ([]*models.User, error) {
-	var list []*models.User
+func (dao UserDao) Query() ([]models.User, error) {
+	var list []models.User
 	return list, fmt.Errorf(NotImplementedYet, "query")
 }
 
-func (dao *UserDao) FindById(id string) (*models.User, error) {
-	var user *models.User
+// returns user and nil error if found, else returns error
+func (dao UserDao) FindById(id string) (models.User, error) {
+	var user models.User
 	key := dao.CreateDomainKey(id)
 
 	obj, err := dao.dataSource.Get(key)
 
-	if obj != nil {
-		user = obj.(*models.User)
+	if err != nil {
+		return user, err
 	}
 
-	return user, err
+	if obj != nil {
+		return dao.convertObject(obj)
+	}
+
+	return user, fmt.Errorf(NotFound, "user", id)
+}
+
+func (dao UserDao) convertObject(obj interface{}) (models.User, error) {
+	var user models.User
+
+	switch v := obj.(type) {
+	case string:
+		u, err := user.FromJSON([]byte(v))
+		if err != nil {
+			return user, err
+		}
+
+		return dao.convertObject(u)
+	case models.User:
+		return v, nil
+	default:
+		return user, fmt.Errorf("could not convert type: %v", v)
+	}
+
+
 }

@@ -64,6 +64,9 @@ func TestDataSource(t *testing.T) {
 
 				g.Assert(t.Name()).Equal("string")
 
+				v := reflect.ValueOf(str)
+				g.Assert(v.Kind()).Equal(reflect.String)
+
 				obj, err := ref.FromJSON([]byte(str))
 				g.Assert(err).Equal(nil)
 				t = reflect.TypeOf( obj )
@@ -74,6 +77,8 @@ func TestDataSource(t *testing.T) {
 				g.Assert(ok).IsTrue()
 				g.Assert(user.GetDOI().GetId()).Equal(ref.GetDOI().GetId())
 				g.Assert(user.GetUsername()).Equal(ref.GetUsername())
+
+
 			} else {
 				g.Assert(false).IsTrue()
 			}

@@ -39,18 +39,6 @@ func NewUser(username, email, sms string) User {
 	return user
 }
 
-func NewUserFromJSON(bytes []byte) (*User, error) {
-	hash, err := MapFromJSON(bytes)
-	if err != nil {
-		return nil, err
-	}
-
-	user := new(User)
-	user.FromMap(hash)
-
-	return user, nil
-}
-
 func (u User) GetDOI() DocumentIdentifier {
 	return u.doi
 }
