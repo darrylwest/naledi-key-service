@@ -52,10 +52,6 @@ func TestDataSource(t *testing.T) {
 			key := "User:" + ref.GetDOI().GetId()
 			err := dataSource.Set(key, ref)
 
-			if err != nil {
-				fmt.Errorf("data source set error: %v", err)
-			}
-
 			g.Assert(err).Equal(nil)
 
 			// read it back directly from the database
@@ -97,6 +93,27 @@ func TestDataSource(t *testing.T) {
 				g.Assert(false).IsTrue()
 			}
 
+		})
+
+		g.It("should remove a known entity from database", func() {
+			client := dao.GetPrimaryClient()
+			dataSource := dao.NewCachedDataSource(client)
+
+			ref := fixtures.CreateUserModel()
+			key := "User:" + ref.GetDOI().GetId()
+			err := dataSource.Set(key, ref)
+			g.Assert(err).Equal(nil)
+
+			obj := dataSource.Delete(key)
+			g.Assert(obj != nil).IsTrue()
+
+			t := reflect.TypeOf(obj)
+			g.Assert(t.Name()).Equal("User")
+
+			if user, err := dataSource.Get(key); err == nil {
+				g.Assert(err).Equal(nil)
+				g.Assert(user).Equal(nil)
+			}
 		})
 	})
 }
