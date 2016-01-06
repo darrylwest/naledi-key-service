@@ -20,6 +20,9 @@ install-deps:
 format:
 	( gofmt -s -w src/*.go src/keyservice/*.go src/keyservice/*/*.go test/*.go )
 
+redis:
+	@( redis-cli -p 15101 $* )
+
 testmodels:
 	@( . ./.setpath ; cd test ; go test -run Model )
 

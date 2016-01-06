@@ -31,6 +31,22 @@ func (f *Fixtures) CreateDOIMap() map[string]interface{} {
 	return doi.ToMap()
 }
 
+func (f *Fixtures) CreateKnownUserModel() models.User {
+	hash := f.CreateUserMap()
+
+	hash["id"] = "566292010a1c40d08ecdbda39806256d"
+
+	obj, err := models.User{}.FromMap(hash)
+
+	if err != nil {
+		panic(err)
+	}
+
+	user, _ := obj.(models.User)
+
+	return user
+}
+
 func (f *Fixtures) CreateUserModel() models.User {
 	user := models.NewUser("john@ymail.com", "john@gmail.com", "7742502211@messaging.sprint.com")
 

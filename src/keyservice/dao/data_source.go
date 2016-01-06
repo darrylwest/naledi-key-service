@@ -32,27 +32,14 @@ func NewCachedDataSource(client *redis.Client) DataSource {
 	return ds
 }
 
-func (ds *DataSource) Get(key string) (models.DataModelType, error) {
+func (ds *DataSource) Get(key string) (interface{}, error) {
 	value := ds.cache.Get(key)
 
 	log.Info("get: %s=%v", key, value)
 
-	return value, nil
-}
-
-func (ds *DataSource) GetByType(key string, model models.DataModelType) (interface{}, error) {
-	if ds.client == nil {
-		return nil, nil
-	}
-
-	str, err := ds.client.Get(key).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	value, err := model.FromJSON([]byte(str))
-	if err != nil {
-		return nil, err
+	if value == nil && ds.client != nil {
+		log.Info("not cached, find from database: %s", key)
+		return ds.client.Get(key).Result()
 	}
 
 	return value, nil
@@ -63,7 +50,14 @@ func (ds *DataSource) Set(key string, value models.DataModelType) error {
 
 	log.Info("set: %s=%v", key, value)
 	if ds.client != nil {
-		err := ds.client.Set(key, value, 0).Err()
+		json, err := value.ToJSON()
+		if err != nil {
+			return err
+		}
+
+		log.Info("set db: %s", json)
+
+		err = ds.client.Set(key, string(json), 0).Err()
 
 		return err
 	}
