@@ -6,7 +6,7 @@ build:
 
 install-deps:
 	go get github.com/codegangsta/negroni
-	go get code.google.com/p/go-uuid/uuid
+	go get github.com/pborman/uuid
 	go get github.com/phyber/negroni-gzip/gzip
 	go get gopkg.in/tylerb/graceful.v1
 	go get -u github.com/darrylwest/cassava-logger/logger
