@@ -1,7 +1,7 @@
 package keyservice
 
 import (
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/pborman/uuid"
 	"crypto/rand"
 	"golang.org/x/crypto/nacl/box"
 	"keyservice/models"

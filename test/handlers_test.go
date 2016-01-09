@@ -6,8 +6,6 @@ import (
 	"keyservice/models"
 	"testing"
 
-	// "code.google.com/p/go-uuid/uuid"
-	// "golang.org/x/crypto/nacl/box"
 	"bytes"
 	"encoding/json"
 	"github.com/agl/ed25519"
