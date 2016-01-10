@@ -2,10 +2,10 @@ package keyservicetest
 
 import (
 	"fmt"
-	"keyservice/dao"
 	"reflect"
 	"strings"
 	"testing"
+	"keyservice"
 
 	. "github.com/franela/goblin"
 )
@@ -18,10 +18,10 @@ func TestUserDao(t *testing.T) {
 	g.Describe("UserDao", func() {
 
 		g.It("should create an instance of user dao", func() {
-			ds := dao.NewCachedDataSource(nil)
-			userDao := dao.CreateUserDao(ds)
+			ds := keyservice.NewCachedDataSource(nil)
+			userDao := keyservice.CreateUserDao(ds)
 
-			g.Assert(fmt.Sprintf("%T", userDao)).Equal("dao.UserDao")
+			g.Assert(fmt.Sprintf("%T", userDao)).Equal("keyservice.UserDao")
 
 			g.Assert(ds.GetCacheLen()).Equal(0)
 			val, err := userDao.FindById("mykey")
@@ -30,10 +30,10 @@ func TestUserDao(t *testing.T) {
 		})
 
 		g.It("should save a user model and update last updated and version", func() {
-			client := dao.GetPrimaryClient()
+			client := keyservice.GetPrimaryClient()
 			client.FlushAll()
-			ds := dao.NewCachedDataSource(client)
-			dao := dao.CreateUserDao(ds)
+			ds := keyservice.NewCachedDataSource(client)
+			dao := keyservice.CreateUserDao(ds)
 			user := fixtures.CreateUserModel()
 
 			doi := user.GetDOI()
@@ -55,8 +55,8 @@ func TestUserDao(t *testing.T) {
 		})
 
 		g.It("should create a user domain key", func() {
-			ds := dao.NewCachedDataSource(nil)
-			dao := dao.CreateUserDao(ds)
+			ds := keyservice.NewCachedDataSource(nil)
+			dao := keyservice.CreateUserDao(ds)
 			user := fixtures.CreateUserModel()
 			id := user.GetDOI().GetId()
 
@@ -74,8 +74,8 @@ func TestUserDao(t *testing.T) {
 		})
 
 		g.It("should find a known user by id", func() {
-			client := dao.GetPrimaryClient()
-			dataSource := dao.NewCachedDataSource(client)
+			client := keyservice.GetPrimaryClient()
+			dataSource := keyservice.NewCachedDataSource(client)
 
 			ref := fixtures.CreateUserModel()
 			id := ref.GetDOI().GetId()
@@ -84,7 +84,7 @@ func TestUserDao(t *testing.T) {
 
 			g.Assert(err).Equal(nil)
 
-			dao := dao.CreateUserDao(dataSource)
+			dao := keyservice.CreateUserDao(dataSource)
 			user, err := dao.FindById(id)
 			g.Assert(err).Equal(nil)
 

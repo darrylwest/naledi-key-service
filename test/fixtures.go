@@ -3,7 +3,6 @@ package keyservicetest
 import (
 	"github.com/darrylwest/cassava-logger/logger"
 	"keyservice"
-	"keyservice/dao"
 )
 
 var (
@@ -18,7 +17,7 @@ func init() {
 	testLogger = testContext.CreateLogger()
 	testContext.ReadConfig()
 
-	dao.InitializeDao(testContext, testLogger)
+	keyservice.InitializeDao(testContext, testLogger)
 }
 
 type Fixtures struct {
@@ -95,3 +94,4 @@ func (f *Fixtures) CreateAccessKeyMap() map[string]interface{} {
 
 	return mp
 }
+

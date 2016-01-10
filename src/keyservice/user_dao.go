@@ -1,8 +1,7 @@
-package dao
+package keyservice
 
 import (
 	"fmt"
-	"keyservice"
 	"strings"
 )
 
@@ -33,7 +32,7 @@ func (dao UserDao) CreateDomainKey(key string) string {
 	}
 }
 
-func (dao UserDao) Save(user keyservice.User) (keyservice.User, error) {
+func (dao UserDao) Save(user User) (User, error) {
 	user.UpdateVersion()
 
 	key := dao.CreateDomainKey(user.GetDOI().GetId())
@@ -42,14 +41,14 @@ func (dao UserDao) Save(user keyservice.User) (keyservice.User, error) {
 	return user, err
 }
 
-func (dao UserDao) Query() ([]keyservice.User, error) {
-	var list []keyservice.User
+func (dao UserDao) Query() ([]User, error) {
+	var list []User
 	return list, fmt.Errorf(NotImplementedYet, "query")
 }
 
 // returns user and nil error if found, else returns error
-func (dao UserDao) FindById(id string) (keyservice.User, error) {
-	var user keyservice.User
+func (dao UserDao) FindById(id string) (User, error) {
+	var user User
 	key := dao.CreateDomainKey(id)
 
 	obj, err := dao.dataSource.Get(key)
@@ -65,8 +64,8 @@ func (dao UserDao) FindById(id string) (keyservice.User, error) {
 	return user, fmt.Errorf(NotFound, "user", id)
 }
 
-func (dao UserDao) convertObject(obj interface{}) (keyservice.User, error) {
-	var user keyservice.User
+func (dao UserDao) convertObject(obj interface{}) (User, error) {
+	var user User
 
 	switch v := obj.(type) {
 	case string:
@@ -76,7 +75,7 @@ func (dao UserDao) convertObject(obj interface{}) (keyservice.User, error) {
 		}
 
 		return dao.convertObject(u)
-	case keyservice.User:
+	case User:
 		return v, nil
 	default:
 		return user, fmt.Errorf("could not convert type: %v", v)

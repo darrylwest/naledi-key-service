@@ -1,9 +1,8 @@
-package dao
+package keyservice
 
 import (
 	"github.com/darrylwest/cassava-logger/logger"
 	"gopkg.in/redis.v3"
-	"keyservice"
 )
 
 const (
@@ -12,14 +11,13 @@ const (
 )
 
 var (
-	log *logger.Logger
-	ctx *keyservice.Context
+	ctx *Context
 
 	primaryClient   *redis.Client
 	secondaryClient *redis.Client
 )
 
-func InitializeDao(context *keyservice.Context, logger *logger.Logger) {
+func InitializeDao(context *Context, logger *logger.Logger) {
 	ctx = context
 	log = logger
 }

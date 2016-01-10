@@ -3,7 +3,6 @@ package keyservicetest
 import (
 	"fmt"
 	"keyservice"
-	"keyservice/dao"
 	"testing"
 
 	"reflect"
@@ -18,9 +17,9 @@ func TestDataSource(t *testing.T) {
 		fixtures := new(Fixtures)
 
 		g.It("should create a cache only data source", func() {
-			dataSource := dao.NewCachedDataSource(nil)
+			dataSource := keyservice.NewCachedDataSource(nil)
 
-			g.Assert(fmt.Sprintf("%T", dataSource)).Equal("dao.DataSource")
+			g.Assert(fmt.Sprintf("%T", dataSource)).Equal("keyservice.DataSource")
 
 			g.Assert(dataSource.GetCacheLen()).Equal(0)
 			g.Assert(dataSource.GetCache() != nil).IsTrue()
@@ -28,7 +27,7 @@ func TestDataSource(t *testing.T) {
 
 		g.It("should create a standard data source with primary redis client", func() {
 			fixtures.CreateUserModel()
-			client := dao.GetPrimaryClient()
+			client := keyservice.GetPrimaryClient()
 
 			pong, err := client.Ping().Result()
 			g.Assert(err).Equal(nil)
@@ -37,7 +36,7 @@ func TestDataSource(t *testing.T) {
 
 		g.It("should create a standard data source with secondary redis client", func() {
 			fixtures.CreateUserModel()
-			client := dao.GetSecondaryClient()
+			client := keyservice.GetSecondaryClient()
 
 			pong, err := client.Ping().Result()
 			g.Assert(err).Equal(nil)
@@ -45,8 +44,8 @@ func TestDataSource(t *testing.T) {
 		})
 
 		g.It("should set a known data model with a datasource and cache", func() {
-			client := dao.GetPrimaryClient()
-			dataSource := dao.NewCachedDataSource(client)
+			client := keyservice.GetPrimaryClient()
+			dataSource := keyservice.NewCachedDataSource(client)
 
 			ref := fixtures.CreateUserModel()
 			key := "User:" + ref.GetDOI().GetId()
@@ -100,8 +99,8 @@ func TestDataSource(t *testing.T) {
 		})
 
 		g.It("should remove a known entity from database", func() {
-			client := dao.GetPrimaryClient()
-			dataSource := dao.NewCachedDataSource(client)
+			client := keyservice.GetPrimaryClient()
+			dataSource := keyservice.NewCachedDataSource(client)
 
 			ref := fixtures.CreateUserModel()
 			key := "User:" + ref.GetDOI().GetId()

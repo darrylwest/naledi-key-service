@@ -3,7 +3,6 @@ package keyservicetest
 import (
 	"fmt"
 	"keyservice"
-	"keyservice/dao"
 	"testing"
 	"time"
 
@@ -17,13 +16,13 @@ func TestCache(t *testing.T) {
 
 	g.Describe("Cache", func() {
 		g.It("should create a cache instance", func() {
-			cache := dao.NewDataModelCache()
+			cache := keyservice.NewDataModelCache()
 
 			g.Assert(cache.Len()).Equal(0)
 		})
 
 		g.It("should get/set a model", func() {
-			cache := dao.NewDataModelCache()
+			cache := keyservice.NewDataModelCache()
 
 			ref := fixtures.CreateUserModel()
 			key := ref.GetDOI().GetId()
@@ -59,7 +58,7 @@ func TestCache(t *testing.T) {
 		})
 
 		g.It("should update access and cached time stamps for get/set", func() {
-			cache := dao.NewDataModelCache()
+			cache := keyservice.NewDataModelCache()
 
 			ref := fixtures.CreateUserModel()
 			key := ref.GetDOI().GetId()
@@ -83,7 +82,7 @@ func TestCache(t *testing.T) {
 		})
 
 		g.It("should delete a model", func() {
-			cache := dao.NewDataModelCache()
+			cache := keyservice.NewDataModelCache()
 
 			ref := fixtures.CreateUserModel()
 			key := ref.GetDOI().GetId()
