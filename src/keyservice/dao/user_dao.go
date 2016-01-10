@@ -21,6 +21,10 @@ func CreateUserDao(ds DataSource) UserDao {
 	return dao
 }
 
+func (dao UserDao) GetPrefix() string {
+	return dao.prefix
+}
+
 func (dao UserDao) CreateDomainKey(key string) string {
 	if strings.HasPrefix( key, dao.prefix ) {
 		return key

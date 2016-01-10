@@ -67,6 +67,8 @@ func TestUserDao(t *testing.T) {
 			g.Assert(strings.HasPrefix(key, "User:")).IsTrue()
 			g.Assert(strings.HasSuffix(key, id)).IsTrue()
 
+			g.Assert(dao.GetPrefix()).Equal("User:")
+
 			// test to insure prefix added only once
 			str := dao.CreateDomainKey(key)
 			g.Assert(str).Equal(key)
