@@ -59,13 +59,13 @@ ping:
 stop:
 	curl -X POST http://localhost:9009/shutdown
 
-install-webserver:
+install-keyservice:
 	@make build
 	@( sudo cp ./bin/keyservice /usr/local/bin/ )
-	@webserver --version
+	@keyservice --version
 
 install:
-	@make install-webserver
+	@make install-keyservice
 
 
 .PHONY: format
