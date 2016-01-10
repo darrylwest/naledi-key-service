@@ -4,7 +4,6 @@ import (
 	"github.com/darrylwest/cassava-logger/logger"
 	"keyservice"
 	"keyservice/dao"
-	"keyservice/models"
 )
 
 var (
@@ -26,35 +25,35 @@ type Fixtures struct {
 }
 
 func (f *Fixtures) CreateDOIMap() map[string]interface{} {
-	doi := models.NewDocumentIdentifier()
+	doi := keyservice.NewDocumentIdentifier()
 
 	return doi.ToMap()
 }
 
-func (f *Fixtures) CreateKnownUserModel() models.User {
+func (f *Fixtures) CreateKnownUserModel() keyservice.User {
 	hash := f.CreateUserMap()
 
 	hash["id"] = "566292010a1c40d08ecdbda39806256d"
 
-	obj, err := models.User{}.FromMap(hash)
+	obj, err := keyservice.User{}.FromMap(hash)
 
 	if err != nil {
 		panic(err)
 	}
 
-	user, _ := obj.(models.User)
+	user, _ := obj.(keyservice.User)
 
 	return user
 }
 
-func (f *Fixtures) CreateUserModel() models.User {
-	user := models.NewUser("john@ymail.com", "john@gmail.com", "7742502211@messaging.sprint.com")
+func (f *Fixtures) CreateUserModel() keyservice.User {
+	user := keyservice.NewUser("john@ymail.com", "john@gmail.com", "7742502211@messaging.sprint.com")
 
 	return user
 }
 
 func (f *Fixtures) CreateUserMap() map[string]interface{} {
-	doi := models.NewDocumentIdentifier()
+	doi := keyservice.NewDocumentIdentifier()
 	hash := doi.ToMap()
 
 	hash["username"] = "jane@jmail.com"
@@ -62,20 +61,20 @@ func (f *Fixtures) CreateUserMap() map[string]interface{} {
 	hash["email"] = "jane@gmail.com"
 	hash["sms"] = "4156664321@messaging.sprint.com"
 
-	hash["status"] = models.ModelStatus.Active
+	hash["status"] = keyservice.ModelStatus.Active
 
 	return hash
 }
 
-func (f *Fixtures) CreateUserDocumentModel(user models.User) models.UserDocument {
-	model := models.NewUserDocument(f.CreateUserModel(), "My Fixture Created User Document")
+func (f *Fixtures) CreateUserDocumentModel(user keyservice.User) keyservice.UserDocument {
+	model := keyservice.NewUserDocument(f.CreateUserModel(), "My Fixture Created User Document")
 
 	return model
 }
 
 func (f *Fixtures) CreateUserDocumentMap() map[string]interface{} {
 	user := f.CreateUserModel()
-	doi := models.NewDocumentIdentifier()
+	doi := keyservice.NewDocumentIdentifier()
 	hash := doi.ToMap()
 
 	hash["name"] = "My Fixture Map Generated Document"
@@ -83,7 +82,7 @@ func (f *Fixtures) CreateUserDocumentMap() map[string]interface{} {
 	udoi := user.GetDOI()
 	hash["owner"] = udoi.GetId()
 	hash["meta"] = "this is my documentmeta data"
-	hash["status"] = models.ModelStatus.Valid
+	hash["status"] = keyservice.ModelStatus.Valid
 
 	return hash
 }

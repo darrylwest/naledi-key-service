@@ -2,8 +2,8 @@ package keyservicetest
 
 import (
 	"fmt"
+	"keyservice"
 	"keyservice/dao"
-	"keyservice/models"
 	"testing"
 	"time"
 
@@ -37,7 +37,7 @@ func TestCache(t *testing.T) {
 
 			g.Assert(cache.Len()).Equal(1)
 			g.Assert(model != nil).IsTrue()
-			user, ok := model.(models.User)
+			user, ok := model.(keyservice.User)
 			g.Assert(ok).IsTrue()
 			g.Assert(user.GetDOI()).Equal(ref.GetDOI())
 			g.Assert(user.GetUsername()).Equal(ref.GetUsername())
@@ -49,12 +49,12 @@ func TestCache(t *testing.T) {
 
 			model = cache.Get(key)
 			g.Assert(cache.Len()).Equal(2)
-			udoc, ok := model.(models.UserDocument)
+			udoc, ok := model.(keyservice.UserDocument)
 			g.Assert(ok).IsTrue()
 			g.Assert(udoc.GetDOI().GetId()).Equal(ref1.GetDOI().GetId())
 
 			// insure that a bad cast won't panic if second parameter (ok) is used
-			_, ok = model.(models.User)
+			_, ok = model.(keyservice.User)
 			g.Assert(ok).IsFalse()
 		})
 

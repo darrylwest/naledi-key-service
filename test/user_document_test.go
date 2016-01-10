@@ -2,7 +2,7 @@ package keyservicetest
 
 import (
 	"fmt"
-	"keyservice/models"
+	"keyservice"
 	"testing"
 	"time"
 
@@ -16,7 +16,7 @@ func TestUserDocumentModel(t *testing.T) {
 		fixtures := new(Fixtures)
 
 		g.It("should create a new user document model", func() {
-			udoc := new(models.UserDocument)
+			udoc := new(keyservice.UserDocument)
 			model := fixtures.CreateUserDocumentModel(fixtures.CreateUserModel())
 
 			fmt.Sprintln(udoc, model)
@@ -36,10 +36,10 @@ func TestUserDocumentModel(t *testing.T) {
 		g.It("should create a json string from the populated user document model", func() {
 			user := fixtures.CreateUserModel()
 			doc := fixtures.CreateUserDocumentModel(user)
-			doc.SetStatus(models.ModelStatus.Expired)
+			doc.SetStatus(keyservice.ModelStatus.Expired)
 			doc.UpdateVersion()
 
-			json, err := models.MapToJSON(doc.ToMap())
+			json, err := keyservice.MapToJSON(doc.ToMap())
 
 			if err != nil {
 				fmt.Println(string(json))
@@ -55,27 +55,27 @@ func TestUserDocumentModel(t *testing.T) {
 			hash := fixtures.CreateUserDocumentMap()
 			// fmt.Printf("%v\n", hash)
 
-			doc := new(models.UserDocument)
+			doc := new(keyservice.UserDocument)
 			if model, err := doc.FromMap(hash); err == nil {
-				v, ok := model.(models.UserDocument)
+				v, ok := model.(keyservice.UserDocument)
 				g.Assert(ok).IsTrue()
 				doc = &v
 			}
 
 			// fmt.Printf("%v\n", doc)
 
-			g.Assert(doc.GetStatus()).Equal(models.ModelStatus.Valid)
+			g.Assert(doc.GetStatus()).Equal(keyservice.ModelStatus.Valid)
 
 			doi := doc.GetDOI()
 			g.Assert(doi.GetId()).Equal(hash["id"].(string))
 
 			dflt := time.Now()
-			dt, err := models.ParseJSONDate(hash, "dateCreated", dflt)
+			dt, err := keyservice.ParseJSONDate(hash, "dateCreated", dflt)
 			// fmt.Println(doi.GetDateCreated(), dt)
 			g.Assert(err).Equal(nil)
 			g.Assert(doi.GetDateCreated()).Equal(dt)
 
-			dt, err = models.ParseJSONDate(hash, "lastUpdated", dflt)
+			dt, err = keyservice.ParseJSONDate(hash, "lastUpdated", dflt)
 			// fmt.Println(doi.GetDateCreated(), dt)
 			g.Assert(err).Equal(nil)
 			g.Assert(doi.GetLastUpdated()).Equal(dt)

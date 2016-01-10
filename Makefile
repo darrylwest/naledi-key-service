@@ -35,7 +35,7 @@ qtest:
 
 test:
 	@( make qtest ) | tee /tmp/keyservice.test
-	@( . ./.setpath ; go vet src/*.go ; go vet src/keyservice/*.go ; go vet src/keyservice/models/*.go ; go vet src/keyservice/dao/*.go ) | tee /tmp/keyservice.vet
+	@( . ./.setpath ; go vet src/*.go ; go vet src/keyservice/*.go ; go vet src/keyservice/dao/*.go ) | tee /tmp/keyservice.vet
 
 watch:
 	./watcher.js

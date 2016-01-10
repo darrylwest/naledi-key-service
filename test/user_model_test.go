@@ -2,7 +2,7 @@ package keyservicetest
 
 import (
 	"fmt"
-	"keyservice/models"
+	"keyservice"
 	"testing"
 
 	. "github.com/franela/goblin"
@@ -15,7 +15,7 @@ func TestUserModel(t *testing.T) {
 		fixtures := new(Fixtures)
 
 		g.It("should create a user model", func() {
-			user := new(models.User)
+			user := new(keyservice.User)
 
 			// fmt.Println( user.GetDOI().GetDateCreated().Year() )
 
@@ -67,15 +67,15 @@ func TestUserModel(t *testing.T) {
 		g.It("should populate a user object from map", func() {
 			hash := fixtures.CreateUserMap()
 
-			user := new(models.User)
+			user := new(keyservice.User)
 			if model, err := user.FromMap(hash); err == nil {
 				// fmt.Printf("model type: %T\n", model)
 
-				v, ok := model.(models.User)
+				v, ok := model.(keyservice.User)
 
 				g.Assert(ok).Equal(true)
 				user = &v
-				g.Assert(fmt.Sprintf("%T", user)).Equal("*models.User")
+				g.Assert(fmt.Sprintf("%T", user)).Equal("*keyservice.User")
 			} else {
 				fmt.Println(err)
 				g.Assert(false).Equal(true)
@@ -93,7 +93,7 @@ func TestUserModel(t *testing.T) {
 
 		g.It("should create a json string from the populated user model", func() {
 			user := fixtures.CreateUserModel()
-			user.SetStatus(models.ModelStatus.Banned)
+			user.SetStatus(keyservice.ModelStatus.Banned)
 			user.UpdateVersion()
 
 			user.SetFullName("John Doe")
@@ -111,7 +111,7 @@ func TestUserModel(t *testing.T) {
 
 		g.It("should create a user map from the json object", func() {
 			model := fixtures.CreateUserModel()
-			model.SetStatus(models.ModelStatus.Banned)
+			model.SetStatus(keyservice.ModelStatus.Banned)
 			model.UpdateVersion()
 
 			model.SetFullName("John Doe")
@@ -122,13 +122,13 @@ func TestUserModel(t *testing.T) {
 			// fmt.Printf("%s", json)
 			g.Assert(err == nil).IsTrue()
 
-			hash, err := models.MapFromJSON(json)
+			hash, err := keyservice.MapFromJSON(json)
 			g.Assert(err == nil).IsTrue()
 
-			user := new(models.User)
+			user := new(keyservice.User)
 			if model, err := user.FromMap(hash); err == nil {
 				// fmt.Printf("%T", model)
-				v, ok := model.(models.User)
+				v, ok := model.(keyservice.User)
 				g.Assert(ok).IsTrue()
 				user = &v
 			} else {

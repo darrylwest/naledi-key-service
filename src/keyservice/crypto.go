@@ -8,11 +8,9 @@ import (
 	"golang.org/x/crypto/nacl/box"
 	"golang.org/x/crypto/nacl/secretbox"
 	"io"
-	"keyservice/models"
 )
 
 const (
-	KeySize   = models.KeySize
 	NonceSize = 24
 )
 

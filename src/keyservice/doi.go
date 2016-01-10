@@ -1,8 +1,8 @@
-package models
+package keyservice
 
 import (
-	"github.com/pborman/uuid"
 	"fmt"
+	"github.com/pborman/uuid"
 	"strconv"
 	"strings"
 	"time"

@@ -2,7 +2,7 @@ package keyservicetest
 
 import (
 	"fmt"
-	"keyservice/models"
+	"keyservice"
 	"testing"
 	"time"
 
@@ -10,7 +10,7 @@ import (
 )
 
 func CreateDocumentIdentifierMap() map[string]interface{} {
-	doi := models.NewDocumentIdentifier()
+	doi := keyservice.NewDocumentIdentifier()
 
 	return doi.ToMap()
 }
@@ -20,14 +20,14 @@ func TestDocumentIdentifierModel(t *testing.T) {
 
 	g.Describe("DocumentIdentifierModel", func() {
 		g.It("should create a user model", func() {
-			doi := new(models.DocumentIdentifier)
+			doi := new(keyservice.DocumentIdentifier)
 
 			g.Assert(doi != nil).IsTrue()
 			g.Assert(doi.GetId()).Equal("")
 		})
 
 		g.It("should create a new model id", func() {
-			id := models.NewModelId()
+			id := keyservice.NewModelId()
 
 			g.Assert(len(id)).Equal(32)
 			// println( id )
@@ -36,7 +36,7 @@ func TestDocumentIdentifierModel(t *testing.T) {
 
 		g.It("should create a new valid instance", func() {
 			now := time.Now().UTC()
-			doi := models.NewDocumentIdentifier()
+			doi := keyservice.NewDocumentIdentifier()
 
 			g.Assert(len(doi.GetId())).Equal(32)
 			// fmt.Println( doi.GetDateCreated().Sub(now).Seconds() )
@@ -46,7 +46,7 @@ func TestDocumentIdentifierModel(t *testing.T) {
 		})
 
 		g.It("should create a map of doi values", func() {
-			doi := models.NewDocumentIdentifier()
+			doi := keyservice.NewDocumentIdentifier()
 
 			hash := doi.ToMap()
 
@@ -59,15 +59,15 @@ func TestDocumentIdentifierModel(t *testing.T) {
 		})
 
 		g.It("should create a doi from a compatible map", func() {
-			ref := models.NewDocumentIdentifier()
+			ref := keyservice.NewDocumentIdentifier()
 			hash := (&ref).ToMap()
 			dflt := (*new(time.Time))
 
-			dateCreated, _ := models.ParseJSONDate(hash, "dateCreated", dflt)
-			lastUpdated, _ := models.ParseJSONDate(hash, "lastUpdated", dflt)
+			dateCreated, _ := keyservice.ParseJSONDate(hash, "dateCreated", dflt)
+			lastUpdated, _ := keyservice.ParseJSONDate(hash, "lastUpdated", dflt)
 			version := int64(hash["version"].(float64))
 
-			doi := new(models.DocumentIdentifier)
+			doi := new(keyservice.DocumentIdentifier)
 			doi.FromMap(hash)
 
 			g.Assert(hash["id"].(string)).Equal(doi.GetId())

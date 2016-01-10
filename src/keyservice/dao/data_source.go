@@ -2,7 +2,7 @@ package dao
 
 import (
 	"gopkg.in/redis.v3"
-	"keyservice/models"
+	"keyservice"
 	// "github.com/darrylwest/cassava-logger/logger"
 )
 
@@ -47,7 +47,7 @@ func (ds *DataSource) Get(key string) (interface{}, error) {
 }
 
 // sets cache and database; returns error or nil on no errors
-func (ds *DataSource) Set(key string, value models.DataModelType) error {
+func (ds *DataSource) Set(key string, value keyservice.DataModelType) error {
 	ds.cache.Set(key, value)
 
 	log.Info("set: %s=%v", key, value)

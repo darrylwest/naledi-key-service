@@ -2,20 +2,20 @@ package dao
 
 import (
 	"fmt"
-	"keyservice/models"
+	"keyservice"
 	"strings"
 )
 
 type UserDao struct {
 	dataSource DataSource
-	prefix string
+	prefix     string
 }
 
 // the context contains keys to access primary and secondary data sources
 func CreateUserDao(ds DataSource) UserDao {
 	dao := UserDao{
 		dataSource: ds,
-		prefix: "User:",
+		prefix:     "User:",
 	}
 
 	return dao
@@ -26,14 +26,14 @@ func (dao UserDao) GetPrefix() string {
 }
 
 func (dao UserDao) CreateDomainKey(key string) string {
-	if strings.HasPrefix( key, dao.prefix ) {
+	if strings.HasPrefix(key, dao.prefix) {
 		return key
 	} else {
 		return dao.prefix + key
 	}
 }
 
-func (dao UserDao) Save(user models.User) (models.User, error) {
+func (dao UserDao) Save(user keyservice.User) (keyservice.User, error) {
 	user.UpdateVersion()
 
 	key := dao.CreateDomainKey(user.GetDOI().GetId())
@@ -42,14 +42,14 @@ func (dao UserDao) Save(user models.User) (models.User, error) {
 	return user, err
 }
 
-func (dao UserDao) Query() ([]models.User, error) {
-	var list []models.User
+func (dao UserDao) Query() ([]keyservice.User, error) {
+	var list []keyservice.User
 	return list, fmt.Errorf(NotImplementedYet, "query")
 }
 
 // returns user and nil error if found, else returns error
-func (dao UserDao) FindById(id string) (models.User, error) {
-	var user models.User
+func (dao UserDao) FindById(id string) (keyservice.User, error) {
+	var user keyservice.User
 	key := dao.CreateDomainKey(id)
 
 	obj, err := dao.dataSource.Get(key)
@@ -65,8 +65,8 @@ func (dao UserDao) FindById(id string) (models.User, error) {
 	return user, fmt.Errorf(NotFound, "user", id)
 }
 
-func (dao UserDao) convertObject(obj interface{}) (models.User, error) {
-	var user models.User
+func (dao UserDao) convertObject(obj interface{}) (keyservice.User, error) {
+	var user keyservice.User
 
 	switch v := obj.(type) {
 	case string:
@@ -76,11 +76,10 @@ func (dao UserDao) convertObject(obj interface{}) (models.User, error) {
 		}
 
 		return dao.convertObject(u)
-	case models.User:
+	case keyservice.User:
 		return v, nil
 	default:
 		return user, fmt.Errorf("could not convert type: %v", v)
 	}
-
 
 }

@@ -1,7 +1,7 @@
 package keyservicetest
 
 import (
-	"keyservice/models"
+	"keyservice"
 	"testing"
 	// "fmt"
 
@@ -13,7 +13,7 @@ func TestModels(t *testing.T) {
 
 	g.Describe("Models", func() {
 		g.It("should create a document identifier", func() {
-			doi := new(models.DocumentIdentifier)
+			doi := new(keyservice.DocumentIdentifier)
 
 			g.Assert(doi != nil).IsTrue()
 		})

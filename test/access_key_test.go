@@ -2,7 +2,7 @@ package keyservicetest
 
 import (
 	"fmt"
-	"keyservice/models"
+	"keyservice"
 	"testing"
 
 	. "github.com/franela/goblin"
@@ -16,7 +16,7 @@ func TestAccessKeyModel(t *testing.T) {
 	g.Describe("AccessKeyModel", func() {
 
 		g.It("should create an access key model", func() {
-			ak := new(models.AccessKey)
+			ak := new(keyservice.AccessKey)
 			g.Assert(ak != nil).IsTrue()
 		})
 
@@ -25,7 +25,7 @@ func TestAccessKeyModel(t *testing.T) {
 
 			fmt.Sprintln(mp)
 
-			ak := new(models.AccessKey)
+			ak := new(keyservice.AccessKey)
 			err := ak.FromMap(mp)
 			g.Assert(err).Equal(nil)
 
@@ -35,13 +35,13 @@ func TestAccessKeyModel(t *testing.T) {
 		g.It("should create a json object from access key map", func() {
 			mp := fixtures.CreateAccessKeyMap()
 
-			json, err := models.MapToJSON(mp)
+			json, err := keyservice.MapToJSON(mp)
 			g.Assert(err).Equal(nil)
 			g.Assert(json != nil).IsTrue()
 		})
 
 		g.It("should create a map object from populated model", func() {
-			ak := models.NewAccessKey(models.NewModelId(), []byte("this is a test"))
+			ak := keyservice.NewAccessKey(keyservice.NewModelId(), []byte("this is a test"))
 
 			mp := ak.ToMap()
 			g.Assert(mp != nil).IsTrue()

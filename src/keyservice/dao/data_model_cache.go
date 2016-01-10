@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"keyservice/models"
+	"keyservice"
 	"sync"
 	"time"
 )
@@ -14,12 +14,12 @@ type CacheItemStats struct {
 }
 
 type CacheItem struct {
-	model        models.DataModelType
+	model        keyservice.DataModelType
 	timeCached   int64 // unix seconds when this item was last set
 	lastAccessed int64 // unix seconds when this item was last get
 }
 
-func (item CacheItem) Values() (models.DataModelType, int64, int64) {
+func (item CacheItem) Values() (keyservice.DataModelType, int64, int64) {
 	return item.model, item.timeCached, item.lastAccessed
 }
 
@@ -36,8 +36,8 @@ func NewDataModelCache() *DataModelCache {
 	return &cache
 }
 
-func (c *DataModelCache) GetValues() []models.DataModelType {
-	list := make([]models.DataModelType, len(c.values))
+func (c *DataModelCache) GetValues() []keyservice.DataModelType {
+	list := make([]keyservice.DataModelType, len(c.values))
 
 	for _, v := range c.values {
 		list = append(list, v.model)
@@ -50,7 +50,7 @@ func (c *DataModelCache) Len() int {
 	return len(c.values)
 }
 
-func (c *DataModelCache) Get(key string) models.DataModelType {
+func (c *DataModelCache) Get(key string) keyservice.DataModelType {
 	item := c.GetItem(key)
 	if item != nil {
 		return item.model
@@ -75,7 +75,7 @@ func (c *DataModelCache) GetItem(key string) *CacheItem {
 	}
 }
 
-func (c *DataModelCache) Set(key string, value models.DataModelType) error {
+func (c *DataModelCache) Set(key string, value keyservice.DataModelType) error {
 	now := time.Now().Unix()
 	item := CacheItem{
 		model:        value,
@@ -92,7 +92,7 @@ func (c *DataModelCache) Set(key string, value models.DataModelType) error {
 	return nil
 }
 
-func (c *DataModelCache) Delete(key string) models.DataModelType {
+func (c *DataModelCache) Delete(key string) keyservice.DataModelType {
 	if item, ok := c.values[key]; ok {
 		c.Lock()
 		delete(c.values, key)

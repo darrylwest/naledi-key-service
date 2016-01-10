@@ -1,10 +1,9 @@
 package keyservice
 
 import (
-	"github.com/pborman/uuid"
 	"crypto/rand"
+	"github.com/pborman/uuid"
 	"golang.org/x/crypto/nacl/box"
-	"keyservice/models"
 	"sync"
 	"time"
 )
@@ -16,7 +15,7 @@ type Session struct {
 	serverPub    *[KeySize]byte
 	serverPriv   *[KeySize]byte
 	license      *[]byte
-	user         *models.User
+	user         *User
 	messageCount int
 }
 
@@ -33,7 +32,7 @@ func (ss *Session) SetPubPrivKeys(pub, priv *[KeySize]byte) {
 	ss.serverPriv = priv
 }
 
-func (ss *Session) GetUser() *models.User {
+func (ss *Session) GetUser() *User {
 	return ss.user
 }
 

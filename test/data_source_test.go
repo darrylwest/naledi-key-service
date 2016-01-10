@@ -2,8 +2,8 @@ package keyservicetest
 
 import (
 	"fmt"
+	"keyservice"
 	"keyservice/dao"
-	"keyservice/models"
 	"testing"
 
 	"reflect"
@@ -69,15 +69,14 @@ func TestDataSource(t *testing.T) {
 
 				obj, err := ref.FromJSON([]byte(str))
 				g.Assert(err).Equal(nil)
-				t = reflect.TypeOf( obj )
+				t = reflect.TypeOf(obj)
 
 				g.Assert(t.Name()).Equal("User")
 
-				user, ok := obj.(models.User)
+				user, ok := obj.(keyservice.User)
 				g.Assert(ok).IsTrue()
 				g.Assert(user.GetDOI().GetId()).Equal(ref.GetDOI().GetId())
 				g.Assert(user.GetUsername()).Equal(ref.GetUsername())
-
 
 			} else {
 				g.Assert(false).IsTrue()
@@ -89,12 +88,12 @@ func TestDataSource(t *testing.T) {
 				t := reflect.TypeOf(obj)
 				g.Assert(t.Name()).Equal("User")
 
-				user, ok := obj.(models.User)
+				user, ok := obj.(keyservice.User)
 				g.Assert(ok).IsTrue()
 				g.Assert(user.GetDOI().GetId()).Equal(ref.GetDOI().GetId())
 				g.Assert(user.GetUsername()).Equal(ref.GetUsername())
 			} else {
-				fmt.Println( err )
+				fmt.Println(err)
 				g.Assert(false).IsTrue()
 			}
 

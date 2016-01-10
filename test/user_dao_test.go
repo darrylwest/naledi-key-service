@@ -3,10 +3,9 @@ package keyservicetest
 import (
 	"fmt"
 	"keyservice/dao"
-	// "keyservice/models"
+	"reflect"
 	"strings"
 	"testing"
-	"reflect"
 
 	. "github.com/franela/goblin"
 )
@@ -91,7 +90,7 @@ func TestUserDao(t *testing.T) {
 
 			// g.Assert(user != nil).IsTrue()
 
-			t := reflect.TypeOf( user )
+			t := reflect.TypeOf(user)
 			g.Assert(t.Name()).Equal("User")
 
 			g.Assert(user.GetDOI().GetId()).Equal(id)
